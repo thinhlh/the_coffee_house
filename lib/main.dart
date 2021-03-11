@@ -52,7 +52,6 @@ class App extends StatelessWidget {
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
           OrderScreen.routeName: (_) => OrderScreen(),
-          SearchProductsScreen.routeName: (_) => SearchProductsScreen(),
           OthersScreen.routeName: (_) => OthersScreen(),
           ProductsOverviewScreen.routeName: (_) => ProductsOverviewScreen(),
           AdminHomeScreen.routeName: (_) => AdminHomeScreen(),

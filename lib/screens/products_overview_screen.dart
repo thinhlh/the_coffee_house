@@ -7,6 +7,7 @@ import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/widgets/bottom_sheet_product.dart';
 import 'package:the_coffee_house/widgets/order_card_navigation.dart';
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/widgets/product_card.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
   static const routeName = '/products_screen';
@@ -53,90 +54,7 @@ class ProductsOverviewScreen extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: products.length,
-                itemBuilder: (_, index) => GestureDetector(
-                  onTap: () => showModalBottomSheet(
-                    context: context,
-                    builder: (_) => BottomSheetProduct(products[index].id,
-                        MediaQuery.of(context).viewPadding.top),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(Constant.BORDER_RADIUS),
-                    ),
-                    isScrollControlled: true,
-                  ),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.17,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(Constant.BORDER_RADIUS),
-                      ),
-                      elevation: Constant.ELEVATION,
-                      child: Padding(
-                        padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    flex: 2,
-                                    child: Text(
-                                      products[index].title,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 3,
-                                    child: Text(
-                                      products[index].description,
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: Constant.LIST_TILE_TITTLE),
-                                    ),
-                                  ),
-                                  Flexible(
-                                    flex: 2,
-                                    child: Text(
-                                      NumberFormat.currency(
-                                        locale: 'vi-VN',
-                                        decimalDigits: 0,
-                                      ).format(products[index].price),
-                                      style: TextStyle(
-                                        color: Colors.grey[700],
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(
-                                  Constant.GENERAL_PADDING),
-                              child: ClipRRect(
-                                child: Image.network(
-                                  products[index].imageUrl,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                itemBuilder: (_, index) => ProductCard(products[index]),
               ),
             ],
           ),

@@ -16,112 +16,113 @@ class BottomSheetProduct extends StatelessWidget {
     final product =
         Provider.of<Products>(context, listen: false).getProductById(productId);
 
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: topPadding),
-        child: Stack(
-          alignment: Alignment.topRight,
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      maxChildSize: 1,
+      minChildSize: 1,
+      builder: (context, controller) => SingleChildScrollView(
+        child: ListView(
+          controller: controller,
+          shrinkWrap: true,
+          physics: PageScrollPhysics(),
           children: [
-            ListView(
-              children: [
-                Image.network(product.imageUrl),
-                Padding(
-                  padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.title,
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    softWrap: true,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.clip,
-                                  ),
-                                  Text(
-                                    NumberFormat.currency(
-                                      locale: 'vi-VN',
-                                      decimalDigits: 0,
-                                    ).format(product.price),
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.grey[600]),
-                                  ),
-                                ],
+            Image.network(product.imageUrl),
+            Image.network(product.imageUrl),
+            Container(
+              padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.title,
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                softWrap: true,
+                                maxLines: 3,
+                                overflow: TextOverflow.clip,
                               ),
-                            ),
-                            SizedBox(
-                              width: Constant.SIZED_BOX_HEIGHT,
-                            ),
-                            _FavoriteButton(() {}),
-                          ],
+                              Text(
+                                NumberFormat.currency(
+                                  locale: 'vi-VN',
+                                  decimalDigits: 0,
+                                ).format(product.price),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 18,
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Text(
-                          product.description,
-                          softWrap: true,
-                          style: TextStyle(color: Colors.grey[600]),
+                        SizedBox(
+                          width: Constant.SIZED_BOX_HEIGHT,
                         ),
-                      ),
-                    ],
+                        _FavoriteButton(() {}),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  height: 10,
-                  color: Colors.grey.shade200,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                  child: Column(
+                  SizedBox(
+                    height: 18,
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: Text(
+                      product.description,
+                      softWrap: true,
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 10,
+              color: Colors.grey.shade200,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Yêu cầu khác',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          Chip(
-                            label: Text('TÙY CHỌN'),
-                            backgroundColor: Colors.grey[300],
-                          ),
-                        ],
+                      Text(
+                        'Yêu cầu khác',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                        child: BottomSheetTextField(),
-                      ),
-                      Container(
-                        height: 10,
-                        color: Colors.grey.shade200,
+                      Chip(
+                        label: Text('TÙY CHỌN'),
+                        backgroundColor: Colors.grey[300],
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+                    child: BottomSheetTextField(),
+                  ),
+                  Container(
+                    height: 10,
+                    color: Colors.grey.shade200,
+                  ),
+                ],
+              ),
             ),
             OutlinedButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -136,7 +137,7 @@ class BottomSheetProduct extends StatelessWidget {
                   CircleBorder(),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

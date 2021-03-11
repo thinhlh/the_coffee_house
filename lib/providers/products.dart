@@ -22,6 +22,13 @@ class Products with ChangeNotifier {
       .toList()
       .length;
 
+  List<Product> getProductsByTitle(String title) {
+    return _products
+        .where((product) =>
+            product.title.trim().toLowerCase().contains(title.toLowerCase()))
+        .toList();
+  }
+
   Future<List<Product>> fetchProducts() async {
     final url =
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json';
