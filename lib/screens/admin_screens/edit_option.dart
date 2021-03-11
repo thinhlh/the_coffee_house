@@ -1,0 +1,4 @@
+enum EditOption {
+  product,
+  category,
+}
