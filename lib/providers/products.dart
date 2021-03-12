@@ -11,18 +11,25 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
+  Future<void> initializeProducts() async {
+    if (_products.isEmpty) await fetchProducts();
+  }
+
   List<Product> getProductsByCategory(String categoryId) =>
       _products.where((product) => product.categoryId == categoryId).toList();
 
   Product getProductById(String id) =>
       (id == null) ? null : _products.firstWhere((product) => product.id == id);
 
-  int getNumberOfProductsPerCategory(String categoryId) => _products
-      .where((product) => product.categoryId == categoryId)
-      .toList()
-      .length;
+  Future<int> getNumberOfProductsPerCategory(String categoryId) async {
+    initializeProducts();
+    return _products
+        .where((product) => product.categoryId == categoryId)
+        .toList()
+        .length;
+  }
 
-  List<Product> getProductsByTitle(String title) {
+  List<Product> searchProductsByTitle(String title) {
     return _products
         .where((product) =>
             product.title.trim().toLowerCase().contains(title.toLowerCase()))

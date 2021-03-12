@@ -8,138 +8,116 @@ import 'package:the_coffee_house/providers/products.dart';
 
 class BottomSheetProduct extends StatelessWidget {
   final productId;
-  final double topPadding;
-  BottomSheetProduct(this.productId, this.topPadding);
+  BottomSheetProduct(this.productId);
 
   @override
   Widget build(BuildContext context) {
     final product =
         Provider.of<Products>(context, listen: false).getProductById(productId);
 
-    return DraggableScrollableSheet(
-      initialChildSize: 1,
-      maxChildSize: 1,
-      minChildSize: 1,
-      builder: (context, controller) => SingleChildScrollView(
-        child: ListView(
-          controller: controller,
-          shrinkWrap: true,
-          physics: PageScrollPhysics(),
-          children: [
-            Image.network(product.imageUrl),
-            Image.network(product.imageUrl),
-            Container(
-              padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.title,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                softWrap: true,
-                                maxLines: 3,
-                                overflow: TextOverflow.clip,
-                              ),
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'vi-VN',
-                                  decimalDigits: 0,
-                                ).format(product.price),
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.grey[600]),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: Constant.SIZED_BOX_HEIGHT,
-                        ),
-                        _FavoriteButton(() {}),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: Text(
-                      product.description,
-                      softWrap: true,
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 10,
-              color: Colors.grey.shade200,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+    return SingleChildScrollView(
+      child: ListView(
+        shrinkWrap: true,
+        physics: PageScrollPhysics(),
+        children: [
+          Image.network(product.imageUrl),
+          Container(
+            padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Yêu cầu khác',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.title,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              softWrap: true,
+                              maxLines: 3,
+                              overflow: TextOverflow.clip,
+                            ),
+                            Text(
+                              NumberFormat.currency(
+                                locale: 'vi-VN',
+                                decimalDigits: 0,
+                              ).format(product.price),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.grey[600]),
+                            ),
+                          ],
                         ),
                       ),
-                      Chip(
-                        label: Text('TÙY CHỌN'),
-                        backgroundColor: Colors.grey[300],
+                      SizedBox(
+                        width: Constant.SIZED_BOX_HEIGHT,
                       ),
+                      _FavoriteButton(() {}),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                    child: BottomSheetTextField(),
-                  ),
-                  Container(
-                    height: 10,
-                    color: Colors.grey.shade200,
-                  ),
-                ],
-              ),
-            ),
-            OutlinedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Icon(
-                FlutterIcons.cross_ent,
-                color: Colors.black,
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                overlayColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
-                  CircleBorder(),
                 ),
-              ),
+                SizedBox(
+                  height: 18,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    product.description,
+                    softWrap: true,
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Container(
+            height: 10,
+            color: Colors.grey.shade200,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Yêu cầu khác',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Chip(
+                      label: Text('TÙY CHỌN'),
+                      backgroundColor: Colors.grey[300],
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+                  child: BottomSheetTextField(),
+                ),
+                Container(
+                  height: 10,
+                  color: Colors.grey.shade200,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

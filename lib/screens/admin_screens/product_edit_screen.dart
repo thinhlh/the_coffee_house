@@ -39,7 +39,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   void initState() {
-    Provider.of<Categories>(context, listen: false).fetchCategories();
+    Provider.of<Categories>(context, listen: false).categories;
     super.initState();
   }
 

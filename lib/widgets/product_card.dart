@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import '../models/product.dart';
@@ -12,19 +13,13 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => showModalBottomSheet(
+      onTap: () => showBarModalBottomSheet(
+        expand: true,
         context: context,
-        builder: (_) => GestureDetector(
-          child: BottomSheetProduct(
-            product.id,
-            MediaQuery.of(context).padding.top,
-          ),
-        ),
-        elevation: 0,
+        builder: (context) => BottomSheetProduct(product.id),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
         ),
-        isScrollControlled: true,
       ),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.17,

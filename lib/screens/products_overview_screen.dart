@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
-import 'package:the_coffee_house/widgets/bottom_sheet_product.dart';
 import 'package:the_coffee_house/widgets/order_card_navigation.dart';
 import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/widgets/product_card.dart';

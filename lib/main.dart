@@ -12,7 +12,6 @@ import 'package:the_coffee_house/screens/products_overview_screen.dart';
 import 'package:the_coffee_house/screens/order_screen.dart';
 import 'package:the_coffee_house/screens/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
-import 'package:the_coffee_house/screens/search_products_screen.dart';
 import 'package:the_coffee_house/screens/tab_screen.dart';
 
 void main() {
