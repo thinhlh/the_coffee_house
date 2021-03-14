@@ -40,10 +40,13 @@ class ProductCard extends StatelessWidget {
                     children: [
                       Flexible(
                         flex: 2,
-                        child: Text(
-                          product.title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                        child: FittedBox(
+                          fit: BoxFit.cover,
+                          child: Text(
+                            product.title,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
                         ),
                       ),
                       Flexible(

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
+import 'package:the_coffee_house/widgets/cart_bottom_navigation.dart';
 import 'package:the_coffee_house/widgets/order_card_navigation.dart';
 import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/widgets/product_card.dart';
@@ -30,12 +31,9 @@ class ProductsOverviewScreen extends StatelessWidget {
           centerTitle: true,
           title: Text(
             arguments['tittle'] as String,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: Constant.TEXT_SIZE,
-            ),
           ),
         ),
+        bottomNavigationBar: CartBottomNavigation(),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
           child: Column(

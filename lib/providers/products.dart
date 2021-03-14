@@ -15,6 +15,12 @@ class Products with ChangeNotifier {
     if (_products.isEmpty) await fetchProducts();
   }
 
+  List<Product> get favoriteProducts {
+    return [
+      ..._products.where((element) => element.isFavorite == true).toList()
+    ];
+  }
+
   List<Product> getProductsByCategory(String categoryId) =>
       _products.where((product) => product.categoryId == categoryId).toList();
 
@@ -144,5 +150,13 @@ class Products with ChangeNotifier {
       //TODO handling error
       throw (error);
     }
+  }
+
+  void toggleFavoriteStatus(String productId) {
+    final favoriteStatus =
+        _products.firstWhere((element) => element.id == productId).isFavorite;
+    _products.firstWhere((element) => element.id == productId).isFavorite =
+        !favoriteStatus;
+    notifyListeners();
   }
 }

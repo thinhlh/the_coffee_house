@@ -6,7 +6,7 @@ import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/screens/admin_screens/category_edit_screen.dart';
 
-class EditcategorsListView extends StatelessWidget {
+class EditcategoriesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Categories>(

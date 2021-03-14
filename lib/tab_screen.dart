@@ -91,6 +91,4 @@ class GeneralAppBar extends AppBar {
           ),
         ),
       ];
-  @override
-  Color get backgroundColor => Colors.white;
 }

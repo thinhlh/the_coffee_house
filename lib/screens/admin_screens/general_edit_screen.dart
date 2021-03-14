@@ -81,7 +81,7 @@ class _GeneralEditScreenState extends State<GeneralEditScreen> {
           padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
           child: editOption == EditOption.product
               ? EditProductsListView()
-              : EditcategorsListView(),
+              : EditcategoriesListView(),
         ),
       ),
     );
