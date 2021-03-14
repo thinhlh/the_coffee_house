@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
+import 'package:the_coffee_house/providers/products.dart';
 
 import 'package:the_coffee_house/screens/home_screen.dart';
 import 'package:the_coffee_house/screens/order_screen.dart';
@@ -20,9 +22,10 @@ class TabScreenState extends State<TabScreen> {
     HomeScreen.routeName: HomeScreen(),
     OrderScreen.routeName: OrderScreen(),
     OthersScreen.routeName: OthersScreen(),
-    '/test_screen': AdminHomeScreen(),
+    AdminHomeScreen.routeName: AdminHomeScreen(),
   };
 
+  bool _isInit = true;
   int _selectedPageIndex = 0;
 
   void navigateToScreen(String routeName, bool isDelivery) {
@@ -43,48 +46,115 @@ class TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: Image.asset(
-          'assets/images/the-coffee-house-logo.jpg',
-          fit: BoxFit.cover,
-          width: MediaQuery.of(context).size.width / 1.6,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: Icon(
-              Icons.card_membership,
-              color: Theme.of(context).primaryColor,
+    return _isInit
+        ? FutureBuilder(
+            future: Future.wait([
+              Provider.of<Products>(context, listen: false)
+                  .initializeProducts(),
+              Provider.of<Categories>(context, listen: false)
+                  .initializeCategories(),
+            ]),
+            builder: (_, snapshot) {
+              _isInit = false;
+              if (snapshot.connectionState != ConnectionState.done)
+                return Scaffold(
+                  body: Image.asset(
+                    'assets/images/waiting_screen.jpg',
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                );
+              return Scaffold(
+                appBar: AppBar(
+                  titleSpacing: 0,
+                  title: Image.asset(
+                    'assets/images/the-coffee-house-logo.jpg',
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width / 1.6,
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        print(_isInit);
+                      },
+                      child: Icon(
+                        Icons.card_membership,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  onTap: _navigate,
+                  currentIndex: _selectedPageIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(FlutterIcons.cup_sli),
+                      label: 'Order',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.menu_rounded),
+                      label: 'Others',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.admin_panel_settings),
+                      label: 'Admin',
+                    ),
+                  ],
+                ),
+                body: _pages.values.toList()[_selectedPageIndex],
+              );
+            })
+        : Scaffold(
+            appBar: AppBar(
+              titleSpacing: 0,
+              title: Image.asset(
+                'assets/images/the-coffee-house-logo.jpg',
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width / 1.6,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    print(_isInit);
+                  },
+                  child: Icon(
+                    Icons.card_membership,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: _navigate,
-        currentIndex: _selectedPageIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(FlutterIcons.cup_sli),
-            label: 'Order',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_rounded),
-            label: 'Others',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.admin_panel_settings),
-            label: 'Admin',
-          ),
-        ],
-      ),
-      body: _pages.values.toList()[_selectedPageIndex],
-    );
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              onTap: _navigate,
+              currentIndex: _selectedPageIndex,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(FlutterIcons.cup_sli),
+                  label: 'Order',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.menu_rounded),
+                  label: 'Others',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.admin_panel_settings),
+                  label: 'Admin',
+                ),
+              ],
+            ),
+            body: _pages.values.toList()[_selectedPageIndex],
+          );
   }
 }

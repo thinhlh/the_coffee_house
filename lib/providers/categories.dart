@@ -13,6 +13,10 @@ class Categories with ChangeNotifier {
     return [..._categories];
   }
 
+  Future<void> initializeCategories() async {
+    await fetchCategories();
+  }
+
   List<String> categoryIdList() =>
       _categories.map((category) => category.id).toList();
 
@@ -121,10 +125,7 @@ class Categories with ChangeNotifier {
     }
   }
 
-  Future<int> getNumberOfProductsByCategoryId(
-      BuildContext context, String categoryId) async {
-    if (Provider.of<Products>(context, listen: false).products.isEmpty)
-      await Provider.of<Products>(context, listen: false).fetchProducts();
+  int getNumberOfProductsByCategoryId(BuildContext context, String categoryId) {
     return Provider.of<Products>(context, listen: false)
         .products
         .where((product) => product.categoryId == categoryId)

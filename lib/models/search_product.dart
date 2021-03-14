@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/widgets/product_card.dart';
 
 class SearchProduct extends SearchDelegate {
   @override
@@ -21,11 +26,25 @@ class SearchProduct extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container();
+    final products =
+        Provider.of<Products>(context).searchProductsByTitle(query);
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+      itemBuilder: (_, index) => ProductCard(products[index]),
+      itemCount: products.length,
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Text(query);
+    final products =
+        Provider.of<Products>(context).searchProductsByTitle(query);
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+      itemBuilder: (_, index) => ProductCard(products[index]),
+      itemCount: products.length,
+    );
   }
 }
