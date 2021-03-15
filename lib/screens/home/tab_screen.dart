@@ -5,9 +5,9 @@ import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/providers/products.dart';
 
-import 'package:the_coffee_house/screens/home_screen.dart';
-import 'package:the_coffee_house/screens/order_screen.dart';
-import 'package:the_coffee_house/screens/others_screen.dart';
+import 'package:the_coffee_house/screens/home/home_screen.dart';
+import 'package:the_coffee_house/screens/home/order_screen.dart';
+import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
 
 class TabScreen extends StatefulWidget {

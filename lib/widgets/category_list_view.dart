@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/models/category.dart';
 import 'package:the_coffee_house/providers/categories.dart';
-import 'package:the_coffee_house/screens/products_overview_screen.dart';
+import 'package:the_coffee_house/screens/home/products_overview_screen.dart';
 
 class CategoryListView extends StatefulWidget {
   @override

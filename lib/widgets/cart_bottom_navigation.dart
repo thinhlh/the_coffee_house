@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/cart.dart';
-import 'package:the_coffee_house/screens/order_confirmation_screen.dart';
+import 'package:the_coffee_house/screens/home/order_confirmation_screen.dart';
 
 class CartBottomNavigation extends StatelessWidget {
   @override
