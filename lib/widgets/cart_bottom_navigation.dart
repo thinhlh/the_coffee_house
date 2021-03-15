@@ -58,9 +58,9 @@ class CartBottomNavigation extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () => showBarModalBottomSheet(
-                      context: context,
-                      builder: (_) => OrderConfirmationScreen(),
-                    ),
+                        context: context,
+                        builder: (_) => OrderConfirmationScreen()),
+                    //cartBottomNavigationVariables[option]['navigate'],
                     child: Chip(
                       backgroundColor: Colors.white,
                       label: Text(

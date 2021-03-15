@@ -31,9 +31,6 @@ class Cart with ChangeNotifier {
       else
         _cartItems[index].quantity += cartItem.quantity;
     }
-    _cartItems.forEach((element) {
-      print(element.quantity.toString() + ' ' + element.title);
-    });
     notifyListeners();
   }
 
