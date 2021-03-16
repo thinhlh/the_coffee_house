@@ -7,7 +7,11 @@ import 'dart:convert';
 import '../models/category.dart';
 
 class Categories with ChangeNotifier {
+  final String _authToken;
+
   List<Category> _categories = [];
+
+  Categories(this._categories, this._authToken);
 
   List<Category> get categories {
     return [..._categories];
@@ -27,7 +31,7 @@ class Categories with ChangeNotifier {
 
   Future<List<Category>> fetchCategories() async {
     final url =
-        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json';
+        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json?auth=$_authToken';
 
     try {
       var response = await http.get(url);
@@ -54,7 +58,7 @@ class Categories with ChangeNotifier {
 
   Future<void> addCategory(Category category) async {
     final url =
-        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json';
+        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json?auth=$_authToken';
     try {
       var response = await http.post(
         url,
@@ -87,7 +91,7 @@ class Categories with ChangeNotifier {
 
     try {
       await http.patch(
-        url + '$id.json',
+        url + '$id.json?auth=$_authToken',
         body: json.encode({
           'title': newCategory.title,
           'imageUrl': newCategory.imageUrl,
@@ -109,7 +113,7 @@ class Categories with ChangeNotifier {
     Category tempCategory = _categories[index];
 
     try {
-      var response = await http.delete(url + '$id.json');
+      var response = await http.delete(url + '$id.json?auth=$_authToken');
       _categories.removeAt(index);
       notifyListeners();
 

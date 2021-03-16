@@ -35,11 +35,19 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<OrderCardNavigationProvider>(
           create: (_) => OrderCardNavigationProvider(),
         ),
-        ChangeNotifierProvider<Products>(
-          create: (_) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: null,
+          update: (_, auth, previousProducts) => Products(
+            previousProducts == null ? [] : previousProducts.products,
+            auth.token,
+          ),
         ),
-        ChangeNotifierProvider<Categories>(
-          create: (_) => Categories(),
+        ChangeNotifierProxyProvider<Auth, Categories>(
+          create: null,
+          update: (_, auth, previousCategories) => Categories(
+            previousCategories == null ? [] : previousCategories.categories,
+            auth.token,
+          ),
         ),
         ChangeNotifierProvider<Notifications>(
           create: (_) => Notifications(),
@@ -58,8 +66,7 @@ class App extends StatelessWidget {
           dividerColor: Colors.grey.shade300,
         ),
         home: Consumer<Auth>(
-          builder: (_, auth, child) =>
-              auth.isAuth ? HomeScreen() : AuthScreen(),
+          builder: (_, auth, child) => auth.isAuth ? TabScreen() : AuthScreen(),
         ),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
