@@ -8,13 +8,15 @@ import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/screens/admin_screens/general_edit_screen.dart';
-import 'package:the_coffee_house/screens/favorites_screen.dart';
-import 'package:the_coffee_house/screens/home_screen.dart';
-import 'package:the_coffee_house/screens/products_overview_screen.dart';
-import 'package:the_coffee_house/screens/order_screen.dart';
-import 'package:the_coffee_house/screens/others_screen.dart';
+import 'package:the_coffee_house/screens/auth/auth_screen.dart';
+import 'package:the_coffee_house/screens/home/favorites_screen.dart';
+import 'package:the_coffee_house/screens/home/home_screen.dart';
+import 'package:the_coffee_house/screens/home/products_overview_screen.dart';
+import 'package:the_coffee_house/screens/home/order_screen.dart';
+import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
-import 'package:the_coffee_house/screens/tab_screen.dart';
+import 'package:the_coffee_house/screens/home/tab_screen.dart';
+import 'package:the_coffee_house/services/auth.dart';
 
 void main() {
   runApp(App());
@@ -27,14 +29,25 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<Auth>(
+          create: (_) => Auth(),
+        ),
         ChangeNotifierProvider<OrderCardNavigationProvider>(
           create: (_) => OrderCardNavigationProvider(),
         ),
-        ChangeNotifierProvider<Products>(
-          create: (_) => Products(),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: null,
+          update: (_, auth, previousProducts) => Products(
+            previousProducts == null ? [] : previousProducts.products,
+            auth.token,
+          ),
         ),
-        ChangeNotifierProvider<Categories>(
-          create: (_) => Categories(),
+        ChangeNotifierProxyProvider<Auth, Categories>(
+          create: null,
+          update: (_, auth, previousCategories) => Categories(
+            previousCategories == null ? [] : previousCategories.categories,
+            auth.token,
+          ),
         ),
         ChangeNotifierProvider<Notifications>(
           create: (_) => Notifications(),
@@ -52,8 +65,8 @@ class App extends StatelessWidget {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           dividerColor: Colors.grey.shade300,
         ),
-        home: TabScreen(
-          key: tabScreenState,
+        home: Consumer<Auth>(
+          builder: (_, auth, child) => auth.isAuth ? TabScreen() : AuthScreen(),
         ),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),

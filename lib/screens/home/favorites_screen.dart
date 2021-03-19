@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 
-import '../providers/products.dart';
-import '../widgets/product_card.dart';
+import '../../providers/products.dart';
+import '../../widgets/product_card.dart';
 
 class FavoriteScreen extends StatelessWidget {
   static const routeName = '/favorite_screen';

@@ -5,6 +5,10 @@ import 'dart:convert';
 import 'package:the_coffee_house/models/product.dart';
 
 class Products with ChangeNotifier {
+  final String _authToken;
+
+  Products(this._products, this._authToken);
+
   List<Product> _products = [];
 
   List<Product> get products {
@@ -44,7 +48,7 @@ class Products with ChangeNotifier {
 
   Future<List<Product>> fetchProducts() async {
     final url =
-        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json';
+        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json?auth=$_authToken';
 
     try {
       var response = await http.get(url);
@@ -72,7 +76,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url =
-        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json';
+        'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json?auth=$_authToken';
 
     try {
       http.post(
@@ -111,7 +115,7 @@ class Products with ChangeNotifier {
       return;
     else
       http.patch(
-        url + '$id.json',
+        url + '$id.json?auth=$_authToken',
         body: json.encode(
           {
             'title': newProduct.title,
@@ -132,7 +136,7 @@ class Products with ChangeNotifier {
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products/';
 
     try {
-      http.delete(url + '$id.json').then(
+      http.delete(url + '$id.json?auth=$_authToken').then(
         (response) {
           final index = _products.indexWhere((element) => element.id == id);
           Product tempProduct = _products[index];

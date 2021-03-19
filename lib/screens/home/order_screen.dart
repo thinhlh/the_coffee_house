@@ -3,12 +3,12 @@ import 'package:flutter_icons/flutter_icons.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/models/search_product.dart';
-import 'package:the_coffee_house/screens/favorites_screen.dart';
+import 'package:the_coffee_house/screens/home/favorites_screen.dart';
 import 'package:the_coffee_house/widgets/cart_bottom_navigation.dart';
 import 'package:the_coffee_house/widgets/order_card_navigation.dart';
 import 'package:the_coffee_house/widgets/navigative_action_card.dart';
 
-import '../widgets/category_list_view.dart';
+import '../../widgets/category_list_view.dart';
 
 class OrderScreen extends StatelessWidget {
   static const routeName = '/order_screen';
