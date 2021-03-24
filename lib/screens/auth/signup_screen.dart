@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/const.dart' as Constant;
-
 import 'package:intl/intl.dart';
+
+import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/screens/auth/login_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static const routeName = '/auth/signup_screen';
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.check, color: Colors.amber.shade200),
-          backgroundColor: Color(0xFFFE8853),
-          splashColor: Colors.transparent,
-        ),
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -23,11 +19,8 @@ class SignUpScreen extends StatelessWidget {
               floating: false,
               expandedHeight: MediaQuery.of(context).size.height / 2,
               title: TextButton(
-                onPressed: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (_) => LoginScreen(),
-                  ),
-                ),
+                onPressed: () => Navigator.of(context)
+                    .pushReplacementNamed(LoginScreen.routeName),
                 child: Text(
                   'Login',
                   style: TextStyle(
@@ -62,7 +55,7 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-GlobalKey _signupForm = GlobalKey<FormState>();
+GlobalKey<FormState> _signupForm = GlobalKey<FormState>();
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -70,132 +63,181 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  TextEditingController _password = TextEditingController();
   Map<String, dynamic> _userData = {
     'email': '',
     'password': '',
+    'name': '',
     'birthday': DateTime.now(),
   };
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final sizedBoxHeight = mediaQuery.size.height / 40;
 
-    return SingleChildScrollView(
-      child: Form(
-        key: _signupForm,
-        child: Container(
-          padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            children: [
-              SizedBox(height: sizedBoxHeight),
-              TextFormField(
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
-                    borderSide: BorderSide.none,
-                  ),
-                  icon: Icon(
-                    Icons.email,
-                    color: Color(0xFFFD7267),
-                  ),
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  hintText: 'Email',
-                ),
-              ),
-              SizedBox(height: sizedBoxHeight),
-              TextFormField(
-                cursorColor: Colors.black,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
-                    borderSide: BorderSide.none,
-                  ),
-                  icon: Icon(
-                    Icons.vpn_key,
-                    color: Color(0xFFFD7267),
-                  ),
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  hintText: 'Password',
-                ),
-              ),
-              SizedBox(height: sizedBoxHeight),
-              TextFormField(
-                cursorColor: Colors.black,
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
-                    borderSide: BorderSide.none,
-                  ),
-                  icon: Icon(
-                    Icons.security,
-                    color: Color(0xFFFD7267),
-                  ),
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  hintText: 'Confirm Password',
-                ),
-              ),
-              SizedBox(height: sizedBoxHeight),
-              TextFormField(
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
-                    borderSide: BorderSide.none,
-                  ),
-                  icon: Icon(
-                    Icons.person,
-                    color: Color(0xFFFD7267),
-                  ),
-                  fillColor: Colors.grey.shade300,
-                  filled: true,
-                  hintText: 'Full Name',
-                ),
-              ),
-              SizedBox(height: sizedBoxHeight),
-              GestureDetector(
-                onTap: () => showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1990),
-                  lastDate: DateTime.now(),
-                ).then((value) {
-                  if (value != null)
-                    setState(() => _userData['birthday'] = value);
-                }),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    enabled: false,
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(Constant.BORDER_RADIUS),
-                      borderSide: BorderSide.none,
+    return _isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
+            child: Form(
+              key: _signupForm,
+              child: Container(
+                padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+                child: ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  children: [
+                    SizedBox(height: sizedBoxHeight),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) =>
+                          (value.contains('@') && value != null)
+                              ? null
+                              : 'Invalid Email',
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constant.BORDER_RADIUS),
+                          borderSide: BorderSide.none,
+                        ),
+                        icon: Icon(
+                          Icons.email,
+                          color: Color(0xFFFD7267),
+                        ),
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        hintText: 'Email',
+                      ),
+                      onSaved: (value) => _userData['email'] = value,
                     ),
-                    icon: Icon(
-                      Icons.cake,
-                      color: Color(0xFFFD7267),
+                    SizedBox(height: sizedBoxHeight),
+                    TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Invalid Password' : null,
+                      controller: _password,
+                      textInputAction: TextInputAction.next,
+                      cursorColor: Colors.black,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constant.BORDER_RADIUS),
+                          borderSide: BorderSide.none,
+                        ),
+                        icon: Icon(
+                          Icons.vpn_key,
+                          color: Color(0xFFFD7267),
+                        ),
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        hintText: 'Password',
+                      ),
+                      onSaved: (value) => _userData['password'] = value,
                     ),
-                    hintText:
-                        DateFormat('d/MM/y').format(_userData['birthday']),
-                    fillColor: Colors.grey.shade300,
-                    filled: true,
-                  ),
+                    SizedBox(height: sizedBoxHeight),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      validator: (value) => value == _password.text
+                          ? null
+                          : 'Confirmation password must be the same as password',
+                      cursorColor: Colors.black,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constant.BORDER_RADIUS),
+                          borderSide: BorderSide.none,
+                        ),
+                        icon: Icon(
+                          Icons.security,
+                          color: Color(0xFFFD7267),
+                        ),
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        hintText: 'Confirm Password',
+                      ),
+                    ),
+                    SizedBox(height: sizedBoxHeight),
+                    TextFormField(
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.done,
+                      cursorColor: Colors.black,
+                      validator: (value) =>
+                          (!value.contains(RegExp('^[^0-9]+\$')) ||
+                                  value.isEmpty)
+                              ? 'Invalid Name'
+                              : null,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constant.BORDER_RADIUS),
+                          borderSide: BorderSide.none,
+                        ),
+                        icon: Icon(
+                          Icons.person,
+                          color: Color(0xFFFD7267),
+                        ),
+                        fillColor: Colors.grey.shade300,
+                        filled: true,
+                        hintText: 'Full Name',
+                      ),
+                      onSaved: (value) => _userData['name'] = value,
+                    ),
+                    SizedBox(height: sizedBoxHeight),
+                    GestureDetector(
+                      onTap: () => showDatePicker(
+                        context: context,
+                        initialDate: _userData['birthday'],
+                        firstDate: DateTime(1990),
+                        lastDate: DateTime.now(),
+                      ).then((value) {
+                        if (value != null)
+                          setState(() => _userData['birthday'] = value);
+                      }),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          enabled: false,
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(Constant.BORDER_RADIUS),
+                            borderSide: BorderSide.none,
+                          ),
+                          icon: Icon(
+                            Icons.cake,
+                            color: Color(0xFFFD7267),
+                          ),
+                          hintText: DateFormat('d/MM/y')
+                              .format(_userData['birthday']),
+                          fillColor: Colors.grey.shade300,
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: sizedBoxHeight),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (!_signupForm.currentState.validate()) return;
+                        _signupForm.currentState.save();
+                      },
+                      child: Text('Sign Up'),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.blue.shade300),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
+                    ),
+                    SizedBox(height: sizedBoxHeight),
+                  ],
                 ),
               ),
-              SizedBox(height: sizedBoxHeight),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
 

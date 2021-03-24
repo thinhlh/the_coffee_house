@@ -5,6 +5,8 @@ import 'package:the_coffee_house/models/http_exception.dart';
 import 'package:the_coffee_house/screens/auth/signup_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 
+import 'signup_screen.dart';
+
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth/login_screen';
 
@@ -201,12 +203,8 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => SignUpScreen(),
-                    ),
-                  ),
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(SignUpScreen.routeName),
                   child: Text("Register"),
                   style: ButtonStyle(
                     foregroundColor:
