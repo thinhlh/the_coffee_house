@@ -65,9 +65,9 @@ class App extends StatelessWidget {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           dividerColor: Colors.grey.shade300,
         ),
-        home: Consumer<Auth>(
-          builder: (_, auth, child) => auth.isAuth ? TabScreen() : AuthScreen(),
-        ),
+        home: Consumer<Auth>(builder: (_, auth, child) {
+          return auth.isAuth ? TabScreen() : AuthScreen();
+        }),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
           OrderScreen.routeName: (_) => OrderScreen(),
