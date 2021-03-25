@@ -34,7 +34,7 @@ class Categories with ChangeNotifier {
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json?auth=$_authToken';
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(Uri.parse(url));
       Map<String, dynamic> extractedData = json.decode(response.body);
       final List<Category> loadedCategories = [];
 
@@ -61,7 +61,7 @@ class Categories with ChangeNotifier {
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/categories.json?auth=$_authToken';
     try {
       var response = await http.post(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'title': category.title,
           'imageUrl': category.imageUrl,
@@ -91,7 +91,7 @@ class Categories with ChangeNotifier {
 
     try {
       await http.patch(
-        url + '$id.json?auth=$_authToken',
+        Uri.parse(url + '$id.json?auth=$_authToken'),
         body: json.encode({
           'title': newCategory.title,
           'imageUrl': newCategory.imageUrl,
@@ -113,7 +113,8 @@ class Categories with ChangeNotifier {
     Category tempCategory = _categories[index];
 
     try {
-      var response = await http.delete(url + '$id.json?auth=$_authToken');
+      var response =
+          await http.delete(Uri.parse(url + '$id.json?auth=$_authToken'));
       _categories.removeAt(index);
       notifyListeners();
 

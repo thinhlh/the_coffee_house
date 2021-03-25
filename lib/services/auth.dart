@@ -25,7 +25,7 @@ class Auth with ChangeNotifier {
         'https://identitytoolkit.googleapis.com/v1/accounts:$segment?key=AIzaSyBpXGQeF1Hh9itoL5DkVAHX1Xjoq7orPFg';
     try {
       final response = await http.post(
-        url,
+        Uri.parse(url),
         body: json.encode(
           {
             'email': email,

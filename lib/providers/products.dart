@@ -51,7 +51,7 @@ class Products with ChangeNotifier {
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products.json?auth=$_authToken';
 
     try {
-      var response = await http.get(url);
+      var response = await http.get(Uri.parse(url));
       Map<String, dynamic> extractedData = json.decode(response.body);
       List<Product> loadedProduct = [];
 
@@ -80,7 +80,7 @@ class Products with ChangeNotifier {
 
     try {
       http.post(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'title': product.title,
           'description': product.description,
@@ -115,7 +115,7 @@ class Products with ChangeNotifier {
       return;
     else
       http.patch(
-        url + '$id.json?auth=$_authToken',
+        Uri.parse(url + '$id.json?auth=$_authToken'),
         body: json.encode(
           {
             'title': newProduct.title,
@@ -136,7 +136,7 @@ class Products with ChangeNotifier {
         'https://the-coffee-house-212b6-default-rtdb.firebaseio.com/products/';
 
     try {
-      http.delete(url + '$id.json?auth=$_authToken').then(
+      http.delete(Uri.parse(url + '$id.json?auth=$_authToken')).then(
         (response) {
           final index = _products.indexWhere((element) => element.id == id);
           Product tempProduct = _products[index];
