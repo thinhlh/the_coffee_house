@@ -223,6 +223,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       onPressed: () {
                         if (!_signupForm.currentState.validate()) return;
                         _signupForm.currentState.save();
+
+                        setState(() => _isLoading = true);
                       },
                       child: Text('Sign Up'),
                       style: ButtonStyle(

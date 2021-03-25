@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +19,11 @@ import 'package:the_coffee_house/screens/home/tab_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 
 import 'screens/auth/login_screen.dart';
-import 'screens/auth/login_screen.dart';
-import 'screens/auth/login_screen.dart';
-import 'screens/auth/signup_screen.dart';
 import 'screens/auth/signup_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(App());
 }
 
@@ -71,7 +71,11 @@ class App extends StatelessWidget {
           dividerColor: Colors.grey.shade300,
         ),
         home: Consumer<Auth>(builder: (_, auth, child) {
-          return auth.isAuth ? TabScreen() : LoginScreen();
+          return auth.isAuth
+              ? TabScreen(
+                  key: tabScreenState,
+                )
+              : LoginScreen();
         }),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
