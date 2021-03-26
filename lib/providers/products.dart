@@ -156,7 +156,7 @@ class Products with ChangeNotifier {
     }
   }
 
-  void toggleFavoriteStatus(String productId) {
+  void toggleFavoriteStatus(String productId) async {
     final favoriteStatus =
         _products.firstWhere((element) => element.id == productId).isFavorite;
     _products.firstWhere((element) => element.id == productId).isFavorite =

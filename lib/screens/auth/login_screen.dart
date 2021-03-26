@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/screens/auth/signup_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
-
-import 'signup_screen.dart';
+import 'auth_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/auth/login_screen';
@@ -100,16 +98,16 @@ class _LoginFormState extends State<LoginForm> {
           .signin(_authData['email'], _authData['password']);
     } on HttpException catch (error) {
       var errorMessage = 'Failed To Login';
-      if (error.message == 'TOO_MANY_ATTEMPTS_TRY_LATER')
+      if (error.message == 'wrong-password')
         errorMessage =
-            'You have been tried to login this account for multiple times. Please try again later';
-      else if (error.message == 'INVALID_EMAIL')
+            'The password is invalid for the given email, or the account corresponding to the email does not have a password set.';
+      else if (error.message == 'invalid-email')
         errorMessage = 'Email does not valid';
-      else if (error.message == 'INVALID_PASSWORD')
-        errorMessage = 'The password is invalid.';
-      else if (error.message == 'EMAIL_NOT_FOUND')
+      else if (error.message == 'user-disable')
         errorMessage =
-            'There is no user record corresponding to this identifier.';
+            'User corresponding to the given email has been disabled.';
+      else if (error.message == 'user-not-found')
+        errorMessage = 'There is no user corresponding to the given email.';
 
       showDialog(
         context: context,
@@ -203,8 +201,9 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(SignUpScreen.routeName),
+                  onPressed: () =>
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .navigate(),
                   child: Text("Register"),
                   style: ButtonStyle(
                     foregroundColor:

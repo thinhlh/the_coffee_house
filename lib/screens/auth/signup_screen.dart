@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
-import 'package:the_coffee_house/screens/auth/login_screen.dart';
+import 'package:the_coffee_house/models/http_exception.dart';
+import 'package:the_coffee_house/models/user.dart';
+import 'auth_screen.dart';
+import 'package:the_coffee_house/services/auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = '/auth/signup_screen';
@@ -19,8 +23,9 @@ class SignUpScreen extends StatelessWidget {
               floating: false,
               expandedHeight: MediaQuery.of(context).size.height / 2,
               title: TextButton(
-                onPressed: () => Navigator.of(context)
-                    .pushReplacementNamed(LoginScreen.routeName),
+                onPressed: () =>
+                    Provider.of<AuthProvider>(context, listen: false)
+                        .navigate(),
                 child: Text(
                   'Login',
                   style: TextStyle(
@@ -42,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
                     color: Colors.purple.shade300,
                   ),
                 ),
-                background: WavyHeader(),
+                background: _WavyHeader(),
               ),
             ),
             SliverToBoxAdapter(
@@ -71,6 +76,12 @@ class _SignUpFormState extends State<SignUpForm> {
     'birthday': DateTime.now(),
   };
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,11 +231,73 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                     SizedBox(height: sizedBoxHeight),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (!_signupForm.currentState.validate()) return;
                         _signupForm.currentState.save();
 
                         setState(() => _isLoading = true);
+                        try {
+                          await Provider.of<Auth>(context, listen: false)
+                              .signup(
+                            User(
+                              uid: null,
+                              email: _userData['email'],
+                              name: _userData['name'],
+                              birthday: _userData['birthday'],
+                            ),
+                            _userData['password'],
+                          );
+
+                          _password.clear();
+                        } on HttpException catch (error) {
+                          var errorMessage = 'Failed To Sign Up';
+                          if (error.message == 'email-already-in-use')
+                            errorMessage =
+                                'There already exists an account with the given email address.';
+                          else if (error.message == 'weak-password')
+                            errorMessage =
+                                'Thrown if the password is not strong enough.';
+
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text('Error'),
+                              content: Text(errorMessage),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all(Colors.blue),
+                                    overlayColor: MaterialStateProperty.all(
+                                        Colors.transparent),
+                                  ),
+                                  child: Text('Okay'),
+                                )
+                              ],
+                            ),
+                          );
+                        } catch (error) {
+                          var errorMessage = 'Cannot sign up';
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              title: Text('Error'),
+                              content: Text(errorMessage),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Okay'),
+                                )
+                              ],
+                            ),
+                          );
+                        }
+                        setState(() => _isLoading = false);
                       },
                       child: Text('Sign Up'),
                       style: ButtonStyle(
@@ -243,7 +316,7 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 }
 
-class WavyHeader extends StatelessWidget {
+class _WavyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipPath(

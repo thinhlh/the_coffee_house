@@ -159,9 +159,9 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Consumer<Products>(
-                              builder: (_, provider, child) => TextButton(
+                              builder: (_, products, child) => TextButton(
                                 onPressed: () {
-                                  provider
+                                  products
                                       .toggleFavoriteStatus(widget.productId);
                                 },
                                 child: product.isFavorite

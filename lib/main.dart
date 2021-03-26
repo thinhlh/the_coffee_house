@@ -9,13 +9,13 @@ import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/screens/admin_screens/general_edit_screen.dart';
+import 'package:the_coffee_house/screens/auth/wrapper.dart';
 import 'package:the_coffee_house/screens/home/favorites_screen.dart';
 import 'package:the_coffee_house/screens/home/home_screen.dart';
 import 'package:the_coffee_house/screens/home/products_overview_screen.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
-import 'package:the_coffee_house/screens/home/tab_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 
 import 'screens/auth/login_screen.dart';
@@ -26,8 +26,6 @@ void main() async {
   await Firebase.initializeApp();
   runApp(App());
 }
-
-GlobalKey<TabScreenState> tabScreenState = GlobalKey<TabScreenState>();
 
 class App extends StatelessWidget {
   @override
@@ -42,10 +40,12 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
           create: null,
-          update: (_, auth, previousProducts) => Products(
-            previousProducts == null ? [] : previousProducts.products,
-            auth.token,
-          ),
+          update: (_, auth, previousProducts) {
+            return Products(
+              previousProducts == null ? [] : previousProducts.products,
+              auth.token,
+            );
+          },
         ),
         ChangeNotifierProxyProvider<Auth, Categories>(
           create: null,
@@ -70,13 +70,7 @@ class App extends StatelessWidget {
           appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           dividerColor: Colors.grey.shade300,
         ),
-        home: Consumer<Auth>(builder: (_, auth, child) {
-          return auth.isAuth
-              ? TabScreen(
-                  key: tabScreenState,
-                )
-              : LoginScreen();
-        }),
+        home: Wrapper(),
         routes: {
           HomeScreen.routeName: (_) => HomeScreen(),
           OrderScreen.routeName: (_) => OrderScreen(),
