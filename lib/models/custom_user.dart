@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-class User {
+class CustomUser {
   String uid;
   String name;
   String email;
   DateTime birthday;
-  Map<String, bool> favoriteProducts;
+  List<String> favoriteProducts = [];
 
-  User({
+  CustomUser({
     @required this.uid,
     @required this.name,
     @required this.email,

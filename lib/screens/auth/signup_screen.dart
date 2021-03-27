@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/models/user.dart';
+import 'package:the_coffee_house/models/custom_user.dart';
 import 'auth_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 
@@ -239,7 +239,7 @@ class _SignUpFormState extends State<SignUpForm> {
                         try {
                           await Provider.of<Auth>(context, listen: false)
                               .signup(
-                            User(
+                            CustomUser(
                               uid: null,
                               email: _userData['email'],
                               name: _userData['name'],
@@ -247,8 +247,6 @@ class _SignUpFormState extends State<SignUpForm> {
                             ),
                             _userData['password'],
                           );
-
-                          _password.clear();
                         } on HttpException catch (error) {
                           var errorMessage = 'Failed To Sign Up';
                           if (error.message == 'email-already-in-use')
@@ -296,6 +294,8 @@ class _SignUpFormState extends State<SignUpForm> {
                               ],
                             ),
                           );
+                        } finally {
+                          _password.clear();
                         }
                         setState(() => _isLoading = false);
                       },

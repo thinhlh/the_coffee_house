@@ -8,6 +8,7 @@ import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
 import 'package:the_coffee_house/screens/admin_screens/general_edit_screen.dart';
 import 'package:the_coffee_house/screens/auth/wrapper.dart';
 import 'package:the_coffee_house/screens/home/favorites_screen.dart';
@@ -35,24 +36,25 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<Auth>(
           create: (_) => Auth(),
         ),
-        ChangeNotifierProvider<OrderCardNavigationProvider>(
-          create: (_) => OrderCardNavigationProvider(),
-        ),
         ChangeNotifierProxyProvider<Auth, Products>(
           create: null,
           update: (_, auth, previousProducts) {
             return Products(
-              previousProducts == null ? [] : previousProducts.products,
-              auth.token,
-            );
+                previousProducts == null ? [] : previousProducts.products);
           },
         ),
         ChangeNotifierProxyProvider<Auth, Categories>(
           create: null,
           update: (_, auth, previousCategories) => Categories(
             previousCategories == null ? [] : previousCategories.categories,
-            auth.token,
           ),
+        ),
+        ChangeNotifierProxyProvider<Auth, UserProvider>(
+          create: null,
+          update: (_, auth, previousUser) => UserProvider(auth.user.uid),
+        ),
+        ChangeNotifierProvider<OrderCardNavigationProvider>(
+          create: (_) => OrderCardNavigationProvider(),
         ),
         ChangeNotifierProvider<Notifications>(
           create: (_) => Notifications(),

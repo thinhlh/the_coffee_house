@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
-import '../models/product.dart';
+import 'package:the_coffee_house/models/product.dart';
+import 'package:the_coffee_house/providers/products.dart';
 import 'bottom_sheet_product.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product product;
-  ProductCard(this.product);
+  final String _productId;
+  ProductCard(this._productId);
 
   @override
   Widget build(BuildContext context) {
+    Product product = Provider.of<Products>(context, listen: false)
+        .getProductById(_productId);
+
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(
         expand: true,

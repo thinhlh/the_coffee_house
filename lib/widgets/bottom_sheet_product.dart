@@ -8,6 +8,7 @@ import 'package:the_coffee_house/models/cart_item.dart';
 import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
 import '../providers/products.dart';
 
 class BottomSheetProduct extends StatefulWidget {
@@ -158,27 +159,30 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Consumer<Products>(
-                              builder: (_, products, child) => TextButton(
-                                onPressed: () {
-                                  products
-                                      .toggleFavoriteStatus(widget.productId);
-                                },
-                                child: product.isFavorite
-                                    ? Icon(
-                                        Icons.favorite_rounded,
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                      )
-                                    : Icon(
-                                        Icons.favorite_border_rounded,
-                                        color: Colors.black,
-                                      ),
-                                style: ButtonStyle(
-                                  overlayColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                ),
-                              ),
+                            Consumer<UserProvider>(
+                              builder: (_, userProvider, child) {
+                                return TextButton(
+                                  onPressed: () {
+                                    userProvider
+                                        .toggleFavoriteStatus(widget.productId);
+                                  },
+                                  child:
+                                      userProvider.isFavorite(widget.productId)
+                                          ? Icon(
+                                              Icons.favorite_rounded,
+                                              color: Theme.of(context)
+                                                  .primaryColorDark,
+                                            )
+                                          : Icon(
+                                              Icons.favorite_border_rounded,
+                                              color: Colors.black,
+                                            ),
+                                  style: ButtonStyle(
+                                    overlayColor: MaterialStateProperty.all(
+                                        Colors.transparent),
+                                  ),
+                                );
+                              },
                             ),
                             Text(
                               'YÊU THÍCH',

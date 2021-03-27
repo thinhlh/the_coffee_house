@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
-
-import '../../providers/products.dart';
-import '../../widgets/product_card.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
+import 'package:the_coffee_house/widgets/product_card.dart';
 
 class FavoriteScreen extends StatelessWidget {
   static const routeName = '/favorite_screen';
@@ -16,7 +15,7 @@ class FavoriteScreen extends StatelessWidget {
         centerTitle: true,
         title: Text('Món yêu thích'),
       ),
-      body: Provider.of<Products>(context, listen: false)
+      body: Provider.of<UserProvider>(context, listen: false)
               .favoriteProducts
               .isEmpty
           ? Center(
@@ -44,13 +43,13 @@ class FavoriteScreen extends StatelessWidget {
             )
           : SingleChildScrollView(
               padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-              child: Consumer<Products>(
-                builder: (_, provider, child) => ListView.builder(
+              child: Consumer<UserProvider>(
+                builder: (_, userProvider, child) => ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) =>
-                      ProductCard(provider.favoriteProducts[index]),
-                  itemCount: provider.favoriteProducts.length,
+                      ProductCard(userProvider.favoriteProducts[index]),
+                  itemCount: userProvider.favoriteProducts.length,
                 ),
               ),
             ),

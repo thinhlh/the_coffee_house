@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
 
 import 'package:the_coffee_house/screens/home/home_screen.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
@@ -49,10 +50,9 @@ class TabScreenState extends State<TabScreen> {
     return _isInit
         ? FutureBuilder(
             future: Future.wait([
-              Provider.of<Products>(context, listen: false)
-                  .initializeProducts(),
-              Provider.of<Categories>(context, listen: false)
-                  .initializeCategories(),
+              Provider.of<Products>(context, listen: false).fetchProducts(),
+              Provider.of<Categories>(context, listen: false).fetchCategories(),
+              Provider.of<UserProvider>(context, listen: false).fetchUser(),
             ]),
             builder: (_, snapshot) {
               _isInit = false;

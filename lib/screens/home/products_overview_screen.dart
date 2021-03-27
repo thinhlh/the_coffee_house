@@ -50,7 +50,7 @@ class ProductsOverviewScreen extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: products.length,
-                itemBuilder: (_, index) => ProductCard(products[index]),
+                itemBuilder: (_, index) => ProductCard(products[index].id),
               ),
             ],
           ),

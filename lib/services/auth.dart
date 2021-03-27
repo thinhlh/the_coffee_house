@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/models/user.dart' as custom_user;
+import 'package:the_coffee_house/models/custom_user.dart';
 
 import 'package:the_coffee_house/models/http_exception.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
+import 'package:the_coffee_house/services/firestore_user.dart';
 
 import '../models/http_exception.dart';
 
@@ -18,7 +19,6 @@ class Auth with ChangeNotifier {
   String get token => _token;
 
   Future<void> signin(String email, String password) async {
-    //return await _authenticate(email, password, 'signInWithPassword');
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
@@ -38,24 +38,16 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signup(custom_user.User user, String password) async {
+  Future<void> signup(CustomUser user, String password) async {
     try {
-      String uid;
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: user.email,
         password: password,
       );
-      uid = userCredential.user.uid;
+      user.uid = userCredential.user.uid;
       _token = await this.user.getIdToken();
-      await FireStoreApi().addUser(
-        custom_user.User(
-          uid: uid,
-          email: user.email,
-          name: user.name,
-          birthday: user.birthday,
-        ),
-      );
+      await FireStoreUser().addUser(user);
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
