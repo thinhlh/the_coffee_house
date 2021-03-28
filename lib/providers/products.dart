@@ -4,8 +4,6 @@ import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/services/firestore_products.dart';
 
 class Products with ChangeNotifier {
-  Products(this._products);
-
   List<Product> _products = [];
 
   List<Product> get products {
@@ -69,7 +67,7 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> deleteProduct(String id) async {
+  Future<void> deleteProduct(String id, BuildContext context) async {
     final index = _products.indexWhere((element) => element.id == id);
     Product tempProduct = _products[index];
     try {

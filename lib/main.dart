@@ -36,22 +36,17 @@ class App extends StatelessWidget {
         ChangeNotifierProvider<Auth>(
           create: (_) => Auth(),
         ),
-        ChangeNotifierProxyProvider<Auth, Products>(
-          create: null,
-          update: (_, auth, previousProducts) {
-            return Products(
-                previousProducts == null ? [] : previousProducts.products);
-          },
-        ),
-        ChangeNotifierProxyProvider<Auth, Categories>(
-          create: null,
-          update: (_, auth, previousCategories) => Categories(
-            previousCategories == null ? [] : previousCategories.categories,
-          ),
-        ),
         ChangeNotifierProxyProvider<Auth, UserProvider>(
           create: null,
-          update: (_, auth, previousUser) => UserProvider(auth.user.uid),
+          update: (_, auth, previousUser) {
+            return UserProvider(auth.user.uid);
+          },
+        ),
+        ChangeNotifierProvider<Products>(
+          create: (_) => Products(),
+        ),
+        ChangeNotifierProvider<Categories>(
+          create: (_) => Categories(),
         ),
         ChangeNotifierProvider<OrderCardNavigationProvider>(
           create: (_) => OrderCardNavigationProvider(),

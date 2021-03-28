@@ -56,5 +56,19 @@ class FireStoreUser extends FireStoreApi {
         .update({'favoriteProducts': favoriteProducts});
   }
 
-  //TODO handling error
+  Future<void> deleteFavoritedProduct(String productId) async {
+    try {
+      final favoritedProducts = _user.favoriteProducts
+        ..removeWhere((element) => element == productId);
+
+      await super
+          .firestore
+          .collection('users')
+          .doc(_user.uid)
+          .update({'favoriteProducts': favoritedProducts});
+    } catch (error) {
+      //TODO handling error
+      throw error;
+    }
+  }
 }

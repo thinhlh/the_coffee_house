@@ -8,8 +8,6 @@ import '../models/category.dart';
 class Categories with ChangeNotifier {
   List<Category> _categories = [];
 
-  Categories(this._categories);
-
   List<Category> get categories {
     return [..._categories];
   }

@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
+
+import 'fire_store.dart';
+import 'firestore_user.dart';
 
 class FireStoreProducts extends FireStoreApi {
   Future<List<Product>> fetchProducts() async {
@@ -74,9 +78,17 @@ class FireStoreProducts extends FireStoreApi {
   Future<void> deleteProduct(String id) async {
     try {
       await super.firestore.collection('products').doc(id).delete();
+      // TODO Also delete favorited products of user
+      _onDeleteProduct(id);
     } catch (error) {
       //TODO handling error
       throw error;
     }
+  }
+
+  Future<void> _onDeleteProduct(String productId) async {
+    //Remove related abilities related to products such as favorite, orders
+
+    return await FireStoreUser().deleteFavoritedProduct(productId);
   }
 }

@@ -3,20 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:the_coffee_house/models/custom_user.dart';
 
 import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/services/fire_store.dart';
 import 'package:the_coffee_house/services/firestore_user.dart';
 
 import '../models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   FirebaseAuth _auth = FirebaseAuth.instance;
-  String _token;
 
-  bool get isAuth => user != null && token != null;
+  bool get isAuth => user != null;
 
   User get user => _auth.currentUser;
-
-  String get token => _token;
 
   Future<void> signin(String email, String password) async {
     try {
@@ -24,7 +20,6 @@ class Auth with ChangeNotifier {
         email: email,
         password: password,
       );
-      _token = await user.getIdToken();
 
       notifyListeners();
     } on FirebaseAuthException catch (e) {
@@ -46,7 +41,6 @@ class Auth with ChangeNotifier {
         password: password,
       );
       user.uid = userCredential.user.uid;
-      _token = await this.user.getIdToken();
       await FireStoreUser().addUser(user);
       notifyListeners();
     } on FirebaseAuthException catch (e) {
