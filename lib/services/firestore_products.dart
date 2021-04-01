@@ -1,40 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:the_coffee_house/models/product.dart';
+import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
 
 import 'fire_store.dart';
 import 'firestore_user.dart';
 
 class FireStoreProducts extends FireStoreApi {
-  Future<List<Product>> fetchProducts() async {
-    try {
-      final result = await super.firestore.collection('products').get();
-
-      final List<DocumentSnapshot> documentSnapshots = result.docs;
-
-      List<Product> products = [];
-
-      documentSnapshots.forEach(
-        (document) {
-          final data = document.data();
-          products.add(
-            Product(
-              id: document.id,
-              title: data['title'],
-              description: data['description'],
-              price: data['price'],
-              imageUrl: data['imageUrl'],
-              categoryId: data['categoryId'],
-            ),
-          );
-        },
-      );
-      return products;
-    } catch (error) {
-      //TODO handling error
-      throw error;
-    }
+  Stream<Products> get products {
+    return super.firestore.collection('products').snapshots().map(
+          (querySnapshot) => Products.fromList(
+            querySnapshot.docs.map((queryDocumentSnapshot) {
+              Map<String, dynamic> json = queryDocumentSnapshot.data();
+              json['id'] = queryDocumentSnapshot.id;
+              return Product.map(json);
+            }).toList(),
+          ),
+        );
   }
 
   Future<Product> addProduct(Product product) async {

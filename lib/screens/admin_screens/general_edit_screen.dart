@@ -48,9 +48,9 @@ class _GeneralEditScreenState extends State<GeneralEditScreen> {
 
   Future<void> onRefresh(BuildContext context, EditOption option) async {
     if (option == EditOption.product)
-      await Provider.of<Products>(context, listen: false).fetchProducts();
+      Provider.of<Products>(context, listen: false).notifyListeners();
     else
-      await Provider.of<Categories>(context, listen: false).fetchCategories();
+      Provider.of<Categories>(context, listen: false).notifyListeners();
   }
 
   @override

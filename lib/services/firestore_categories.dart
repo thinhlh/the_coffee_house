@@ -1,32 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:the_coffee_house/models/category.dart';
+import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
 
 class FireStoreCategories extends FireStoreApi {
-  Future<List<Category>> fetchCategories() async {
-    try {
-      final result = await super.firestore.collection('categories').get();
-
-      final List<DocumentSnapshot> documentSnapshots = result.docs;
-
-      List<Category> categories = [];
-      documentSnapshots.forEach(
-        (document) {
-          final data = document.data();
-          categories.add(
-            Category(
-              id: document.id,
-              title: data['title'],
-              imageUrl: data['imageUrl'],
-            ),
-          );
-        },
-      );
-      return categories;
-    } catch (error) {
-      // TODO handling error
-      throw error;
-    }
+  Stream<Categories> get categories {
+    return super.firestore.collection('categories').snapshots().map(
+        (querySnapshots) =>
+            Categories.fromList(querySnapshots.docs.map((documentSnapshot) {
+              Map<String, dynamic> json = documentSnapshot.data();
+              json['id'] = documentSnapshot.id;
+              return Category.fromJson(json);
+            }).toList()));
   }
 
   Future<Category> addCategory(Category category) async {

@@ -10,6 +10,8 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
+  Products.fromList(this._products);
+
   List<Product> getProductsByCategory(String categoryId) =>
       _products.where((product) => product.categoryId == categoryId).toList();
 
@@ -32,7 +34,7 @@ class Products with ChangeNotifier {
 
   Future<List<Product>> fetchProducts() async {
     try {
-      _products = await FireStoreProducts().fetchProducts();
+      //_products = await FireStoreProducts().fetchProducts();
       notifyListeners();
     } catch (error) {
       //TODO handling error

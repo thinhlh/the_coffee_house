@@ -12,23 +12,14 @@ class Categories with ChangeNotifier {
     return [..._categories];
   }
 
+  Categories.fromList(this._categories);
+
   List<String> categoryIdList() =>
       _categories.map((category) => category.id).toList();
 
   Category getCategoryById(String id) {
     if (id == null) return null;
     return _categories.firstWhere((element) => element.id == id);
-  }
-
-  Future<List<Category>> fetchCategories() async {
-    try {
-      _categories = await FireStoreCategories().fetchCategories();
-      notifyListeners();
-    } catch (error) {
-      // TODO handling error
-      throw error;
-    }
-    return [..._categories];
   }
 
   Future<void> addCategory(Category category) async {

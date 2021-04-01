@@ -53,4 +53,19 @@ class Auth with ChangeNotifier {
       throw error;
     }
   }
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw HttpException(e.code);
+      } else if (e.code == 'email-already-in-use') {
+        throw HttpException(e.code);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/models/notifications.dart';
+import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
@@ -18,6 +19,8 @@ import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
+import 'package:the_coffee_house/services/firestore_categories.dart';
+import 'package:the_coffee_house/services/firestore_products.dart';
 
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -42,11 +45,13 @@ class App extends StatelessWidget {
             return UserProvider(auth.user.uid);
           },
         ),
-        ChangeNotifierProvider<Products>(
-          create: (_) => Products(),
+        StreamProvider<Products>(
+          create: (_) => FireStoreProducts().products,
+          initialData: Products.fromList([]),
         ),
-        ChangeNotifierProvider<Categories>(
-          create: (_) => Categories(),
+        StreamProvider<Categories>(
+          create: (_) => FireStoreCategories().categories,
+          initialData: Categories.fromList([]),
         ),
         ChangeNotifierProvider<OrderCardNavigationProvider>(
           create: (_) => OrderCardNavigationProvider(),
