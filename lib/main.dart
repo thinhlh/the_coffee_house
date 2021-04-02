@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/models/notifications.dart';
-import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
@@ -36,15 +36,14 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Auth>(
-          create: (_) => Auth(),
+        StreamProvider<User>(
+          create: (_) => Auth().user,
+          initialData: null,
         ),
-        ChangeNotifierProxyProvider<Auth, UserProvider>(
-          create: null,
-          update: (_, auth, previousUser) {
-            return UserProvider(auth.user.uid);
-          },
-        ),
+        ChangeNotifierProxyProvider<User, UserProvider>(
+            create: (_) => UserProvider.initialize(),
+            update: (_, user, userProvider) =>
+                user != null ? userProvider.update(user.uid) : null),
         StreamProvider<Products>(
           create: (_) => FireStoreProducts().products,
           initialData: Products.fromList([]),

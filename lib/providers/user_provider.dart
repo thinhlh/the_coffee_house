@@ -7,17 +7,33 @@ class UserProvider with ChangeNotifier {
 
   CustomUser get user => _user;
 
-  final String _userUid;
+  UserProvider(this._user);
 
-  UserProvider(this._userUid);
+  UserProvider update(String uid) {
+    FireStoreUser().firestore.collection('users').doc(uid).get().then((value) {
+      final json = value.data();
+      json['uid'] = value.id;
+      _user = CustomUser.fromJson(json);
+    });
+
+    return this;
+  }
+
+  UserProvider.initialize() {
+    this._user = CustomUser(
+      uid: '',
+      name: '',
+      email: '',
+      birthday: DateTime.now(),
+      favoriteProducts: [],
+    );
+  }
+
+  UserProvider.fromJson(Map<String, dynamic> json) {
+    _user = CustomUser.fromJson(json);
+  }
 
   List<String> get favoriteProducts => [..._user.favoriteProducts];
-
-  Future<CustomUser> fetchUser() async {
-    if (_user != null) return user;
-    _user = await FireStoreUser().getUser(_userUid);
-    return _user;
-  }
 
   bool isFavorite(String productId) {
     return user.favoriteProducts.contains(productId);

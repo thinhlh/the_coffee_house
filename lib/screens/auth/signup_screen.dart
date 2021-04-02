@@ -237,8 +237,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
                         setState(() => _isLoading = true);
                         try {
-                          await Provider.of<Auth>(context, listen: false)
-                              .signup(
+                          await Auth().signup(
                             CustomUser(
                               uid: null,
                               email: _userData['email'],

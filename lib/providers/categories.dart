@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:the_coffee_house/models/http_exception.dart';
 import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/services/firestore_categories.dart';
@@ -67,9 +66,9 @@ class Categories with ChangeNotifier {
     }
   }
 
-  int getNumberOfProductsByCategoryId(BuildContext context, String categoryId) {
-    return Provider.of<Products>(context, listen: false)
-        .products
+  int getNumberOfProductsByCategoryId(
+      Products productProvider, String categoryId) {
+    return productProvider.products
         .where((product) => product.categoryId == categoryId)
         .toList()
         .length;

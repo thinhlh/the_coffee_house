@@ -20,7 +20,7 @@ class Product {
     this.isFavorite = false,
   });
 
-  Product.map(Map<String, dynamic> json) {
+  Product.fromJson(Map<String, dynamic> json) {
     this.id = json['id'];
     this.title = json['title'];
     this.description = json['description'];

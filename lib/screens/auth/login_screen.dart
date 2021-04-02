@@ -94,8 +94,7 @@ class _LoginFormState extends State<LoginForm> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Auth>(context, listen: false)
-          .signin(_authData['email'], _authData['password']);
+      await Auth().signin(_authData['email'], _authData['password']);
     } on HttpException catch (error) {
       var errorMessage = 'Failed To Login';
       if (error.message == 'wrong-password')

@@ -1,35 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:the_coffee_house/models/custom_user.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
 
 class FireStoreUser extends FireStoreApi {
-  CustomUser _user;
-
-  CustomUser get user => _user;
-
-  CustomUser _extractToUser(DocumentSnapshot documentSnapshot) {
-    final data = documentSnapshot.data();
-
-    List<String> favoriteProducts = data['favoriteProducts'] == null
-        ? []
-        : (data['favoriteProducts'] as List<dynamic>).cast<String>();
-
-    _user = CustomUser(
-      uid: documentSnapshot.id,
-      name: data['name'],
-      email: data['email'],
-      birthday: (data['birthday'] as Timestamp).toDate(),
-      favoriteProducts: favoriteProducts,
-    );
-    return _user;
-  }
-
-  Future<CustomUser> getUser(String uid) async {
-    if (_user != null) return _user;
-    final documentSnapshot =
-        await super.firestore.collection('users').doc(uid).get();
-    return _extractToUser(documentSnapshot);
-  }
+  Stream<UserProvider> getUser(String uid) => super
+          .firestore
+          .collection('users')
+          .doc(uid)
+          .snapshots()
+          .map((documentSnapshot) {
+        Map<String, dynamic> json = documentSnapshot.data();
+        json['uid'] = documentSnapshot.id;
+        return UserProvider.fromJson(json);
+      });
 
   Future<void> addUser(CustomUser user) async {
     CollectionReference users = super.firestore.collection('users');
@@ -56,19 +40,19 @@ class FireStoreUser extends FireStoreApi {
         .update({'favoriteProducts': favoriteProducts});
   }
 
-  Future<void> deleteFavoritedProduct(String productId) async {
-    try {
-      final favoritedProducts = _user.favoriteProducts
-        ..removeWhere((element) => element == productId);
+  // Future<void> deleteFavoritedProduct(String productId) async {
+  //   try {
+  //     final favoritedProducts = _user.favoriteProducts
+  //       ..removeWhere((element) => element == productId);
 
-      await super
-          .firestore
-          .collection('users')
-          .doc(_user.uid)
-          .update({'favoriteProducts': favoritedProducts});
-    } catch (error) {
-      //TODO handling error
-      throw error;
-    }
-  }
+  //     await super
+  //         .firestore
+  //         .collection('users')
+  //         .doc(_user.uid)
+  //         .update({'favoriteProducts': favoritedProducts});
+  //   } catch (error) {
+  //     //TODO handling error
+  //     throw error;
+  //   }
+  // }
 }

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:the_coffee_house/models/category.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
