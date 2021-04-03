@@ -68,7 +68,8 @@ class EditProductsListView extends StatelessWidget {
                                 child: Text('Yes'),
                                 onPressed: () {
                                   Provider.of<Products>(context, listen: false)
-                                      .deleteProduct(products[index].id);
+                                      .deleteProduct(
+                                          products[index].id, context);
 
                                   Navigator.of(context).pop();
                                 },

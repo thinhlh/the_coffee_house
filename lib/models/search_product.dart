@@ -31,7 +31,7 @@ class SearchProduct extends SearchDelegate {
 
     return ListView.builder(
       padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-      itemBuilder: (_, index) => ProductCard(products[index]),
+      itemBuilder: (_, index) => ProductCard(products[index].id),
       itemCount: products.length,
     );
   }
@@ -43,7 +43,7 @@ class SearchProduct extends SearchDelegate {
 
     return ListView.builder(
       padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-      itemBuilder: (_, index) => ProductCard(products[index]),
+      itemBuilder: (_, index) => ProductCard(products[index].id),
       itemCount: products.length,
     );
   }

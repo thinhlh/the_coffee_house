@@ -1,60 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:the_coffee_house/models/custom_user.dart';
 
 import 'package:the_coffee_house/models/http_exception.dart';
+import 'package:the_coffee_house/services/fire_store.dart';
+import 'package:the_coffee_house/services/firestore_user.dart';
 
-class Auth with ChangeNotifier {
-  String _token;
-  DateTime _expireDate;
-  String _userId;
+class Auth extends FireStoreApi {
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool get isAuth => token != null;
+  bool get isAuth => _auth.currentUser != null;
 
-  String get userId => _userId;
+  Stream<User> get user => _auth.authStateChanges();
 
-  String get token => (_expireDate != null &&
-          _expireDate.isAfter(DateTime.now()) &&
-          _token != null)
-      ? _token
-      : null;
-
-  Future<void> _authenticate(
-      String email, String password, String segment) async {
-    final url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$segment?key=AIzaSyBpXGQeF1Hh9itoL5DkVAHX1Xjoq7orPFg';
+  Future<void> signin(String email, String password) async {
     try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ),
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-      final responseData = json.decode(response.body);
-      print(responseData);
-      if (responseData['error'] != null)
-        throw (HttpException(responseData['error']['message']));
-
-      _userId = responseData['localId'];
-      _token = responseData['idToken'];
-      _expireDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
-      //_expireDate=DateTime.now().add(responseData[])
-      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        throw HttpException(e.code);
+      } else if (e.code == 'wrong-password') {
+        throw HttpException(e.code);
+      }
     } catch (error) {
       throw error;
     }
   }
 
-  Future<void> signin(String email, String password) async {
-    return await _authenticate(email, password, 'signInWithPassword');
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw HttpException(e.code);
+      } else if (e.code == 'email-already-in-use') {
+        throw HttpException(e.code);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 
-  Future<void> signup(String email, String password) async {
-    return await _authenticate(email, password, 'signUp');
+  Future<void> signup(CustomUser user, String password) async {
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: user.email,
+        password: password,
+      );
+      user.uid = userCredential.user.uid;
+      await FireStoreUser().addUser(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw HttpException(e.code);
+      } else if (e.code == 'email-already-in-use') {
+        throw HttpException(e.code);
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 }

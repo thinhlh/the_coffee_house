@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/services/auth.dart';
 import 'package:the_coffee_house/widgets/navigative_action_card.dart';
 
 class OthersScreen extends StatelessWidget {
@@ -113,7 +115,7 @@ class OthersScreen extends StatelessWidget {
                 _ExpandableListTile(
                   leadingIcon: Icons.logout,
                   title: 'Đăng xuất',
-                  expanded: () {},
+                  expanded: () async => await Auth().signOut(),
                 ),
               ],
             ),
@@ -139,6 +141,7 @@ class _ExpandableListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
+      onTap: expanded,
       leading: Icon(
         leadingIcon,
         color: Constant.ACCENT_COLOR,
