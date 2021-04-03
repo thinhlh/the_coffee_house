@@ -15,8 +15,10 @@ class Products with ChangeNotifier {
   List<Product> getProductsByCategory(String categoryId) =>
       _products.where((product) => product.categoryId == categoryId).toList();
 
-  Product getProductById(String id) =>
-      (id == null) ? null : _products.firstWhere((product) => product.id == id);
+  Product getProductById(String id) => _products.firstWhere(
+        (product) => product.id == id,
+        orElse: () => null,
+      );
 
   Future<int> getNumberOfProductsPerCategory(String categoryId) async {
     return _products

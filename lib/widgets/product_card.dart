@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:the_coffee_house/const.dart' as Constant;
 import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/providers/user_provider.dart';
 import 'bottom_sheet_product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -16,6 +17,12 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Product product = Provider.of<Products>(context, listen: false)
         .getProductById(_productId);
+
+    // if (product == null) {
+    //   // toggle unfavorite this product
+    //   Provider.of<UserProvider>(context, listen: false)
+    //       .toggleFavoriteStatus(_productId);
+    // }
 
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(

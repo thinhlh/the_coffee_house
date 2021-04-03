@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/models/notifications.dart';
+import 'package:the_coffee_house/providers/notifications.dart';
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
@@ -21,6 +21,7 @@ import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 import 'package:the_coffee_house/services/firestore_categories.dart';
 import 'package:the_coffee_house/services/firestore_products.dart';
+import 'package:the_coffee_house/services/firestore_user.dart';
 
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -34,54 +35,65 @@ void main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User>(
-          create: (_) => Auth().user,
-          initialData: null,
-        ),
-        ChangeNotifierProxyProvider<User, UserProvider>(
-            create: (_) => UserProvider.initialize(),
-            update: (_, user, userProvider) =>
-                user != null ? userProvider.update(user.uid) : null),
-        StreamProvider<Products>(
-          create: (_) => FireStoreProducts().products,
-          initialData: Products.fromList([]),
-        ),
-        StreamProvider<Categories>(
-          create: (_) => FireStoreCategories().categories,
-          initialData: Categories.fromList([]),
-        ),
-        ChangeNotifierProvider<OrderCardNavigationProvider>(
-          create: (_) => OrderCardNavigationProvider(),
-        ),
-        ChangeNotifierProvider<Notifications>(
-          create: (_) => Notifications(),
-        ),
-        ChangeNotifierProvider<Cart>(
-          create: (_) => Cart(),
-        )
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Constant.PRIMARY_SWATCH,
-          primaryColor: Constant.PRIMARY_COLOR,
-          accentColor: Constant.ACCENT_COLOR,
-          appBarTheme: AppBarTheme(backgroundColor: Colors.white),
-          dividerColor: Colors.grey.shade300,
-        ),
-        home: Wrapper(),
-        routes: {
-          HomeScreen.routeName: (_) => HomeScreen(),
-          OrderScreen.routeName: (_) => OrderScreen(),
-          OthersScreen.routeName: (_) => OthersScreen(),
-          ProductsOverviewScreen.routeName: (_) => ProductsOverviewScreen(),
-          AdminHomeScreen.routeName: (_) => AdminHomeScreen(),
-          GeneralEditScreen.routeName: (_) => GeneralEditScreen(),
-          FavoriteScreen.routeName: (_) => FavoriteScreen(),
-          LoginScreen.routeName: (_) => LoginScreen(),
-          SignUpScreen.routeName: (_) => SignUpScreen(),
+    return StreamProvider<User>.value(
+      value: Auth().user,
+      initialData: null,
+      child: Consumer<User>(
+        builder: (_, user, child) {
+          final materialApp = MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Constant.PRIMARY_SWATCH,
+              primaryColor: Constant.PRIMARY_COLOR,
+              accentColor: Constant.ACCENT_COLOR,
+              appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+              dividerColor: Colors.grey.shade300,
+            ),
+            home: Wrapper(),
+            routes: {
+              HomeScreen.routeName: (_) => HomeScreen(),
+              OrderScreen.routeName: (_) => OrderScreen(),
+              OthersScreen.routeName: (_) => OthersScreen(),
+              ProductsOverviewScreen.routeName: (_) => ProductsOverviewScreen(),
+              AdminHomeScreen.routeName: (_) => AdminHomeScreen(),
+              GeneralEditScreen.routeName: (_) => GeneralEditScreen(),
+              FavoriteScreen.routeName: (_) => FavoriteScreen(),
+              LoginScreen.routeName: (_) => LoginScreen(),
+              SignUpScreen.routeName: (_) => SignUpScreen(),
+            },
+          );
+
+          return user == null
+              ? materialApp
+              : MultiProvider(
+                  providers: [
+                    StreamProvider<UserProvider>.value(
+                      value: FireStoreUser().getUser(
+                          FirebaseAuth.instance.currentUser == null
+                              ? null
+                              : FirebaseAuth.instance.currentUser.uid),
+                      initialData: UserProvider.initialize(),
+                    ),
+                    StreamProvider<Products>.value(
+                      value: FireStoreProducts().products,
+                      initialData: Products.fromList([]),
+                    ),
+                    StreamProvider<Categories>.value(
+                      value: FireStoreCategories().categories,
+                      initialData: Categories.fromList([]),
+                    ),
+                    ChangeNotifierProvider<OrderCardNavigationProvider>(
+                      create: (_) => OrderCardNavigationProvider(),
+                    ),
+                    ChangeNotifierProvider<Notifications>(
+                      create: (_) => Notifications(),
+                    ),
+                    ChangeNotifierProvider<Cart>(
+                      create: (_) => Cart(),
+                    ),
+                  ],
+                  child: materialApp,
+                );
         },
       ),
     );

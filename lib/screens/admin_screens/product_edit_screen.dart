@@ -222,35 +222,31 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   SizedBox(
                     height: Constant.SIZED_BOX_HEIGHT,
                   ),
-                  Builder(
-                    builder: (_) => imageController.text.isEmpty
-                        ? SizedBox(
-                            height: 0,
-                            width: 0,
-                          )
-                        : SizedBox(
-                            height: MediaQuery.of(context).size.height / 3,
-                            child: Image.network(
-                              imageController.text,
-                              fit: BoxFit.contain,
-                              loadingBuilder: (_, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              },
-                              errorBuilder:
-                                  (_, exception, StackTrace stackTrace) =>
-                                      Center(
-                                child: Text(
-                                  'Unable to load the image',
-                                  style: TextStyle(
-                                      fontSize: Constant.TEXT_SIZE,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                  imageController.text.isEmpty
+                      ? SizedBox(
+                          height: 0,
+                          width: 0,
+                        )
+                      : SizedBox(
+                          height: MediaQuery.of(context).size.height / 3,
+                          child: Image.network(
+                            imageController.text,
+                            fit: BoxFit.contain,
+                            loadingBuilder: (_, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(child: CircularProgressIndicator());
+                            },
+                            errorBuilder:
+                                (_, exception, StackTrace stackTrace) => Center(
+                              child: Text(
+                                'Unable to load the image',
+                                style: TextStyle(
+                                    fontSize: Constant.TEXT_SIZE,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
-                  ),
+                        ),
                   SizedBox(
                     height: Constant.SIZED_BOX_HEIGHT,
                   ),

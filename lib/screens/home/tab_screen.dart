@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
+
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
 import 'package:the_coffee_house/providers/user_provider.dart';
 
@@ -44,19 +44,6 @@ class TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder<Products>(
-    //   stream: FireStoreProducts().products,
-    //   builder: (_, asyncSnapshot) {
-    //     if (asyncSnapshot.connectionState == ConnectionState.waiting)
-    //       return Scaffold(
-    //         body: Image.asset(
-    //           'assets/images/waiting_screen.jpg',
-    //           fit: BoxFit.cover,
-    //           height: double.infinity,
-    //           width: double.infinity,
-    //         ),
-    //       );
-    //     else
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,

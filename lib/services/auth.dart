@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:the_coffee_house/models/custom_user.dart';
 
 import 'package:the_coffee_house/models/http_exception.dart';

@@ -46,13 +46,6 @@ class _GeneralEditScreenState extends State<GeneralEditScreen> {
     super.didChangeDependencies();
   }
 
-  Future<void> onRefresh(BuildContext context, EditOption option) async {
-    if (option == EditOption.product)
-      Provider.of<Products>(context, listen: false).notifyListeners();
-    else
-      Provider.of<Categories>(context, listen: false).notifyListeners();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +68,11 @@ class _GeneralEditScreenState extends State<GeneralEditScreen> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => onRefresh(context, editOption),
-        child: Padding(
-          padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-          child: editOption == EditOption.product
-              ? EditProductsListView()
-              : EditcategoriesListView(),
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+        child: editOption == EditOption.product
+            ? EditProductsListView()
+            : EditcategoriesListView(),
       ),
     );
   }

@@ -24,7 +24,7 @@ class Product {
     this.id = json['id'];
     this.title = json['title'];
     this.description = json['description'];
-    this.price = json['price'];
+    this.price = json['price'] + .0;
     this.imageUrl = json['imageUrl'];
     this.categoryId = json['categoryId'];
   }
