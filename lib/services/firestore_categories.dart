@@ -3,17 +3,20 @@ import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/services/fire_store.dart';
 
 class FireStoreCategories extends FireStoreApi {
-  Stream<Categories> get categories {
-    return super.firestore.collection('categories').snapshots().map(
-        (querySnapshots) =>
-            Categories.fromList(querySnapshots.docs.map((documentSnapshot) {
-              Map<String, dynamic> json = documentSnapshot.data();
-              json['id'] = documentSnapshot.id;
-              return Category.fromJson(json);
-            }).toList()));
-  }
+  @override
+  Stream<Categories> get stream => super
+      .firestore
+      .collection('categories')
+      .snapshots()
+      .map((querySnapshots) =>
+          Categories.fromList(querySnapshots.docs.map((documentSnapshot) {
+            Map<String, dynamic> json = documentSnapshot.data();
+            json['id'] = documentSnapshot.id;
+            return Category.fromJson(json);
+          }).toList()));
 
-  Future<Category> addCategory(Category category) async {
+  @override
+  Future<Category> add(category) async {
     try {
       final response = await super.firestore.collection('categories').add({
         'title': category.title,
@@ -31,9 +34,14 @@ class FireStoreCategories extends FireStoreApi {
     }
   }
 
-  Future<void> updateCategory(String id, Category newCategory) async {
+  @override
+  Future<void> update(newCategory) async {
     try {
-      await super.firestore.collection('categories').doc(id).update({
+      await super
+          .firestore
+          .collection('categories')
+          .doc(newCategory.id)
+          .update({
         'title': newCategory.title,
         'imageUrl': newCategory.imageUrl,
       });
@@ -43,7 +51,8 @@ class FireStoreCategories extends FireStoreApi {
     }
   }
 
-  Future<void> deleteCategory(String id) async {
+  @override
+  Future<void> delete(String id) async {
     try {
       await super.firestore.collection('categories').doc(id).delete();
     } catch (error) {

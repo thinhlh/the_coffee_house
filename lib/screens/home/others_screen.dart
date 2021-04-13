@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
+import 'package:the_coffee_house/screens/home/web_view_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 import 'package:the_coffee_house/widgets/navigative_action_card.dart';
 
@@ -40,21 +40,32 @@ class OthersScreen extends StatelessWidget {
                 icon: FlutterIcons.file_document_mco,
                 color: Theme.of(context).primaryColor,
                 title: 'Lịch sử đơn hàng',
+                navigate: () {},
               ),
               NavigativeActionCard(
                 icon: FlutterIcons.law_oct,
                 color: Theme.of(context).primaryColor,
                 title: 'Điều khoản',
+                navigate: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => WebViewScreen(
+                      'Điều khoản',
+                      'https://order.thecoffeehouse.com/term',
+                    ),
+                  ),
+                ),
               ),
               NavigativeActionCard(
                 icon: FlutterIcons.music_note_mco,
                 color: Colors.red,
                 title: 'Nhạc đang phát',
+                navigate: () {},
               ),
               NavigativeActionCard(
                 icon: FlutterIcons.news_ent,
                 color: Colors.blue,
                 title: 'Tin tức & Khuyến mãi',
+                navigate: () {},
               ),
             ],
           ),

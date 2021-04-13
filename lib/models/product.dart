@@ -28,4 +28,14 @@ class Product {
     this.imageUrl = json['imageUrl'];
     this.categoryId = json['categoryId'];
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': this.title,
+      'description': this.description,
+      'price': this.price,
+      'imageUrl': this.imageUrl,
+      'categoryId': this.categoryId,
+    };
+  }
 }

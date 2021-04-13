@@ -6,29 +6,25 @@ import 'package:the_coffee_house/services/fire_store.dart';
 import 'fire_store.dart';
 
 class FireStoreProducts extends FireStoreApi {
-  Stream<Products> get products {
-    return super.firestore.collection('products').snapshots().map(
-          (querySnapshot) => Products.fromList(
-            querySnapshot.docs.map(
-              (queryDocumentSnapshot) {
-                Map<String, dynamic> json = queryDocumentSnapshot.data();
-                json['id'] = queryDocumentSnapshot.id;
-                return Product.fromJson(json);
-              },
-            ).toList(),
-          ),
-        );
-  }
+  @override
+  Stream<Products> get stream =>
+      super.firestore.collection('products').snapshots().map(
+            (querySnapshot) => Products.fromList(
+              querySnapshot.docs.map(
+                (queryDocumentSnapshot) {
+                  Map<String, dynamic> json = queryDocumentSnapshot.data();
+                  json['id'] = queryDocumentSnapshot.id;
+                  return Product.fromJson(json);
+                },
+              ).toList(),
+            ),
+          );
 
-  Future<Product> addProduct(Product product) async {
+  @override
+  Future<Product> add(product) async {
     try {
-      final response = await super.firestore.collection('products').add({
-        'title': product.title,
-        'description': product.description,
-        'price': product.price,
-        'imageUrl': product.imageUrl,
-        'categoryId': product.categoryId,
-      });
+      final response =
+          await super.firestore.collection('products').add(product.toJson());
       return Product(
         id: response.id,
         title: product.title,
@@ -43,9 +39,10 @@ class FireStoreProducts extends FireStoreApi {
     }
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
+  @override
+  Future<void> update(newProduct) async {
     try {
-      await super.firestore.collection('products').doc(id).update({
+      await super.firestore.collection('products').doc(newProduct.id).update({
         'title': newProduct.title,
         'description': newProduct.description,
         'price': newProduct.price,
@@ -58,7 +55,8 @@ class FireStoreProducts extends FireStoreApi {
     }
   }
 
-  Future<void> deleteProduct(String productId) async {
+  @override
+  Future<void> delete(String productId) async {
     try {
       await super.firestore.collection('products').doc(productId).delete();
       // TODO Also delete favorited products of user

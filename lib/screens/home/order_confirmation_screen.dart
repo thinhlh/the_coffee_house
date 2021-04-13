@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/screens/home/order_information_screen.dart';
 
 class OrderConfirmationScreen extends StatelessWidget {
+  static const routeName = '/order_confirmation_screen';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,19 +74,23 @@ class OrderConfirmationScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () => showBarModalBottomSheet(
-                          context: context,
-                          builder: (_) => OrderInformationScreen()),
-                      //cartBottomNavigationVariables[option]['navigate'],
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          'TIẾP TỤC',
-                          style: TextStyle(
-                            color: Color.fromRGBO(202, 118, 53, 1),
-                            fontWeight: FontWeight.w500,
-                          ),
+                    OutlinedButton(
+                      onPressed: () => showBarModalBottomSheet(
+                        context: context,
+                        builder: (_) => OrderInformationScreen(),
+                      ),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          StadiumBorder(),
+                        ),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
+                      child: Text(
+                        'TIẾP TỤC',
+                        style: TextStyle(
+                          color: Color.fromRGBO(202, 118, 53, 1),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     )

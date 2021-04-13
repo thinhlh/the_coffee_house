@@ -2,13 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_coffee_house/utils/global_vars.dart';
+import 'package:the_coffee_house/providers/coupons.dart';
 
 import 'package:the_coffee_house/providers/notifications.dart';
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/providers/products.dart';
+import 'package:the_coffee_house/providers/stores.dart';
 import 'package:the_coffee_house/providers/user_provider.dart';
 import 'package:the_coffee_house/screens/admin_screens/general_edit_screen.dart';
 import 'package:the_coffee_house/screens/auth/wrapper.dart';
@@ -18,8 +22,11 @@ import 'package:the_coffee_house/screens/home/products_overview_screen.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
+import 'package:the_coffee_house/screens/home/reward_screen.dart';
+import 'package:the_coffee_house/screens/home/stores_screen.dart';
 import 'package:the_coffee_house/services/auth.dart';
 import 'package:the_coffee_house/services/firestore_categories.dart';
+import 'package:the_coffee_house/services/firestore_notifications.dart';
 import 'package:the_coffee_house/services/firestore_products.dart';
 import 'package:the_coffee_house/services/firestore_user.dart';
 
@@ -29,6 +36,7 @@ import 'screens/auth/signup_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await sharedPref.init();
   runApp(App());
 }
 
@@ -53,6 +61,8 @@ class App extends StatelessWidget {
             routes: {
               HomeScreen.routeName: (_) => HomeScreen(),
               OrderScreen.routeName: (_) => OrderScreen(),
+              StoresScreen.routeName: (_) => StoresScreen(),
+              RewardScreen.routeName: (_) => RewardScreen(),
               OthersScreen.routeName: (_) => OthersScreen(),
               ProductsOverviewScreen.routeName: (_) => ProductsOverviewScreen(),
               AdminHomeScreen.routeName: (_) => AdminHomeScreen(),
@@ -75,23 +85,37 @@ class App extends StatelessWidget {
                       initialData: UserProvider.initialize(),
                     ),
                     StreamProvider<Products>.value(
-                      value: FireStoreProducts().products,
+                      value: FireStoreProducts().stream,
                       initialData: Products.fromList([]),
                     ),
                     StreamProvider<Categories>.value(
-                      value: FireStoreCategories().categories,
+                      value: FireStoreCategories().stream,
                       initialData: Categories.fromList([]),
                     ),
                     ChangeNotifierProvider<OrderCardNavigationProvider>(
                       create: (_) => OrderCardNavigationProvider(),
                     ),
-                    ChangeNotifierProvider<Notifications>(
-                      create: (_) => Notifications(),
-                    ),
                     ChangeNotifierProvider<Cart>(
                       create: (_) => Cart(),
                     ),
+                    ChangeNotifierProvider<Coupons>(
+                      create: (_) => Coupons(),
+                    ),
+                    ChangeNotifierProvider(
+                      create: (_) => Stores(),
+                    ),
                   ],
+                  builder: (_, child) => Consumer<UserProvider>(
+                    builder: (_, userProvider, child) => MultiProvider(
+                      providers: [
+                        StreamProvider<Notifications>.value(
+                          value: FireStoreNotifications().stream,
+                          initialData: Notifications.initialize(),
+                        ),
+                      ],
+                      child: materialApp,
+                    ),
+                  ),
                   child: materialApp,
                 );
         },

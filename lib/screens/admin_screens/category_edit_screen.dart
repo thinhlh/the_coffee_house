@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/models/category.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 
@@ -13,7 +13,7 @@ class EditCategoryScreen extends StatefulWidget {
   _EditCategoryScreenState createState() => _EditCategoryScreenState();
 }
 
-final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class _EditCategoryScreenState extends State<EditCategoryScreen> {
   var editingCategory = Category(
@@ -22,7 +22,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
     imageUrl: '',
   );
 
-  Map<String, String> initValues;
+  Map<String, String> initialValues;
 
   final TextEditingController imageController = TextEditingController();
 
@@ -36,7 +36,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
         editingCategory =
             Provider.of<Categories>(context).getCategoryById(widget.id);
       }
-      initValues = {
+      initialValues = {
         'title': editingCategory.title,
         'imageUrl': editingCategory.imageUrl,
       };
@@ -53,8 +53,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 
   void save() {
-    if (!formKey.currentState.validate()) return;
-    formKey.currentState.save();
+    if (!_formKey.currentState.validate()) return;
+    _formKey.currentState.save();
     setState(() => isLoading = true);
     if (editingCategory.id != null) {
       Provider.of<Categories>(context, listen: false)
@@ -84,7 +84,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : Form(
-              key: formKey,
+              key: _formKey,
               child: ListView(
                 physics: PageScrollPhysics(),
                 padding: const EdgeInsets.all(Constant.GENERAL_PADDING * 2),
@@ -93,7 +93,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Title'),
                     textInputAction: TextInputAction.next,
-                    initialValue: initValues['title'],
+                    initialValue: initialValues['title'],
                     validator: (value) {
                       if (value.isEmpty) return 'Title cannot be null';
                       return null;

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the_coffee_house/utils/global_vars.dart';
+import 'package:the_coffee_house/providers/categories.dart';
+import 'package:the_coffee_house/providers/products.dart';
 import 'package:the_coffee_house/screens/auth/auth_screen.dart';
 import 'package:the_coffee_house/screens/home/tab_screen.dart';
-import 'package:the_coffee_house/services/firestore_products.dart';
-
-GlobalKey<TabScreenState> tabScreenState = GlobalKey<TabScreenState>();
 
 class Wrapper extends StatelessWidget {
   @override
@@ -13,8 +13,11 @@ class Wrapper extends StatelessWidget {
     return Consumer<User>(
       builder: (_, user, child) => user != null
           ? FutureBuilder(
-              future:
-                  FireStoreProducts().firestore.collection('products').get(),
+              future: Future.wait([
+                Provider.of<Products>(context, listen: false).fetchProducts(),
+                Provider.of<Categories>(context, listen: false)
+                    .fetchCategories(),
+              ]),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return TabScreen(key: tabScreenState);

@@ -12,13 +12,28 @@ class Products with ChangeNotifier {
 
   Products.fromList(this._products);
 
+  ///Only used for the first time when init and show blank screen in Wrapper
+  Future<void> fetchProducts() {
+    return FireStoreProducts()
+        .firestore
+        .collection('products')
+        .get()
+        .then((value) => this._products = value.docs.map((e) {
+              Map<String, dynamic> json = e.data();
+              json['id'] = e.id;
+              return Product.fromJson(json);
+            }).toList());
+  }
+
   List<Product> getProductsByCategory(String categoryId) =>
       _products.where((product) => product.categoryId == categoryId).toList();
 
-  Product getProductById(String id) => _products.firstWhere(
-        (product) => product.id == id,
-        orElse: () => null,
-      );
+  Product getProductById(String id) {
+    return _products.firstWhere(
+      (product) => product.id == id,
+      orElse: () => null,
+    );
+  }
 
   Future<int> getNumberOfProductsPerCategory(String categoryId) async {
     return _products
@@ -34,22 +49,9 @@ class Products with ChangeNotifier {
         .toList();
   }
 
-  Future<List<Product>> fetchProducts() async {
-    try {
-      //_products = await FireStoreProducts().fetchProducts();
-      notifyListeners();
-    } catch (error) {
-      //TODO handling error
-      throw (error);
-    }
-    return [..._products];
-  }
-
   Future<void> addProduct(Product product) async {
     try {
-      final addedProduct = await FireStoreProducts().addProduct(product);
-      _products.add(addedProduct);
-
+      final addedProduct = await FireStoreProducts().add(product);
       notifyListeners();
     } catch (error) {
       //TODO handling error
@@ -62,9 +64,7 @@ class Products with ChangeNotifier {
     if (index < 0) return;
 
     try {
-      await FireStoreProducts().updateProduct(id, newProduct);
-
-      _products[index] = newProduct;
+      await FireStoreProducts().update(newProduct);
       notifyListeners();
     } catch (error) {
       throw error;
@@ -77,7 +77,7 @@ class Products with ChangeNotifier {
     try {
       _products.removeAt(index);
       notifyListeners();
-      await FireStoreProducts().deleteProduct(id);
+      await FireStoreProducts().delete(id);
     } catch (error) {
       _products.insert(index, tempProduct);
       _products = null;

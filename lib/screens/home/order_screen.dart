@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/models/search_product.dart';
 import 'package:the_coffee_house/screens/home/favorites_screen.dart';
+import 'package:the_coffee_house/screens/home/google_map.dart';
 import 'package:the_coffee_house/widgets/cart_bottom_navigation.dart';
 import 'package:the_coffee_house/widgets/order_card_navigation.dart';
 import 'package:the_coffee_house/widgets/navigative_action_card.dart';
@@ -72,6 +73,8 @@ class OrderScreen extends StatelessWidget {
                     title: 'Các món vừa đặt',
                     color: Colors.blue.shade300,
                     icon: FlutterIcons.coffee_mco,
+                    navigate: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => GoogleMapWidget())),
                   ),
                 ),
                 Expanded(

@@ -3,7 +3,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/models/cart_item.dart';
 import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/cart.dart';

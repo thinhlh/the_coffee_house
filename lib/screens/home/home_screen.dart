@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
+import 'package:the_coffee_house/utils/global_vars.dart';
 import 'package:the_coffee_house/providers/notifications.dart';
-import 'package:the_coffee_house/screens/auth/wrapper.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/widgets/navigative_action_card.dart';
 import 'package:the_coffee_house/widgets/image_slider_widget.dart';
-import 'package:the_coffee_house/widgets/notification_widget.dart';
+import 'package:the_coffee_house/widgets/notification_list_tile.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/home_screen';
 
   @override
   Widget build(BuildContext context) {
-    final _notifications = Provider.of<Notifications>(context).notifications;
-
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -72,50 +70,55 @@ class HomeScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Text(
-                            'Thông báo mới',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: Constant.TEXT_SIZE),
-                            textAlign: TextAlign.left,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: Constant.GENERAL_PADDING),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.red[700],
-                              radius: Constant.BORDER_RADIUS,
-                              child: Text(
-                                _notifications.length.toString(),
+              child: Consumer<Notifications>(
+                builder: (_, notificationProvider, child) {
+                  final notifications = notificationProvider.notifications;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                'Thông báo mới',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Constant.LIST_TILE_SUBTITTLE,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Constant.TEXT_SIZE),
+                                textAlign: TextAlign.left,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: Constant.GENERAL_PADDING),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.red[700],
+                                  radius: Constant.BORDER_RADIUS,
+                                  child: Text(
+                                    notifications.length.toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: Constant.LIST_TILE_SUBTITTLE,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, index) => NotificationWidget(
-                      _notifications[index],
-                    ),
-                    itemCount: _notifications.length,
-                  ),
-                ],
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (_, index) => NotificationListTile(
+                          notifications[index],
+                        ),
+                        itemCount: notifications.length,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),

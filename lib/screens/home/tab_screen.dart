@@ -9,8 +9,13 @@ import 'package:the_coffee_house/screens/home/home_screen.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/screens/home/others_screen.dart';
 import 'package:the_coffee_house/screens/admin_screens/admin_home_screen.dart';
+import 'package:the_coffee_house/screens/home/reward_screen.dart';
+import 'package:the_coffee_house/screens/home/stores_screen.dart';
+import 'package:the_coffee_house/services/shared_preferences.dart';
 
 class TabScreen extends StatefulWidget {
+  static const routeName = '/tab_screen';
+
   const TabScreen({Key key}) : super(key: key);
 
   @override
@@ -21,10 +26,13 @@ class TabScreenState extends State<TabScreen> {
   Map<String, Widget> _pages = {
     HomeScreen.routeName: HomeScreen(),
     OrderScreen.routeName: OrderScreen(),
+    StoresScreen.routeName: StoresScreen(),
+    RewardScreen.routeName: RewardScreen(),
     OthersScreen.routeName: OthersScreen(),
     AdminHomeScreen.routeName: AdminHomeScreen(),
   };
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 2;
+  //TODO change this to 0 later
 
   void navigateToScreen(String routeName, bool isDelivery) {
     final screenIndex =
@@ -46,7 +54,7 @@ class TabScreenState extends State<TabScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        titleSpacing: 0,
+        elevation: 0,
         title: Image.asset(
           'assets/images/the-coffee-house-logo.jpg',
           fit: BoxFit.cover,
@@ -54,11 +62,9 @@ class TabScreenState extends State<TabScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => print(
-                Provider.of<UserProvider>(context, listen: false)
-                    .favoriteProducts),
+            onPressed: () => SharedPref().deleteAllViewedNotifications(),
             child: Icon(
-              Icons.card_membership,
+              FlutterIcons.credit_card_alt_faw,
               color: Theme.of(context).primaryColor,
             ),
           ),
@@ -70,7 +76,7 @@ class TabScreenState extends State<TabScreen> {
         currentIndex: _selectedPageIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
           BottomNavigationBarItem(
@@ -78,13 +84,21 @@ class TabScreenState extends State<TabScreen> {
             label: 'Order',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'Cửa Hàng',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chrome_reader_mode_outlined),
+            label: 'Reward',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.menu_rounded),
             label: 'Others',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.admin_panel_settings),
-            label: 'Admin',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.admin_panel_settings_outlined),
+          //   label: 'Admin',
+          // ),
         ],
       ),
       body: _pages.values.toList()[_selectedPageIndex],

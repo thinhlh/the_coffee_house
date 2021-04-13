@@ -6,9 +6,9 @@ import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/categories.dart';
 import 'package:the_coffee_house/providers/products.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 
-final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 class EditProductScreen extends StatefulWidget {
   final String id;
@@ -38,12 +38,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   var isLoading = false;
 
   @override
-  void initState() {
-    Provider.of<Categories>(context, listen: false).categories;
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     if (isInit) {
       categories = Provider.of<Categories>(context, listen: false).categories;
@@ -63,7 +57,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
       imageController.text = editingProduct.imageUrl;
       isInit = false;
     }
-
     super.didChangeDependencies();
   }
 
@@ -73,14 +66,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.dispose();
   }
 
-  void save() {
-    if (!formKey.currentState.validate()) return;
+  void save() async {
+    if (!_formKey.currentState.validate()) return;
 
-    formKey.currentState.save();
+    _formKey.currentState.save();
     setState(() => isLoading = true);
     if (editingProduct.id != null) {
       // id is not null => this is the update form
-      Provider.of<Products>(
+      await Provider.of<Products>(
         context,
         listen: false,
       ).updateProduct(editingProduct.id, editingProduct);
@@ -112,7 +105,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               child: CircularProgressIndicator(),
             )
           : Form(
-              key: formKey,
+              key: _formKey,
               child: ListView(
                 padding: const EdgeInsets.all(Constant.GENERAL_PADDING * 2),
                 shrinkWrap: true,
@@ -121,10 +114,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     decoration: const InputDecoration(labelText: 'Title'),
                     textInputAction: TextInputAction.next,
                     initialValue: initValues['title'],
-                    validator: (value) {
-                      if (value.isEmpty) return 'Title cannot be null';
-                      return null;
-                    },
+                    validator: (value) =>
+                        value.isEmpty ? 'Title cannot be null' : null,
                     onSaved: (newValue) => editingProduct = Product(
                       id: editingProduct.id,
                       description: editingProduct.description,
@@ -139,10 +130,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     keyboardType: TextInputType.multiline,
                     initialValue: initValues['description'],
                     maxLines: 2,
-                    validator: (value) {
-                      if (value.isEmpty) return 'Description cannot be null';
-                      return null;
-                    },
+                    validator: (value) =>
+                        value.isEmpty ? 'Description cannot be null' : null,
                     onSaved: (newValue) => editingProduct = Product(
                       id: editingProduct.id,
                       title: editingProduct.title,
@@ -157,10 +146,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     initialValue: initValues['price'],
-                    validator: (value) {
-                      if (value.isEmpty) return 'Price cannot be null';
-                      return null;
-                    },
+                    validator: (value) =>
+                        value.isEmpty ? 'Price cannot be null' : null,
                     onSaved: (newValue) => editingProduct = Product(
                       id: editingProduct.id,
                       title: editingProduct.title,
@@ -206,10 +193,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         labelText: 'Image Url',
                         isDense: true,
                       ),
-                      validator: (value) {
-                        if (value.isEmpty) return 'Please fill this field';
-                        return null;
-                      },
+                      validator: (value) =>
+                          value.isEmpty ? 'Image Url cannot be null' : null,
                       onSaved: (newValue) => editingProduct = Product(
                             id: editingProduct.id,
                             title: editingProduct.title,

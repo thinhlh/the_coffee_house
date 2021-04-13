@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/providers/cart.dart';
 import 'package:the_coffee_house/screens/home/order_confirmation_screen.dart';
 
@@ -58,8 +58,9 @@ class CartBottomNavigation extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () => showBarModalBottomSheet(
-                        context: context,
-                        builder: (_) => OrderConfirmationScreen()),
+                      context: context,
+                      builder: (_) => OrderConfirmationScreen(),
+                    ),
                     //cartBottomNavigationVariables[option]['navigate'],
                     child: Chip(
                       backgroundColor: Colors.white,

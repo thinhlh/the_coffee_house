@@ -3,10 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/models/product.dart';
 import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
 import 'bottom_sheet_product.dart';
 
 class ProductCard extends StatelessWidget {

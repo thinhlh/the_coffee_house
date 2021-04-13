@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/const.dart' as Constant;
+import 'package:the_coffee_house/utils/const.dart' as Constant;
 
 class NavigativeActionCard extends StatelessWidget {
   final IconData icon;
@@ -32,7 +32,10 @@ class NavigativeActionCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 backgroundColor: color.withAlpha(50),
-                child: Icon(icon, color: color),
+                child: Icon(
+                  icon,
+                  color: color,
+                ),
               ),
               SizedBox(
                 height: Constant.SIZED_BOX_HEIGHT,
@@ -43,7 +46,6 @@ class NavigativeActionCard extends StatelessWidget {
                   title,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    //fontSize: 16,
                   ),
                 ),
               ),

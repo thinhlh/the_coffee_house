@@ -13,6 +13,18 @@ class Categories with ChangeNotifier {
 
   Categories.fromList(this._categories);
 
+  Future<void> fetchCategories() {
+    return FireStoreCategories()
+        .firestore
+        .collection('categories')
+        .get()
+        .then((value) => this._categories = value.docs.map((e) {
+              Map<String, dynamic> json = e.data();
+              json['id'] = e.id;
+              return Category.fromJson(json);
+            }).toList());
+  }
+
   List<String> categoryIdList() =>
       _categories.map((category) => category.id).toList();
 
@@ -23,7 +35,7 @@ class Categories with ChangeNotifier {
 
   Future<void> addCategory(Category category) async {
     try {
-      final addedCategory = await FireStoreCategories().addCategory(category);
+      final addedCategory = await FireStoreCategories().add(category);
       _categories.add(addedCategory);
 
       notifyListeners();
@@ -38,7 +50,7 @@ class Categories with ChangeNotifier {
     if (index == -1) return;
 
     try {
-      await FireStoreCategories().updateCategory(id, newCategory);
+      await FireStoreCategories().update(newCategory);
 
       _categories[index] = newCategory;
 
@@ -56,7 +68,7 @@ class Categories with ChangeNotifier {
 
     try {
       _categories.removeAt(index);
-      await FireStoreCategories().deleteCategory(id);
+      await FireStoreCategories().delete(id);
     } catch (error) {
       _categories.insert(index, tempCategory);
       throw HttpException('Cannot delete product');
