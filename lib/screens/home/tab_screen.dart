@@ -29,7 +29,7 @@ class TabScreenState extends State<TabScreen> {
     OthersScreen.routeName: OthersScreen(),
     AdminHomeScreen.routeName: AdminHomeScreen(),
   };
-  int _selectedPageIndex = 2;
+  int _selectedPageIndex = 0;
   //TODO change this to 0 later
 
   void navigateToScreen(String routeName, bool isDelivery) {
