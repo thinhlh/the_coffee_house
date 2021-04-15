@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/utils/global_vars.dart';
@@ -10,7 +9,6 @@ import 'package:the_coffee_house/models/notification.dart' as model;
 class NotificationListTile extends StatefulWidget {
   final model.Notification _notification;
   NotificationListTile(this._notification);
-
   @override
   _NotificationListTileState createState() => _NotificationListTileState();
 }
@@ -50,7 +48,7 @@ class _NotificationListTileState extends State<NotificationListTile> {
             mainAxisSize: MainAxisSize.min,
             children: [
               isViewed
-                  ? Text(isViewed.toString())
+                  ? SizedBox()
                   : Icon(
                       Icons.circle_notifications,
                       color: Theme.of(context).primaryColorDark,
@@ -81,7 +79,7 @@ class _NotificationListTileState extends State<NotificationListTile> {
             style: TextStyle(fontSize: Constant.LIST_TILE_TITTLE),
           ),
           subtitle: Text(
-            DateFormat('y/MM/dd - hh:mm').format(widget._notification.dateTime),
+            widget._notification.formattedDateTime,
             style: TextStyle(fontSize: Constant.LIST_TILE_SUBTITTLE),
           ),
         ),

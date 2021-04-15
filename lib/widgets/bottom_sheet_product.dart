@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/utils/const.dart' as Constant;
@@ -141,10 +142,7 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
                                 overflow: TextOverflow.clip,
                               ),
                               Text(
-                                NumberFormat.currency(
-                                  locale: 'vi-VN',
-                                  decimalDigits: 0,
-                                ).format(product.price),
+                                product.formattedPrice,
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,

@@ -7,7 +7,7 @@ class Coupons with ChangeNotifier {
     Coupon(
       code: 'NHATINHTE',
       title: 'MUA 2 TẶNG 1',
-      expiryDate: DateTime(2021, 4, 15),
+      expiryDate: DateTime(2021, 4, 17),
       conditions: [
         'Ưu đãi 15% cho đơn hàng delivery (giao tận nơi)',
         'Áp dụng cho sản phẩm bánh, nước, snack. Không áo dụng cho cà phê gói, topping, merhandise & các loại combo',

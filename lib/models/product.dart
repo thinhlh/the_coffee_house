@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 class Product {
   String id;
@@ -38,4 +39,9 @@ class Product {
       'categoryId': this.categoryId,
     };
   }
+
+  String get formattedPrice => NumberFormat.currency(
+        locale: 'vi-VN',
+        decimalDigits: 0,
+      ).format(price);
 }
