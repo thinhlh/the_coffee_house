@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:the_coffee_house/models/cart_item.dart';
 
 class Cart with ChangeNotifier {
@@ -10,6 +11,11 @@ class Cart with ChangeNotifier {
         (previousValue, cartItem) =>
             previousValue + cartItem.quantity * cartItem.unitPrice,
       );
+
+  String get formattedTotalPrice => NumberFormat.currency(
+        locale: 'vi-VN',
+        decimalDigits: 0,
+      ).format(totalPrice);
 
   List<CartItem> get cart => [..._cartItems];
 

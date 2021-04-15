@@ -3,8 +3,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
-
 import 'package:the_coffee_house/screens/home/home_screen.dart';
 import 'package:the_coffee_house/screens/home/order_screen.dart';
 import 'package:the_coffee_house/screens/home/others_screen.dart';

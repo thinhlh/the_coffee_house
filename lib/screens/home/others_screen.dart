@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:the_coffee_house/screens/home/contact_screen.dart';
+import 'package:the_coffee_house/screens/home/user_info_screen.dart';
 
 import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:the_coffee_house/screens/home/web_view_screen.dart';
@@ -65,7 +67,14 @@ class OthersScreen extends StatelessWidget {
                 icon: FlutterIcons.news_ent,
                 color: Colors.blue,
                 title: 'Tin tức & Khuyến mãi',
-                navigate: () {},
+                navigate: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => WebViewScreen(
+                      'Tin tức & khuyến mãi',
+                      'https://www.thecoffeehouse.com/blogs/news',
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -86,13 +95,14 @@ class OthersScreen extends StatelessWidget {
                 _ExpandableListTile(
                   leadingIcon: Icons.star,
                   title: 'Gửi đánh giá và góp ý',
-                  expanded: () {},
+                  onExpanded: () {},
                 ),
                 Divider(),
                 _ExpandableListTile(
                   leadingIcon: Icons.message,
                   title: 'Liên hệ',
-                  expanded: () {},
+                  onExpanded: () =>
+                      Navigator.of(context).pushNamed(ContactScreen.routeName),
                 ),
               ],
             ),
@@ -114,19 +124,20 @@ class OthersScreen extends StatelessWidget {
                 _ExpandableListTile(
                   leadingIcon: Icons.person,
                   title: 'Thông tin cá nhân',
-                  expanded: () {},
+                  onExpanded: () =>
+                      Navigator.of(context).pushNamed(UserInfoScreen.routeName),
                 ),
                 Divider(),
                 _ExpandableListTile(
                   leadingIcon: Icons.notifications,
                   title: 'Cài đặt',
-                  expanded: () {},
+                  onExpanded: () {},
                 ),
                 Divider(),
                 _ExpandableListTile(
                   leadingIcon: Icons.logout,
                   title: 'Đăng xuất',
-                  expanded: () async => await Auth().signOut(),
+                  onExpanded: () async => await Auth().signOut(),
                 ),
               ],
             ),
@@ -140,19 +151,19 @@ class OthersScreen extends StatelessWidget {
 class _ExpandableListTile extends StatelessWidget {
   final IconData leadingIcon;
   final String title;
-  final Function expanded;
+  final Function onExpanded;
 
   _ExpandableListTile({
     @required this.leadingIcon,
     @required this.title,
-    @required this.expanded,
+    @required this.onExpanded,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      onTap: expanded,
+      onTap: onExpanded,
       leading: Icon(
         leadingIcon,
         color: Constant.ACCENT_COLOR,

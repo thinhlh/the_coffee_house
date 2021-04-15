@@ -95,6 +95,9 @@ class _LoginFormState extends State<LoginForm> {
     });
     try {
       await Auth().signin(_authData['email'], _authData['password']);
+      setState(() {
+        _isLoading = false;
+      });
     } on HttpException catch (error) {
       var errorMessage = 'Failed To Login';
       if (error.message == 'wrong-password')
@@ -145,9 +148,6 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override

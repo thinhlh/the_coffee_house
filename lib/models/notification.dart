@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:the_coffee_house/models/membership.dart';
 
 class Notification {
@@ -55,6 +56,9 @@ class Notification {
                     : Membership.Diamond)
         .toList();
   }
+
+  String get formattedDateTime =>
+      DateFormat('y/MM/dd - hh:mm').format(dateTime);
 }
 
 /// Actions that navigate user to appropriate screen;

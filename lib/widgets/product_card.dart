@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -75,10 +74,7 @@ class ProductCard extends StatelessWidget {
                       Flexible(
                         flex: 2,
                         child: Text(
-                          NumberFormat.currency(
-                            locale: 'vi-VN',
-                            decimalDigits: 0,
-                          ).format(product.price),
+                          product.formattedPrice,
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 16,

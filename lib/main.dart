@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:the_coffee_house/screens/home/contact_screen.dart';
+import 'package:the_coffee_house/screens/home/user_info_screen.dart';
+
 import 'package:the_coffee_house/utils/global_vars.dart';
 import 'package:the_coffee_house/providers/coupons.dart';
 
@@ -70,6 +72,9 @@ class App extends StatelessWidget {
               FavoriteScreen.routeName: (_) => FavoriteScreen(),
               LoginScreen.routeName: (_) => LoginScreen(),
               SignUpScreen.routeName: (_) => SignUpScreen(),
+              //Pushed Page
+              ContactScreen.routeName: (_) => ContactScreen(),
+              UserInfoScreen.routeName: (_) => UserInfoScreen(),
             },
           );
 
@@ -78,10 +83,7 @@ class App extends StatelessWidget {
               : MultiProvider(
                   providers: [
                     StreamProvider<UserProvider>.value(
-                      value: FireStoreUser().getUser(
-                          FirebaseAuth.instance.currentUser == null
-                              ? null
-                              : FirebaseAuth.instance.currentUser.uid),
+                      value: user.uid == null ? null : FireStoreUser().user,
                       initialData: UserProvider.initialize(),
                     ),
                     StreamProvider<Products>.value(

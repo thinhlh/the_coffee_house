@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class SharedPref {
   static SharedPreferences sharedPreferences;
@@ -11,24 +13,46 @@ class SharedPref {
   }
 
   List<String> get viewedNotifications {
-    return sharedPreferences.getStringList(_viewedNotificationsKey) ?? [];
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    final userSettings = sharedPreferences.getString(uid);
+    print(uid);
+    if (userSettings == null) return [];
+    final list = ((json.decode(userSettings)
+                    as Map<String, dynamic>)[_viewedNotificationsKey]
+                as List<dynamic>)
+            .cast<String>()
+            .toList() ??
+        [];
+    print(list);
+    return list;
   }
 
-  Future<bool> addViewedNotifications(String notificationId) async {
-    final list = sharedPreferences.getStringList(_viewedNotificationsKey) ?? [];
+  Future<void> addViewedNotifications(String notificationId) async {
+    final _viewedNotifications = this.viewedNotifications;
 
-    if (list.contains(notificationId)) return Future.value(true);
-    return await sharedPreferences.setStringList(
-        _viewedNotificationsKey, list..add(notificationId));
+    if (_viewedNotifications.contains(notificationId))
+      return Future.value(true);
+
+    _viewedNotifications.add(notificationId);
+
+    final encodedJson = json.encode({
+      _viewedNotificationsKey: _viewedNotifications,
+    });
+    await sharedPreferences.setString(
+      FirebaseAuth.instance.currentUser.uid,
+      encodedJson,
+    );
   }
 
   bool isViewedNotification(String notificationId) {
-    final list = sharedPreferences.getStringList(_viewedNotificationsKey) ?? [];
-    return list.contains(notificationId);
+    return viewedNotifications.contains(notificationId);
   }
 
   void deleteAllViewedNotifications() async {
-    bool response = await sharedPreferences.remove(_viewedNotificationsKey);
+    bool response = await sharedPreferences.remove(
+      FirebaseAuth.instance.currentUser.uid,
+    );
+    print(viewedNotifications);
     if (!response) {
       print('Failed to delete');
     }

@@ -1,21 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:the_coffee_house/models/custom_user.dart';
 import 'package:the_coffee_house/providers/user_provider.dart';
 
 class FireStoreUser {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Stream<UserProvider> getUser(String uid) => uid == null
-      ? null
-      : firestore
+  Stream<UserProvider> get user => firestore
           .collection('users')
-          .doc(uid)
+          .doc(FirebaseAuth.instance.currentUser.uid)
           .snapshots()
           .map((documentSnapshot) {
-          Map<String, dynamic> json = documentSnapshot.data();
-          json['uid'] = documentSnapshot.id;
-          return UserProvider.fromJson(json);
-        });
+        Map<String, dynamic> json = documentSnapshot.data();
+        json['uid'] = documentSnapshot.id;
+        return UserProvider.fromJson(json);
+      });
 
   Future<void> addUser(CustomUser user) async {
     CollectionReference users = firestore.collection('users');
@@ -38,6 +37,18 @@ class FireStoreUser {
           .update({'favoriteProducts': favoriteProducts});
     } catch (error) {
       //TODO handling error
+    }
+  }
+
+  Future<void> editUser(Map<String, dynamic> newData) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .update(newData);
+    } catch (error) {
+      //TODO handling error
+      throw error;
     }
   }
 }

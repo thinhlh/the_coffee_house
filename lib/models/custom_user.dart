@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:the_coffee_house/models/membership.dart';
 
 class CustomUser {
@@ -57,4 +58,6 @@ class CustomUser {
       'favoriteProducts': this.favoriteProducts,
     };
   }
+
+  String get formattedBirthday => DateFormat('dd/MM/y').format(birthday);
 }

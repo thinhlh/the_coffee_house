@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:intl/intl.dart';
+
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -62,10 +62,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          NumberFormat.currency(
-                            locale: 'vi-VN',
-                            decimalDigits: 0,
-                          ).format(provider.totalPrice),
+                          provider.formattedTotalPrice,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -151,10 +148,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                       ),
                       subtitle: Text('Property'),
                       trailing: Text(
-                        NumberFormat.currency(
-                          locale: 'vi-VN',
-                          decimalDigits: 0,
-                        ).format(provider.cart[index].price),
+                        provider.cart[index].formmatedPrice,
                         style: TextStyle(
                           fontSize: 16,
                         ),
@@ -196,10 +190,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          NumberFormat.currency(
-                            locale: 'vi-VN',
-                            decimalDigits: 0,
-                          ).format(provider.totalPrice),
+                          provider.formattedTotalPrice,
                           style: TextStyle(
                             fontSize: 16,
                           ),
@@ -252,10 +243,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          NumberFormat.currency(
-                            locale: 'vi-VN',
-                            decimalDigits: 0,
-                          ).format(provider.totalPrice),
+                          provider.formattedTotalPrice,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
