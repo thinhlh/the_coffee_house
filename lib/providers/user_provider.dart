@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
-import 'package:the_coffee_house/services/firestore_user.dart';
+
+import '../models/custom_user.dart';
+import '../services/firestore_user.dart';
 
 class UserProvider with ChangeNotifier {
   CustomUser _user;

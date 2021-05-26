@@ -1,6 +1,6 @@
-import 'package:the_coffee_house/models/notification.dart';
-import 'package:the_coffee_house/providers/notifications.dart';
-import 'package:the_coffee_house/services/fire_store.dart';
+import '../models/notification.dart';
+import '../providers/notifications.dart';
+import 'fire_store.dart';
 
 class FireStoreNotifications extends FireStoreApi {
   @override

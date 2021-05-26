@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+
+import '../utils/const.dart' as Constant;
 
 class ImageSlider extends StatelessWidget {
   @override

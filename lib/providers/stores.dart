@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:the_coffee_house/models/store.dart';
+
+import '../models/store.dart';
 
 class Stores with ChangeNotifier {
   List<Store> _stores = [

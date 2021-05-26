@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/search_product.dart';
-import 'package:the_coffee_house/screens/home/favorites_screen.dart';
-import 'package:the_coffee_house/screens/home/google_map.dart';
-import 'package:the_coffee_house/widgets/cart_bottom_navigation.dart';
-import 'package:the_coffee_house/widgets/order_card_navigation.dart';
-import 'package:the_coffee_house/widgets/navigative_action_card.dart';
-
+import '../../models/search_product.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/cart_bottom_navigation.dart';
 import '../../widgets/category_list_view.dart';
+import '../../widgets/navigative_action_card.dart';
+import '../../widgets/order_card_navigation.dart';
+import 'favorites_screen.dart';
 
 class OrderScreen extends StatelessWidget {
   static const routeName = '/order_screen';
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       bottomNavigationBar: CartBottomNavigation(),
       body: SingleChildScrollView(
@@ -25,7 +23,7 @@ class OrderScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: mediaQuery.size.height * 0.17,
+              height: 0.17.sh,
               child: OrderCardNavigation(),
             ),
             SizedBox(
@@ -37,7 +35,7 @@ class OrderScreen extends StatelessWidget {
                 delegate: SearchProduct(),
               ),
               child: Container(
-                height: mediaQuery.size.height * 0.06,
+                height: 0.06.sh,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
                   color: Colors.grey[300],
@@ -73,8 +71,7 @@ class OrderScreen extends StatelessWidget {
                     title: 'Các món vừa đặt',
                     color: Colors.blue.shade300,
                     icon: FlutterIcons.coffee_mco,
-                    navigate: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => GoogleMapWidget())),
+                    navigate: () => {},
                   ),
                 ),
                 Expanded(

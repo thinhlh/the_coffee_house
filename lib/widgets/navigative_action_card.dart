@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '../utils/const.dart' as Constant;
 
 class NavigativeActionCard extends StatelessWidget {
   final IconData icon;

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/screens/admin_screens/edit_option.dart';
-import 'package:the_coffee_house/screens/admin_screens/general_edit_screen.dart';
-import 'package:the_coffee_house/screens/admin_screens/notification_edit_screen.dart';
+import '../../utils/const.dart' as Constant;
+import 'edit_option.dart';
+import 'general_edit_screen.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   static const routeName = '/admin_screens/admin_home_screen';

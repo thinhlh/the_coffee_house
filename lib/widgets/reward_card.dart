@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/coupon.dart';
-import 'package:the_coffee_house/screens/home/reward_info_screen.dart';
+import '../models/coupon.dart';
+import '../screens/home/reward_info_screen.dart';
+import '../utils/const.dart' as Constant;
 
 class RewardCard extends StatelessWidget {
   final Coupon coupon;

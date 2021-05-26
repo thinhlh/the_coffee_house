@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
-import 'package:the_coffee_house/utils/const.dart' as Constant;
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
-import 'package:the_coffee_house/models/store.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../models/store.dart';
+import '../../utils/const.dart' as Constant;
 
 class StoreInfoScreen extends StatelessWidget {
   final Store store;
@@ -12,8 +13,6 @@ class StoreInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
@@ -49,7 +48,7 @@ class StoreInfoScreen extends StatelessWidget {
             options: CarouselOptions(
               autoPlay: false,
               enableInfiniteScroll: true,
-              height: mediaQuery.size.height / 2,
+              height: 0.5.sh,
               viewportFraction: 1,
             ),
           ),

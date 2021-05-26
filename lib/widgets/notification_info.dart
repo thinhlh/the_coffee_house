@@ -1,9 +1,11 @@
 import 'dart:async';
-
 import 'dart:ui' as ui;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/notification.dart' as model;
+
+import '../models/notification.dart' as model;
+import '../utils/const.dart' as Constant;
 
 class NotificationInfo extends StatelessWidget {
   final model.Notification notification;
@@ -19,8 +21,6 @@ class NotificationInfo extends StatelessWidget {
     image.image.resolve(ImageConfiguration()).addListener(
         ImageStreamListener((info, _) => completer.complete(info.image)));
 
-    final mediaQuery = MediaQuery.of(context);
-
     return FutureBuilder(
         future: completer.future,
         builder: (_, AsyncSnapshot<ui.Image> snapshot) {
@@ -30,12 +30,8 @@ class NotificationInfo extends StatelessWidget {
             );
           return IntrinsicHeight(
             child: Container(
-              width: mediaQuery.size.width,
-              // height: mediaQuery.size.width *
-              //     snapshot.data.height /
-              //     snapshot.data.width *
-              //     2,
-              height: mediaQuery.size.width * 4 / 3,
+              width: 1.sw,
+              height: MediaQuery.of(context).size.width * 4 / 3,
               child: Column(
                 children: [
                   Flexible(

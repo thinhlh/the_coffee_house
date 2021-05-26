@@ -1,6 +1,6 @@
-import 'package:the_coffee_house/models/category.dart';
-import 'package:the_coffee_house/providers/categories.dart';
-import 'package:the_coffee_house/services/fire_store.dart';
+import '../models/category.dart';
+import '../providers/categories.dart';
+import 'fire_store.dart';
 
 class FireStoreCategories extends FireStoreApi {
   @override

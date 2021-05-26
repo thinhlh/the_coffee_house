@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class SharedPref {
   static SharedPreferences sharedPreferences;
@@ -15,7 +16,6 @@ class SharedPref {
   List<String> get viewedNotifications {
     final uid = FirebaseAuth.instance.currentUser.uid;
     final userSettings = sharedPreferences.getString(uid);
-    print(uid);
     if (userSettings == null) return [];
     final list = ((json.decode(userSettings)
                     as Map<String, dynamic>)[_viewedNotificationsKey]
@@ -23,8 +23,18 @@ class SharedPref {
             .cast<String>()
             .toList() ??
         [];
-    print(list);
     return list;
+  }
+
+  int numberOfViewedNotification(List<String> notifications) {
+    int result = 0;
+    List<String> _viewedNotifications = viewedNotifications;
+    _viewedNotifications.forEach((element) {
+      if (notifications.contains(element)) {
+        result++;
+      }
+    });
+    return result;
   }
 
   Future<void> addViewedNotifications(String notificationId) async {

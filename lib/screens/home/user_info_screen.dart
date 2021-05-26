@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '../../models/custom_user.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/const.dart' as Constant;
 
 GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/cart.dart';
-import 'package:the_coffee_house/screens/home/order_information_screen.dart';
+import '../../providers/cart.dart';
+import '../../utils/const.dart' as Constant;
+import 'order_information_screen.dart';
 
 class OrderConfirmationScreen extends StatelessWidget {
   static const routeName = '/order_confirmation_screen';

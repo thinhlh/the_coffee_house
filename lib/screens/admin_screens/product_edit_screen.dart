@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/category.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/models/product.dart';
-import 'package:the_coffee_house/providers/categories.dart';
-import 'package:the_coffee_house/providers/products.dart';
-
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '../../models/category.dart';
+import '../../models/product.dart';
+import '../../providers/categories.dart';
+import '../../providers/products.dart';
+import '../../utils/const.dart' as Constant;
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -213,7 +213,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           width: 0,
                         )
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height / 3,
+                          height: (1 / 3).sh,
                           child: Image.network(
                             imageController.text,
                             fit: BoxFit.contain,

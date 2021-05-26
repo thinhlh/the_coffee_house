@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
+import '../../models/custom_user.dart';
+import '../../models/http_exception.dart';
+import '../../services/auth.dart';
+import '../../utils/const.dart' as Constant;
 import 'auth_screen.dart';
-import 'package:the_coffee_house/services/auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = '/auth/signup_screen';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/user_provider.dart';
-import 'package:the_coffee_house/widgets/product_card.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/product_card.dart';
 
 class FavoriteScreen extends StatelessWidget {
   static const routeName = '/favorite_screen';

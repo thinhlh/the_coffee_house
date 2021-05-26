@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/order_card_navigation_provider.dart';
-import 'package:the_coffee_house/widgets/cart_bottom_navigation.dart';
-import 'package:the_coffee_house/widgets/order_card_navigation.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/widgets/product_card.dart';
+import '../../providers/order_card_navigation_provider.dart';
+import '../../providers/products.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/cart_bottom_navigation.dart';
+import '../../widgets/order_card_navigation.dart';
+import '../../widgets/product_card.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
   static const routeName = '/products_screen';
@@ -40,7 +41,7 @@ class ProductsOverviewScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.17,
+                height: 0.17.sh,
                 child: OrderCardNavigation(),
               ),
               SizedBox(

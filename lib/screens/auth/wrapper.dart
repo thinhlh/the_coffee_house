@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/utils/global_vars.dart';
-import 'package:the_coffee_house/providers/categories.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/screens/auth/auth_screen.dart';
-import 'package:the_coffee_house/screens/home/tab_screen.dart';
+
+import '../../providers/categories.dart';
+import '../../providers/products.dart';
+import '../../utils/global_vars.dart';
+import '../home/tab_screen.dart';
+import 'auth_screen.dart';
 
 class Wrapper extends StatelessWidget {
   @override

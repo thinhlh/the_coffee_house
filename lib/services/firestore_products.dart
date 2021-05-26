@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:the_coffee_house/models/product.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/services/fire_store.dart';
 
+import '../models/product.dart';
+import '../providers/products.dart';
 import 'fire_store.dart';
 
 class FireStoreProducts extends FireStoreApi {

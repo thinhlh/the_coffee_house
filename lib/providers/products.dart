@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/models/product.dart';
-import 'package:the_coffee_house/services/firestore_products.dart';
+import '../models/product.dart';
+import '../services/firestore_products.dart';
 
 class Products with ChangeNotifier {
   List<Product> _products = [];

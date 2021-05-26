@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:the_coffee_house/screens/home/contact_screen.dart';
-import 'package:the_coffee_house/screens/home/user_info_screen.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/screens/home/web_view_screen.dart';
-import 'package:the_coffee_house/services/auth.dart';
-import 'package:the_coffee_house/widgets/navigative_action_card.dart';
+import '../../services/auth.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/expandable_list_tile.dart';
+import '../../widgets/navigative_action_card.dart';
+import 'contact_screen.dart';
+import 'setting_screen.dart';
+import 'user_info_screen.dart';
+import 'web_view_screen.dart';
 
 class OthersScreen extends StatelessWidget {
   static const routeName = '/others_screen';
@@ -92,13 +94,13 @@ class OthersScreen extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
               children: [
-                _ExpandableListTile(
+                ExpandableListTile(
                   leadingIcon: Icons.star,
                   title: 'Gửi đánh giá và góp ý',
                   onExpanded: () {},
                 ),
                 Divider(),
-                _ExpandableListTile(
+                ExpandableListTile(
                   leadingIcon: Icons.message,
                   title: 'Liên hệ',
                   onExpanded: () =>
@@ -121,20 +123,21 @@ class OthersScreen extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
               children: [
-                _ExpandableListTile(
+                ExpandableListTile(
                   leadingIcon: Icons.person,
                   title: 'Thông tin cá nhân',
                   onExpanded: () =>
                       Navigator.of(context).pushNamed(UserInfoScreen.routeName),
                 ),
                 Divider(),
-                _ExpandableListTile(
+                ExpandableListTile(
                   leadingIcon: Icons.notifications,
                   title: 'Cài đặt',
-                  onExpanded: () {},
+                  onExpanded: () =>
+                      Navigator.of(context).pushNamed(SettingScreen.routeName),
                 ),
                 Divider(),
-                _ExpandableListTile(
+                ExpandableListTile(
                   leadingIcon: Icons.logout,
                   title: 'Đăng xuất',
                   onExpanded: () async => await Auth().signOut(),
@@ -144,39 +147,6 @@ class OthersScreen extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class _ExpandableListTile extends StatelessWidget {
-  final IconData leadingIcon;
-  final String title;
-  final Function onExpanded;
-
-  _ExpandableListTile({
-    @required this.leadingIcon,
-    @required this.title,
-    @required this.onExpanded,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      dense: true,
-      onTap: onExpanded,
-      leading: Icon(
-        leadingIcon,
-        color: Constant.ACCENT_COLOR,
-      ),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16),
-      ),
-      trailing: RotatedBox(
-        quarterTurns: 3,
-        child: Icon(Icons.expand_more),
-      ),
-      visualDensity: VisualDensity.compact,
     );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/stores.dart';
-import 'package:the_coffee_house/screens/home/google_map.dart';
-import 'package:the_coffee_house/screens/home/store_info_screen.dart';
+import '../../providers/stores.dart';
+import '../../utils/const.dart' as Constant;
+import 'google_map.dart';
+import 'store_info_screen.dart';
 
 class StoresScreen extends StatefulWidget {
   static const routeName = '/stores_screen';
@@ -62,7 +63,6 @@ class _StoresScreenState extends State<StoresScreen> {
 class _StoresListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     return Padding(
       padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
       child: ListView(
@@ -106,7 +106,8 @@ class _StoresListView extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
                   ),
-                  height: mediaQuery.size.height / 7,
+                  // height: MediaQuery.of(context).size.height / 7,
+                  height: (1 / 7).sh,
                   padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

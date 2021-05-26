@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:the_coffee_house/models/membership.dart';
+
+import 'membership.dart';
 
 class CustomUser {
   String uid;
@@ -28,16 +29,16 @@ class CustomUser {
     this.point = json['point'];
 
     switch (json['membership']) {
-      case 'Membership.Bronze':
+      case 'Bronze':
         this.membership = Membership.Bronze;
         break;
-      case 'Membership.Silver':
+      case 'Silver':
         this.membership = Membership.Silver;
         break;
-      case 'Membership.Gold':
+      case 'Gold':
         this.membership = Membership.Gold;
         break;
-      case 'Membership.Diamond':
+      case 'Diamond':
         this.membership = Membership.Diamond;
         break;
       default:
@@ -54,7 +55,7 @@ class CustomUser {
       'email': this.email,
       'birthday': this.birthday,
       'point': this.point,
-      'membership': this.membership.toString(),
+      'membership': this.membership.valueString(),
       'favoriteProducts': this.favoriteProducts,
     };
   }

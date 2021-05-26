@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_screenutil: ^5.0.0+2
+
   shared_preferences: ^2.0.5
   
   carousel_slider: ^3.0.0

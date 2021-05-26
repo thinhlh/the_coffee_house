@@ -1,8 +1,9 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/models/coupon.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '../../models/coupon.dart';
+import '../../utils/const.dart' as Constant;
 
 class RewardInfoScreen extends StatelessWidget {
   final Coupon _coupon;
@@ -57,7 +58,7 @@ class RewardInfoScreen extends StatelessWidget {
               SizedBox(height: 2 * Constant.SIZED_BOX_HEIGHT),
               Center(
                 child: BarcodeWidget(
-                  width: MediaQuery.of(context).size.width,
+                  width: 1.sw,
                   barcode: Barcode.qrCode(),
                   data: _coupon.code,
                 ),

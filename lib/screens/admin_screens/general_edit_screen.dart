@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/screens/admin_screens/category_edit_screen.dart';
-import 'package:the_coffee_house/screens/admin_screens/edit_option.dart';
-import 'package:the_coffee_house/screens/admin_screens/notification_edit_screen.dart';
-import 'package:the_coffee_house/screens/admin_screens/product_edit_screen.dart';
-import 'package:the_coffee_house/widgets/admin/categories_edit_list_view.dart';
-import 'package:the_coffee_house/widgets/admin/notifications_edit_list_view.dart';
-import 'package:the_coffee_house/widgets/admin/products_edit_list_view.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/admin/categories_edit_list_view.dart';
+import '../../widgets/admin/notifications_edit_list_view.dart';
+import '../../widgets/admin/products_edit_list_view.dart';
+import 'category_edit_screen.dart';
+import 'edit_option.dart';
+import 'notification_edit_screen.dart';
+import 'product_edit_screen.dart';
 
 class GeneralEditScreen extends StatefulWidget {
   static const routeName = '/admin_screens/general_edit_screen';

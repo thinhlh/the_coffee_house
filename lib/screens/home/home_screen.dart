@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/utils/global_vars.dart';
-import 'package:the_coffee_house/providers/notifications.dart';
-import 'package:the_coffee_house/screens/home/order_screen.dart';
-import 'package:the_coffee_house/widgets/navigative_action_card.dart';
-import 'package:the_coffee_house/widgets/image_slider_widget.dart';
-import 'package:the_coffee_house/widgets/notification_list_tile.dart';
+import '../../providers/notifications.dart';
+import '../../utils/const.dart' as Constant;
+import '../../utils/global_vars.dart';
+import '../../widgets/image_slider_widget.dart';
+import '../../widgets/navigative_action_card.dart';
+import '../../widgets/notification_list_tile.dart';
+import 'order_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/home_screen';
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -95,11 +100,20 @@ class HomeScreen extends StatelessWidget {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.red[700],
                                   radius: Constant.BORDER_RADIUS,
-                                  child: Text(
-                                    notifications.length.toString(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Constant.LIST_TILE_SUBTITTLE,
+                                  child: Consumer<Notifications>(
+                                    builder: (_, notifications, child) => Text(
+                                      (notifications.notifications.length -
+                                              sharedPref
+                                                  .numberOfViewedNotification(
+                                                notifications.notifications
+                                                    .map((e) => e.id)
+                                                    .toList(),
+                                              ))
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: Constant.LIST_TILE_SUBTITTLE,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -113,6 +127,7 @@ class HomeScreen extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (_, index) => NotificationListTile(
                           notifications[index],
+                          () => setState(() {}),
                         ),
                         itemCount: notifications.length,
                       ),

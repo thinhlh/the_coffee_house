@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/membership.dart';
-import 'package:the_coffee_house/providers/notifications.dart';
-import 'package:the_coffee_house/models/notification.dart' as model;
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../models/membership.dart';
+import '../../models/notification.dart' as model;
+import '../../providers/notifications.dart';
+import '../../utils/const.dart' as Constant;
 
 class EditNotificationScreen extends StatefulWidget {
   final String notificationId;
@@ -141,7 +143,7 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
                           width: 0,
                         )
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height / 3,
+                          height: (1 / 3).sh,
                           child: Image.network(
                             imageController.text,
                             fit: BoxFit.contain,

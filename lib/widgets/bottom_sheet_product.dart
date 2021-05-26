@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
-
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/cart_item.dart';
-import 'package:the_coffee_house/models/product.dart';
-import 'package:the_coffee_house/providers/cart.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
+import '../models/cart_item.dart';
+import '../models/product.dart';
+import '../providers/cart.dart';
 import '../providers/products.dart';
+import '../providers/user_provider.dart';
+import '../utils/const.dart' as Constant;
 
 class BottomSheetProduct extends StatefulWidget {
   final productId;
@@ -242,7 +241,7 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
                     margin:
                         const EdgeInsets.only(bottom: Constant.GENERAL_PADDING),
                     padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                    width: MediaQuery.of(context).size.width * 2 / 3,
+                    width: (2 / 3).sw,
                     child: Card(
                       elevation: 10,
                       shadowColor: Colors.grey.shade800,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/widgets/product_card.dart';
+import '../providers/products.dart';
+import '../utils/const.dart' as Constant;
+import '../widgets/product_card.dart';
 
 class SearchProduct extends SearchDelegate {
   @override

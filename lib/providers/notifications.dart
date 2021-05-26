@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart' as widget;
-import 'package:the_coffee_house/models/notification.dart';
-import 'package:the_coffee_house/services/firestore_notifications.dart';
+
+import '../models/notification.dart';
+import '../services/firestore_notifications.dart';
 
 class Notifications with widget.ChangeNotifier {
   List<Notification> _notifications = [];

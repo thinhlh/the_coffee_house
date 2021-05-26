@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/product.dart';
-import 'package:the_coffee_house/providers/products.dart';
+import '../models/product.dart';
+import '../providers/products.dart';
+import '../utils/const.dart' as Constant;
 import 'bottom_sheet_product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -32,7 +33,7 @@ class ProductCard extends StatelessWidget {
         ),
       ),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.17,
+        height: 0.17.sh,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),

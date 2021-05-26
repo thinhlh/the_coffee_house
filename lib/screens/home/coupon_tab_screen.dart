@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/coupons.dart';
-import 'package:the_coffee_house/widgets/reward_card.dart';
+
+import '../../providers/coupons.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/reward_card.dart';
 
 class CouponTabScreen extends StatelessWidget {
   @override
@@ -46,8 +47,8 @@ class CouponTabScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (_, index) =>
-                  RewardCard(couponsProvider.coupons[index]),
-              itemCount: couponsProvider.coupons.length,
+                  RewardCard(couponsProvider.nearlyOutOfDate[index]),
+              itemCount: couponsProvider.nearlyOutOfDate.length,
             ),
           ),
           SizedBox(height: Constant.SIZED_BOX_HEIGHT),
@@ -63,6 +64,15 @@ class CouponTabScreen extends StatelessWidget {
             ),
           ),
           SizedBox(height: Constant.SIZED_BOX_HEIGHT),
+          Consumer<Coupons>(
+            builder: (_, couponsProvider, child) => ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (_, index) =>
+                  RewardCard(couponsProvider.coupons[index]),
+              itemCount: couponsProvider.coupons.length,
+            ),
+          ),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/screens/home/accumulative_point_tab_screen.dart';
-import 'package:the_coffee_house/screens/home/coupon_tab_screen.dart';
+
+import 'accumulative_point_tab_screen.dart';
+import 'coupon_tab_screen.dart';
 
 // ignore: must_be_immutable
 class RewardScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _RewardScreenState extends State<RewardScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: initialIndex,
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.grey.shade100,
         appBar: AppBar(
@@ -35,9 +36,6 @@ class _RewardScreenState extends State<RewardScreen> {
                     text: 'TÍCH ĐIỂM',
                   ),
                   Tab(
-                    text: 'ĐỔI ƯU ĐÃI',
-                  ),
-                  Tab(
                     text: 'PHIẾU ƯU ĐÃI',
                   ),
                 ],
@@ -48,7 +46,6 @@ class _RewardScreenState extends State<RewardScreen> {
         body: TabBarView(
           children: [
             AccumlativePointTabScreen(),
-            Text('Doi Uu Dai'),
             CouponTabScreen(),
           ],
         ),

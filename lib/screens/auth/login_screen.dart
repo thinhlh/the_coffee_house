@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/services/auth.dart';
+
+import '../../models/http_exception.dart';
+import '../../services/auth.dart';
+import '../../utils/const.dart' as Constant;
 import 'auth_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -147,6 +148,10 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

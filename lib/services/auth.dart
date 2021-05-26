@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
 
-import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/services/firestore_user.dart';
+import '../models/custom_user.dart';
+import '../models/http_exception.dart';
+import 'firestore_user.dart';
 
 class Auth {
   FirebaseAuth _auth = FirebaseAuth.instance;

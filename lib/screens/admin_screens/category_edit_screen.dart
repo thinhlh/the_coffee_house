@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/category.dart';
-import 'package:the_coffee_house/providers/categories.dart';
+import '../../models/category.dart';
+import '../../providers/categories.dart';
+import '../../utils/const.dart' as Constant;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditCategoryScreen extends StatefulWidget {
   final id;
@@ -128,7 +129,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                     builder: (_) => imageController.text.isEmpty
                         ? Container()
                         : SizedBox(
-                            height: MediaQuery.of(context).size.height / 3,
+                            height: (1 / 3).sh,
                             child: Image.network(
                               imageController.text,
                               fit: BoxFit.contain,

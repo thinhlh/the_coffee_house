@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:the_coffee_house/models/cart_item.dart';
+
+import '../models/cart_item.dart';
 
 class Cart with ChangeNotifier {
   /// String is the id of product in the cart;

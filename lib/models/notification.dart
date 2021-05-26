@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:the_coffee_house/models/membership.dart';
+
+import 'membership.dart';
 
 class Notification {
   String id;
@@ -35,7 +36,7 @@ class Notification {
       'description': description,
       'imageUrl': imageUrl,
       'dateTime': DateTime.now(),
-      'targetCustomer': targetCustomer.map((e) => e.toString()).toList(),
+      'targetCustomer': targetCustomer.map((e) => e.valueString()).toList(),
     };
   }
 

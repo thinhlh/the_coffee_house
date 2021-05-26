@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '../../utils/const.dart' as Constant;
 
 class ContactScreen extends StatelessWidget {
   static const routeName = '/contact_screen';
@@ -64,12 +64,12 @@ class ContactScreen extends StatelessWidget {
             divider,
             ListTile(
               onTap: () {
-                try {
-                  UrlLauncher.launch('fb://page/The.Coffee.House.2014');
-                } catch (error) {
-                  UrlLauncher.launch(
-                      'https://www.facebook.com/The.Coffee.House.2014');
-                }
+                UrlLauncher.canLaunch('fb://page/The.Coffee.House.2014').then(
+                  (value) => value
+                      ? UrlLauncher.launch('fb://page/The.Coffee.House.2014')
+                      : UrlLauncher.launch(
+                          'https://www.facebook.com/The.Coffee.House.2014'),
+                );
               },
               tileColor: Colors.white,
               leading: Icon(

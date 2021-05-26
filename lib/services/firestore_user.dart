@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:the_coffee_house/models/custom_user.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
+
+import '../models/custom_user.dart';
+import '../providers/user_provider.dart';
 
 class FireStoreUser {
   FirebaseFirestore firestore = FirebaseFirestore.instance;

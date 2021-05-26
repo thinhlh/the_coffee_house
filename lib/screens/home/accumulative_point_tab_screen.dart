@@ -3,17 +3,20 @@ import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/models/membership.dart';
-import 'package:the_coffee_house/providers/coupons.dart';
-import 'package:the_coffee_house/providers/user_provider.dart';
-import 'package:the_coffee_house/screens/home/web_view_screen.dart';
-import 'package:the_coffee_house/widgets/navigative_action_card.dart';
-import 'package:the_coffee_house/widgets/reward_card.dart';
+import '../../models/membership.dart';
+import '../../providers/coupons.dart';
+import '../../providers/user_provider.dart';
+import '../../utils/const.dart' as Constant;
+import '../../widgets/navigative_action_card.dart';
+import '../../widgets/reward_card.dart';
+import 'web_view_screen.dart';
 
 class AccumlativePointTabScreen extends StatelessWidget {
   static const routeName = '/accumulative_point';
+
+  final _scrollControler = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,8 @@ class AccumlativePointTabScreen extends StatelessWidget {
                           icon: FlutterIcons.gift_faw,
                           title: 'Đổi ưu đãi',
                           color: Colors.blue.withOpacity(0.6),
-                          navigate: () {},
+                          navigate: () =>
+                              DefaultTabController.of(context).animateTo(1),
                         ),
                       ),
                       Expanded(
@@ -44,7 +48,11 @@ class AccumlativePointTabScreen extends StatelessWidget {
                           title: 'Voucher của bạn',
                           color:
                               Theme.of(context).primaryColor.withOpacity(0.9),
-                          navigate: () {},
+                          navigate: () => _scrollControler.animateTo(
+                            _scrollControler.position.maxScrollExtent,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.fastOutSlowIn,
+                          ),
                         ),
                       ),
                     ],
@@ -93,7 +101,7 @@ class AccumlativePointTabScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () =>
-                              DefaultTabController.of(context).animateTo(2),
+                              DefaultTabController.of(context).animateTo(1),
                           child: Chip(
                             backgroundColor: Colors.white,
                             label: Text(
@@ -113,6 +121,7 @@ class AccumlativePointTabScreen extends StatelessWidget {
                   ),
                   Consumer<Coupons>(
                     builder: (_, couponsProvider, child) => ListView.builder(
+                      controller: _scrollControler,
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (_, index) =>
@@ -121,37 +130,6 @@ class AccumlativePointTabScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Đổi ưu đãi',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: Constant.TEXT_SIZE,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () =>
-                          DefaultTabController.of(context).animateTo(1),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        label: Text(
-                          'XEM TẤT CẢ',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).primaryColor.withOpacity(0.8),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
@@ -165,7 +143,7 @@ class _UserPointCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height / 2,
+      height: 0.5.sh,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(

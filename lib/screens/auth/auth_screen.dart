@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/screens/auth/login_screen.dart';
-import 'package:the_coffee_house/screens/auth/signup_screen.dart';
+
+import 'login_screen.dart';
+import 'signup_screen.dart';
 
 class AuthScreen extends StatelessWidget {
   @override
@@ -14,7 +15,7 @@ class AuthScreen extends StatelessWidget {
 }
 
 class AuthProvider with ChangeNotifier {
-  bool _isLogin=true;
+  bool _isLogin = true;
 
   void navigate() {
     _isLogin = !_isLogin;

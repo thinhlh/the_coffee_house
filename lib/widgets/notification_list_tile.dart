@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/utils/global_vars.dart';
-import 'package:the_coffee_house/services/shared_preferences.dart';
-import 'package:the_coffee_house/widgets/notification_info.dart';
-import 'package:the_coffee_house/models/notification.dart' as model;
+import '../models/notification.dart' as model;
+import '../utils/const.dart' as Constant;
+import '../utils/global_vars.dart';
+import 'notification_info.dart';
 
 class NotificationListTile extends StatefulWidget {
   final model.Notification _notification;
-  NotificationListTile(this._notification);
+  final Function _setStateParent;
+  NotificationListTile(
+    this._notification,
+    this._setStateParent,
+  );
   @override
   _NotificationListTileState createState() => _NotificationListTileState();
 }
@@ -31,8 +34,8 @@ class _NotificationListTileState extends State<NotificationListTile> {
           dense: true,
           onTap: () async {
             if (!isViewed) {
-              await SharedPref()
-                  .addViewedNotifications(widget._notification.id);
+              await sharedPref.addViewedNotifications(widget._notification.id);
+              widget._setStateParent();
               setState(() => isViewed = true);
             }
             showModalBottomSheet(

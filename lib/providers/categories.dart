@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/models/http_exception.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/services/firestore_categories.dart';
+
 import '../models/category.dart';
+import '../models/http_exception.dart';
+import '../services/firestore_categories.dart';
+import 'products.dart';
 
 class Categories with ChangeNotifier {
   List<Category> _categories = [];

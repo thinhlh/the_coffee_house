@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
-import 'package:the_coffee_house/providers/categories.dart';
-import 'package:the_coffee_house/providers/products.dart';
-import 'package:the_coffee_house/screens/home/products_overview_screen.dart';
+
+import '../providers/categories.dart';
+import '../providers/products.dart';
+import '../screens/home/products_overview_screen.dart';
+import '../utils/const.dart' as Constant;
 
 class CategoryListView extends StatefulWidget {
   @override
