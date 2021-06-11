@@ -6,6 +6,7 @@ import '../../utils/const.dart' as Constant;
 import '../../widgets/reward_card.dart';
 
 class CouponTabScreen extends StatelessWidget {
+  static final readyForUseKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,6 +58,7 @@ class CouponTabScreen extends StatelessWidget {
                 horizontal: Constant.GENERAL_PADDING),
             child: Text(
               'Sẵn sàng sử dụng',
+              key: readyForUseKey,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,

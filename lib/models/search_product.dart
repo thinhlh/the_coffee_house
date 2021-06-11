@@ -26,8 +26,8 @@ class SearchProduct extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final products =
-        Provider.of<Products>(context).searchProductsByTitle(query);
+    final products = Provider.of<Products>(context, listen: false)
+        .searchProductsByTitle(query);
 
     return ListView.builder(
       padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
@@ -38,8 +38,8 @@ class SearchProduct extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final products =
-        Provider.of<Products>(context).searchProductsByTitle(query);
+    final products = Provider.of<Products>(context, listen: false)
+        .searchProductsByTitle(query);
 
     return ListView.builder(
       padding: const EdgeInsets.all(Constant.GENERAL_PADDING),

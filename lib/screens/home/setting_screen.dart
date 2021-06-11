@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/const.dart' as Constant;
@@ -6,6 +7,7 @@ import 'web_view_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   static const routeName = '/setting_screen';
+  bool receiveNotification = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +35,7 @@ class SettingScreen extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ),
                 title: Text('Nhận thông báo'),
-                trailing: Switch(
-                  value: true,
-                  onChanged: (newValue) {},
-                ),
+                trailing: _NotificationSwitch(true),
               ),
               Divider(
                 thickness: 1,
@@ -65,6 +64,28 @@ class SettingScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _NotificationSwitch extends StatefulWidget {
+  bool receiveNotification;
+  _NotificationSwitch(this.receiveNotification);
+  @override
+  __NotificationSwitchState createState() => __NotificationSwitchState();
+}
+
+class __NotificationSwitchState extends State<_NotificationSwitch> {
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      value: widget.receiveNotification,
+      onChanged: (newValue) async {
+        newValue
+            ? await FirebaseMessaging.instance.subscribeToTopic("Test")
+            : await FirebaseMessaging.instance.unsubscribeFromTopic("Test");
+        setState(() => widget.receiveNotification = newValue);
+      },
     );
   }
 }

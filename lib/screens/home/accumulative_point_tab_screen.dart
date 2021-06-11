@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:the_coffee_house/screens/home/coupon_tab_screen.dart';
 
 import '../../models/membership.dart';
 import '../../providers/coupons.dart';
@@ -15,8 +16,6 @@ import 'web_view_screen.dart';
 
 class AccumlativePointTabScreen extends StatelessWidget {
   static const routeName = '/accumulative_point';
-
-  final _scrollControler = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +47,9 @@ class AccumlativePointTabScreen extends StatelessWidget {
                           title: 'Voucher của bạn',
                           color:
                               Theme.of(context).primaryColor.withOpacity(0.9),
-                          navigate: () => _scrollControler.animateTo(
-                            _scrollControler.position.maxScrollExtent,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.fastOutSlowIn,
-                          ),
+                          navigate: () async {
+                            DefaultTabController.of(context).animateTo(1);
+                          },
                         ),
                       ),
                     ],
@@ -121,7 +118,6 @@ class AccumlativePointTabScreen extends StatelessWidget {
                   ),
                   Consumer<Coupons>(
                     builder: (_, couponsProvider, child) => ListView.builder(
-                      controller: _scrollControler,
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (_, index) =>

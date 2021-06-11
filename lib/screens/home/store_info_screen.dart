@@ -65,7 +65,7 @@ class StoreInfoScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  store.street,
+                  store.address,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class StoreInfoScreen extends StatelessWidget {
                     ),
                   ),
                   title: Text(
-                    store.fullAddress,
+                    store.address,
                     maxLines: 2,
                   ),
                   subtitle: Container(

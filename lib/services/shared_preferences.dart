@@ -6,7 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPref {
   static SharedPreferences sharedPreferences;
 
-  static const String _viewedNotificationsKey = 'viewed_notifications';
+  static const String VIEWED_NOTIFICATIONS = 'viewed_notifications';
+  static const String DELIVERY_LOCATION =
+      'delivery_location'; //The address where customer prefer to be deliveried
+  static const String TAKE_AWAY_LOCATION =
+      'take_away_location'; // The id of store where customer prefer to take away
 
   Future<void> init() async {
     if (sharedPreferences == null)
@@ -18,8 +22,7 @@ class SharedPref {
     final userSettings = sharedPreferences.getString(uid);
     if (userSettings == null) return [];
     final list = ((json.decode(userSettings)
-                    as Map<String, dynamic>)[_viewedNotificationsKey]
-                as List<dynamic>)
+                as Map<String, dynamic>)[VIEWED_NOTIFICATIONS] as List<dynamic>)
             .cast<String>()
             .toList() ??
         [];
@@ -46,7 +49,7 @@ class SharedPref {
     _viewedNotifications.add(notificationId);
 
     final encodedJson = json.encode({
-      _viewedNotificationsKey: _viewedNotifications,
+      VIEWED_NOTIFICATIONS: _viewedNotifications,
     });
     await sharedPreferences.setString(
       FirebaseAuth.instance.currentUser.uid,
@@ -66,5 +69,25 @@ class SharedPref {
     if (!response) {
       print('Failed to delete');
     }
+  }
+
+  String get deliveryLocation {
+    return sharedPreferences.containsKey(DELIVERY_LOCATION)
+        ? sharedPreferences.getString(DELIVERY_LOCATION)
+        : '';
+  }
+
+  String get takeAwayLocation {
+    return sharedPreferences.containsKey(TAKE_AWAY_LOCATION)
+        ? sharedPreferences.getString(TAKE_AWAY_LOCATION)
+        : '';
+  }
+
+  Future<bool> setDeliveryLocation(String location) {
+    return sharedPreferences.setString(DELIVERY_LOCATION, location);
+  }
+
+  Future<bool> setTakeAwayLocation(String location) {
+    return sharedPreferences.setString(TAKE_AWAY_LOCATION, location);
   }
 }

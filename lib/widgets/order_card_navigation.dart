@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+import 'package:the_coffee_house/screens/home/stores_screen.dart';
+import 'package:the_coffee_house/utils/global_vars.dart';
 
 import '../providers/order_card_navigation_provider.dart';
 import '../utils/const.dart' as Constant;
@@ -19,9 +22,8 @@ class OrderCardNavigation extends StatelessWidget {
       color: const Color.fromRGBO(135, 111, 93, 1),
       elevation: Constant.ELEVATION,
       semanticContainer: true,
-      child:
-          Consumer<OrderCardNavigationProvider>(builder: (_, provider, child) {
-        return DefaultTabController(
+      child: Consumer<OrderCardNavigationProvider>(
+        builder: (_, provider, child) => DefaultTabController(
           initialIndex: (provider.isDelivery) ? 0 : 1,
           length: 2,
           child: Column(
@@ -50,25 +52,30 @@ class OrderCardNavigation extends StatelessWidget {
                     ),
                     _OrderActionCard(
                       'TẠI THE COFFEE HOUSE',
-                      '86 Cao Thắng',
+                      'Chọn địa chỉ',
                     ),
                   ],
                 ),
               ),
             ],
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }
 
-class _OrderActionCard extends StatelessWidget {
+class _OrderActionCard extends StatefulWidget {
   final String title;
-  final String location;
+  String location;
 
   _OrderActionCard(this.title, this.location);
 
+  @override
+  __OrderActionCardState createState() => __OrderActionCardState();
+}
+
+class __OrderActionCardState extends State<_OrderActionCard> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -83,7 +90,7 @@ class _OrderActionCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  title,
+                  widget.title,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 10,
@@ -91,7 +98,7 @@ class _OrderActionCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  location,
+                  widget.location,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.white,
@@ -105,13 +112,29 @@ class _OrderActionCard extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: Chip(
-            label: Text(
-              'THAY ĐỔI',
-              style: TextStyle(color: Colors.black),
+          child: GestureDetector(
+            child: Chip(
+              label: Text(
+                'THAY ĐỔI',
+                style: TextStyle(color: Colors.black),
+              ),
+              elevation: Constant.ELEVATION,
+              //backgroundColor: Colors.brown,
             ),
-            elevation: Constant.ELEVATION,
-            //backgroundColor: Colors.brown,
+            onTap: () => showBarModalBottomSheet(
+              context: context,
+              builder: (_) => StoresScreen(
+                isUsedForChoosingLocation: true,
+              ),
+            ).then((value) {
+              if (value != null)
+                final provider = Provider.of<OrderCardNavigationProvider>(
+                    context,
+                    listen: false);
+              setState(() {
+                widget.location = value;
+              });
+            }),
           ),
         ),
       ],

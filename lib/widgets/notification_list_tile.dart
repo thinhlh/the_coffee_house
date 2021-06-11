@@ -70,6 +70,8 @@ class _NotificationListTileState extends State<NotificationListTile> {
                     width: 35,
                     height: 35,
                     fit: BoxFit.cover,
+                    errorBuilder: (_, exception, stackTrace) =>
+                        Icon(Icons.error),
                   ),
                 ),
               ),

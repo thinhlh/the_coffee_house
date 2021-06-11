@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore_web: ^1.0.4
   firebase_auth_web: ^1.0.4
   cloud_firestore: ^1.0.2
+  firebase_messaging: ^10.0.2
   google_maps_flutter: ^2.0.3
   webview_flutter: ^2.0.4
 

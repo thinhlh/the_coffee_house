@@ -41,10 +41,6 @@ class ProductsOverviewScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 0.17.sh,
-                child: OrderCardNavigation(),
-              ),
-              SizedBox(
                 height: Constant.SIZED_BOX_HEIGHT,
               ),
               ListView.builder(

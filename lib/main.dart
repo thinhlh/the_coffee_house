@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:the_coffee_house/services/firestore_stores.dart';
 
 import 'providers/cart.dart';
 import 'providers/categories.dart';
@@ -32,14 +36,34 @@ import 'services/firestore_categories.dart';
 import 'services/firestore_notifications.dart';
 import 'services/firestore_products.dart';
 import 'services/firestore_user.dart';
+
 import 'utils/const.dart' as Constant;
 import 'utils/global_vars.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   await sharedPref.init();
+  await initializeFirebaseServices();
   runApp(App());
+}
+
+Future<void> initializeFirebaseServices() async {
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance.subscribeToTopic("Test");
+
+  FirebaseMessaging.onMessage.listen((event) {
+    print(event.notification.body);
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print('Message Clicked => Open the app');
+  });
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
+  //FirebaseMessaging.instance.unsubscribeFromTopic("Test");
+}
+
+Future<void> _messageHandler(RemoteMessage message) async {
+  print(message.notification.body);
 }
 
 class App extends StatelessWidget {
@@ -91,6 +115,10 @@ class App extends StatelessWidget {
                       value: user.uid == null ? null : FireStoreUser().user,
                       initialData: UserProvider.initialize(),
                     ),
+                    StreamProvider<Stores>.value(
+                      value: FireStoreStores().stream,
+                      initialData: Stores.fromList([]),
+                    ),
                     StreamProvider<Products>.value(
                       value: FireStoreProducts().stream,
                       initialData: Products.fromList([]),
@@ -107,9 +135,6 @@ class App extends StatelessWidget {
                     ),
                     ChangeNotifierProvider<Coupons>(
                       create: (_) => Coupons(),
-                    ),
-                    ChangeNotifierProvider(
-                      create: (_) => Stores(),
                     ),
                   ],
                   builder: (_, child) => Consumer<UserProvider>(

@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter/material.dart';
+import 'package:the_coffee_house/screens/home/order_screen.dart';
+import 'package:the_coffee_house/utils/global_vars.dart';
 
 import '../models/notification.dart' as model;
 import '../utils/const.dart' as Constant;
@@ -82,7 +84,13 @@ class NotificationInfo extends StatelessWidget {
                           ),
                           Flexible(
                             child: OutlinedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                tabScreenState.currentState.navigateToScreen(
+                                  OrderScreen.routeName,
+                                  true,
+                                );
+                              },
                               child: Text(
                                 'Order ngay',
                                 style: TextStyle(
