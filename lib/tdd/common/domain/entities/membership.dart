@@ -1,0 +1,32 @@
+enum Membership {
+  Bronze,
+  Silver,
+  Gold,
+  Diamond,
+}
+
+extension ToValueString on Membership {
+  String valueString() {
+    if (this == Membership.Bronze) {
+      return 'Bronze';
+    } else if (this == Membership.Silver) {
+      return 'Silver';
+    } else if (this == Membership.Gold) {
+      return 'Gold';
+    } else {
+      return 'Diamond';
+    }
+  }
+}
+
+Membership parseMembershipFromString(String value) {
+  if (value == 'Bronze') {
+    return Membership.Bronze;
+  } else if (value == 'Silver') {
+    return Membership.Silver;
+  } else if (value == 'Gold') {
+    return Membership.Gold;
+  } else {
+    return Membership.Diamond;
+  }
+}

@@ -1,8 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.the_coffee_house">
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.coffeehouse.the">
    <application
-        android:label="the_coffee_house"
+        android:label="the"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyAApuAqAZ13iH_PsgSmoktTbKyP0-ybAwY"/>

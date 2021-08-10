@@ -1,0 +1,8 @@
+{
+  "uid": "uid",
+  "name": "name",
+  "email": "email",
+  "point": 0,
+  "membership": "Bronze",
+  "admin": false
+}
