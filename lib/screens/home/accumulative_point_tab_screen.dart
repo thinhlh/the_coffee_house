@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:the_coffee_house/screens/home/coupon_tab_screen.dart';
+import 'package:the/providers/promotions.dart';
+import 'package:the/screens/home/point_history.dart';
+import 'package:the/widgets/user_info_card.dart';
 
 import '../../models/membership.dart';
-import '../../providers/coupons.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/const.dart' as Constant;
 import '../../widgets/navigative_action_card.dart';
-import '../../widgets/reward_card.dart';
+import '../../widgets/promotion_card.dart';
 import 'web_view_screen.dart';
 
 class AccumlativePointTabScreen extends StatelessWidget {
@@ -36,20 +37,24 @@ class AccumlativePointTabScreen extends StatelessWidget {
                           icon: FlutterIcons.gift_faw,
                           title: 'Đổi ưu đãi',
                           color: Colors.blue.withOpacity(0.6),
-                          navigate: () =>
+                          onPressed: () =>
                               DefaultTabController.of(context).animateTo(1),
                         ),
                       ),
                       Expanded(
                         flex: 1,
                         child: NavigativeActionCard(
-                          icon: Icons.credit_card,
-                          title: 'Voucher của bạn',
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.9),
-                          navigate: () async {
-                            DefaultTabController.of(context).animateTo(1);
-                          },
+                          icon: FlutterIcons.news_ent,
+                          color: Colors.redAccent[200],
+                          title: 'Tin tức & Khuyến mãi',
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => WebViewScreen(
+                                'Tin tức & khuyến mãi',
+                                'https://www.thecoffeehouse.com/blogs/news',
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -60,9 +65,11 @@ class AccumlativePointTabScreen extends StatelessWidget {
                         flex: 1,
                         child: NavigativeActionCard(
                           icon: FlutterIcons.history_faw,
-                          title: 'Lịch sử BEAN',
+                          title: 'Lịch sử tích luỹ điểm',
                           color: Colors.green.shade300,
-                          navigate: () {},
+                          onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) => PointHistory())),
                         ),
                       ),
                       Expanded(
@@ -70,8 +77,8 @@ class AccumlativePointTabScreen extends StatelessWidget {
                         child: NavigativeActionCard(
                           icon: FlutterIcons.law_oct,
                           title: 'Quyền lợi của bạn',
-                          color: Colors.blue.shade700,
-                          navigate: () => Navigator.of(context).push(
+                          color: Colors.purple.shade400,
+                          onPressed: () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => WebViewScreen(
                                 'Quyền lợi của bạn',
@@ -116,13 +123,13 @@ class AccumlativePointTabScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Consumer<Coupons>(
-                    builder: (_, couponsProvider, child) => ListView.builder(
+                  Consumer<Promotions>(
+                    builder: (_, promotionsProvider, child) => ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemBuilder: (_, index) =>
-                          RewardCard(couponsProvider.firstThreeCoupons[index]),
-                      itemCount: couponsProvider.firstThreeCoupons.length,
+                      itemBuilder: (_, index) => PromotionCard(
+                          promotionsProvider.firstThreePromotions[index]),
+                      itemCount: promotionsProvider.firstThreePromotions.length,
                     ),
                   ),
                 ],
@@ -164,14 +171,14 @@ class _UserPointCard extends StatelessWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: _UserInfoCard(),
+                child: UserInfoCard(),
               ),
               Expanded(
                 flex: 1,
                 child: Center(
                   child: Text(
                     'Còn ${(2000 - user.user.point < 0) ? 0 : 2000 - user.user.point} BEAN nữa bạn sẽ thăng hạng.\n'
-                    'Đổi quà không ảnh hưởng tới việc thăng hạng của bạn.\n180 BEAN tích lũy từ 1/7/2020-30/9/2020 sẽ hết hạn vào ngày 30/03/2021. '
+                    'Đổi quà không ảnh hưởng tới việc thăng hạng của bạn.\n180 BEAN tích lũy từ 1/7/2021-30/9/2022 sẽ hết hạn vào ngày 30/03/2023. '
                     'Hãy dùng BEAN này để đổi ưu đãi nhé',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -185,76 +192,6 @@ class _UserPointCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _UserInfoCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          flex: 1,
-          child: BarcodeWidget(
-            data: user.uid,
-            barcode: Barcode.code128(),
-            drawText: false,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 3 * Constant.GENERAL_PADDING,
-              vertical: 2 * Constant.GENERAL_PADDING,
-            ),
-          ),
-        ),
-        //Text(user.uid),
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(2 * Constant.BORDER_RADIUS),
-              ),
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).primaryColor.withOpacity(0.7),
-                  Theme.of(context).accentColor.withOpacity(0.7),
-                ],
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  user.name,
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  'Hạng ${user.membership == Membership.Bronze ? 'Đồng' : user.membership == Membership.Silver ? 'Bạc' : user.membership == Membership.Gold ? 'Vàng' : 'Kim cương'}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: Constant.TEXT_SIZE,
-                  ),
-                ),
-                Text(
-                  '${user.point} BEAN',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: Constant.LIST_TILE_SUBTITTLE,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      ],
     );
   }
 }

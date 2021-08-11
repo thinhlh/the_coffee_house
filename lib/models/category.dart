@@ -16,4 +16,11 @@ class Category {
     this.title = json['title'];
     this.imageUrl = json['imageUrl'];
   }
+
+  Map<String, Object> toJson() {
+    return {
+      'title': this.title,
+      'imageUrl': this.imageUrl,
+    };
+  }
 }

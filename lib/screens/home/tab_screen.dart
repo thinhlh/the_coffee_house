@@ -1,11 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:the/providers/cart.dart';
+import 'package:the/providers/categories.dart';
+import 'package:the/providers/notifications.dart';
+import 'package:the/providers/user_orders.dart';
+import 'package:the/providers/products.dart';
+import 'package:the/providers/promotions.dart';
+import 'package:the/providers/stores.dart';
 
-import '../../providers/order_card_navigation_provider.dart';
+import 'package:the/screens/home/others_screen.dart';
+import 'package:the/services/categories_api.dart';
+import 'package:the/services/notifications_api.dart';
+import 'package:the/services/user_orders_api.dart';
+import 'package:the/services/products_api.dart';
+import 'package:the/services/promotions_api.dart';
+import 'package:the/services/stores_api.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:the/widgets/user_info_card.dart';
+
 import '../../utils/global_vars.dart';
-import '../admin_screens/admin_home_screen.dart';
 import 'home_screen.dart';
 import 'order_screen.dart';
 import 'others_screen.dart';
@@ -28,16 +43,12 @@ class TabScreenState extends State<TabScreen> {
     StoresScreen.routeName: StoresScreen(),
     RewardScreen.routeName: RewardScreen(),
     OthersScreen.routeName: OthersScreen(),
-    AdminHomeScreen.routeName: AdminHomeScreen(),
   };
   int _selectedPageIndex = 0;
 
-  void navigateToScreen(String routeName, bool isDelivery) {
+  void navigateToScreen(String routeName) {
     final screenIndex =
         _pages.keys.toList().indexWhere((element) => element == routeName);
-
-    Provider.of<OrderCardNavigationProvider>(context, listen: false)
-        .checkAndUpdateOption(isDelivery);
 
     setState(() {
       _selectedPageIndex = screenIndex;
@@ -57,7 +68,18 @@ class TabScreenState extends State<TabScreen> {
             fit: BoxFit.cover, width: 1.6.sw),
         actions: [
           TextButton(
-            onPressed: () => sharedPref.deleteAllViewedNotifications(),
+            onPressed: () async {
+              // sharedPref.deleteDeliveryAndTakeAwayLocation();
+              // sharedPref.deleteAllViewedNotifications();
+              showDialog(
+                context: context,
+                builder: (_) => Dialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: UserInfoCard(),
+                ),
+              );
+            },
             child: Icon(
               FlutterIcons.credit_card_alt_faw,
               color: Theme.of(context).primaryColor,
@@ -80,7 +102,7 @@ class TabScreenState extends State<TabScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.storefront),
-            label: 'Cửa Hàng',
+            label: 'Stores',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chrome_reader_mode_outlined),
@@ -90,16 +112,9 @@ class TabScreenState extends State<TabScreen> {
             icon: Icon(Icons.menu_rounded),
             label: 'Others',
           ),
-          //Hide admin screen from normal user
-          BottomNavigationBarItem(
-            icon: Icon(Icons.admin_panel_settings_outlined),
-            label: 'Admin',
-          ),
         ],
       ),
       body: _pages.values.toList()[_selectedPageIndex],
     );
-    // },
-    //);
   }
 }

@@ -1,6 +1,6 @@
 {
-    "name": "the_coffee_house",
-    "short_name": "the_coffee_house",
+    "name": "the",
+    "short_name": "the",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

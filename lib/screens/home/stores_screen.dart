@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/search_store.dart';
-import 'package:the_coffee_house/widgets/store_card.dart';
+import 'package:the/helpers/search_store.dart';
+import 'package:the/widgets/store_card.dart';
 
 import '../../providers/stores.dart';
 import '../../utils/const.dart' as Constant;
@@ -9,7 +9,7 @@ import 'google_map.dart';
 
 class StoresScreen extends StatefulWidget {
   static const routeName = '/stores_screen';
-  bool isUsedForChoosingLocation;
+  final bool isUsedForChoosingLocation;
 
   StoresScreen({this.isUsedForChoosingLocation});
 
@@ -47,25 +47,28 @@ class _StoresScreenState extends State<StoresScreen> {
           )
         ],
         title: ListTile(
-            shape: StadiumBorder(),
-            visualDensity: VisualDensity.compact,
-            horizontalTitleGap: 0,
-            tileColor: Colors.grey.shade400.withOpacity(0.4),
-            title: Text(
-              'Tìm kiếm',
-              style: TextStyle(color: Colors.grey.shade700),
-            ),
-            leading: Icon(Icons.search),
-            onTap: () => showSearch(
-                  context: context,
-                  delegate: SearchStore(widget.isUsedForChoosingLocation),
-                ).then((value) {
-                  if (value != null) {
-                    //This situation happends when choosing location from the order screen => navigate to search => choose store
-                    // the store returned need to be poped one more time to back to order screen
-                    Navigator.of(context).pop(value);
-                  }
-                })),
+          shape: StadiumBorder(),
+          visualDensity: VisualDensity.compact,
+          horizontalTitleGap: 0,
+          tileColor: Colors.grey.shade400.withOpacity(0.4),
+          title: Text(
+            'Tìm kiếm',
+            style: TextStyle(color: Colors.grey.shade700),
+          ),
+          leading: Icon(Icons.search),
+          onTap: () => showSearch(
+            context: context,
+            delegate: SearchStore(widget.isUsedForChoosingLocation),
+          ).then(
+            (value) {
+              if (value != null) {
+                //This situation happends when choosing location from the order screen => navigate to search => choose store
+                // the store returned need to be poped one more time to back to order screen
+                Navigator.of(context).pop(value);
+              }
+            },
+          ),
+        ),
       ),
       body: isMap
           ? GoogleMapWidget()

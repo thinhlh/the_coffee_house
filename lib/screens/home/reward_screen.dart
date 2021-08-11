@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'accumulative_point_tab_screen.dart';
-import 'coupon_tab_screen.dart';
+import 'promotion_tab_screen.dart';
 
 // ignore: must_be_immutable
 class RewardScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _RewardScreenState extends State<RewardScreen> {
         body: TabBarView(
           children: [
             AccumlativePointTabScreen(),
-            CouponTabScreen(),
+            PromotionTabScreen(),
           ],
         ),
       ),

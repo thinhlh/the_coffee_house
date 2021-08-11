@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:the_coffee_house/services/firestore_stores.dart';
+import 'package:the/services/stores_api.dart';
 
 import '../models/store.dart';
 
@@ -11,7 +11,7 @@ class Stores with ChangeNotifier {
   Stores.fromList(this._stores);
 
   Future<void> fetchStores() {
-    return FireStoreStores()
+    return StoresAPI()
         .firestore
         .collection('stores')
         .get()
@@ -22,12 +22,48 @@ class Stores with ChangeNotifier {
             }).toList());
   }
 
-  List<Store> searchStoreByTitle(String searchString) {
+  List<Store> searchStore(String searchString) {
     return [..._stores]
         .where((store) => store.address
             .trim()
             .toLowerCase()
             .contains(searchString.toLowerCase()))
         .toList();
+  }
+
+  Store getStoreById(String id) {
+    try {
+      return [..._stores].where((element) => element.id == id).first;
+    } on StateError catch (e) {
+      return null;
+    }
+  }
+
+  String getNameById(String id) {
+    return [..._stores]
+        .firstWhere((element) => element.id == id, orElse: () => null)
+        ?.name;
+  }
+
+  Future<void> addStore(Store store, bool isLocalImage) async {
+    try {
+      await StoresAPI().addStore(store, isLocalImage);
+      notifyListeners();
+    } catch (error) {
+      //TODO handling error
+      throw error;
+    }
+  }
+
+  Future<void> updateStore(Store newStore, bool isLocalImage) async {
+    final index = _stores.indexWhere((store) => store.id == newStore.id);
+    if (index < 0) return;
+
+    try {
+      await StoresAPI().updateStore(newStore, isLocalImage);
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -10,7 +10,7 @@ class Notification {
   String description;
   String imageUrl;
   DateTime dateTime;
-  List<Membership> targetCustomer = [];
+  List<Membership> targetCustomers = [];
   NotificationAction notificationAction = NotificationAction.Order;
 
   Notification.initialize() {
@@ -26,7 +26,7 @@ class Notification {
     @required this.description,
     @required this.imageUrl,
     @required this.dateTime,
-    this.targetCustomer,
+    this.targetCustomers,
     this.notificationAction,
   });
 
@@ -36,7 +36,7 @@ class Notification {
       'description': description,
       'imageUrl': imageUrl,
       'dateTime': DateTime.now(),
-      'targetCustomer': targetCustomer.map((e) => e.valueString()).toList(),
+      'targetCustomer': targetCustomers.map((e) => e.valueString()).toList(),
     };
   }
 
@@ -46,15 +46,10 @@ class Notification {
     this.description = json['description'];
     this.imageUrl = json['imageUrl'];
     this.dateTime = (json['dateTime'] as Timestamp).toDate();
-    this.targetCustomer = (json['targetCustomer'] as List<dynamic>)
+    print(json['targetCustomer']);
+    this.targetCustomers = (json['targetCustomer'] as List<dynamic> ?? [])
         .cast<String>()
-        .map((value) => value == 'Membership.Bronze'
-            ? Membership.Bronze
-            : value == 'Membership.Silver'
-                ? Membership.Silver
-                : value == 'Membership.Gold'
-                    ? Membership.Gold
-                    : Membership.Diamond)
+        .map((e) => parseMembershipFromString(e))
         .toList();
   }
 

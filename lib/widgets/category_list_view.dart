@@ -6,12 +6,7 @@ import '../providers/products.dart';
 import '../screens/home/products_overview_screen.dart';
 import '../utils/const.dart' as Constant;
 
-class CategoryListView extends StatefulWidget {
-  @override
-  _CategoryListViewState createState() => _CategoryListViewState();
-}
-
-class _CategoryListViewState extends State<CategoryListView> {
+class CategoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Categories>(builder: (_, categoriesProvider, child) {
@@ -49,18 +44,26 @@ class _CategoryListViewState extends State<CategoryListView> {
                   ),
                 ),
                 subtitle: Text('$productsPerCategory món'),
-                trailing: Image.network(categories[index].imageUrl,
-                    loadingBuilder: (_, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor),
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes
-                        : null,
-                  );
-                }),
+                trailing: Image.network(
+                  categories[index].imageUrl,
+                  loadingBuilder: (_, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor),
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes
+                          : null,
+                    );
+                  },
+                  errorBuilder: (_, exception, stackTrace) => Center(
+                    child: Text(
+                      'Unable to load image',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               ),
             );
           },

@@ -1,31 +1,16 @@
-# The Coffee House
-A coffee client application made by Flutter with Firebase
+# the
 
-## Semantic Commit Messages
+A new Flutter project.
 
-Commit rule of this project
+## Getting Started
 
-Format: `<type>(<scope>): <subject>`
+This project is a starting point for a Flutter application.
 
-`<scope>` is optional
+A few resources to get you started if this is your first Flutter project:
 
-### Example
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-```
-feat: add hat wobble
-^--^  ^------------^
-|     |
-|     +-> Summary in present tense.
-|
-+-------> Type: chore, docs, feat, fix, refactor, style, or test.
-```
-
-More Examples:
-
-- `feat`: (new feature for the user, not a new feature for build script)
-- `fix`: (bug fix for the user, not a fix to a build script)
-- `docs`: (changes to the documentation)
-- `style`: (formatting, missing semi colons, etc; no production code change)
-- `refactor`: (refactoring production code, eg. renaming a variable)
-- `test`: (adding missing tests, refactoring tests; no production code change)
-- `chore`: (updating grunt tasks etc; no production code change)
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

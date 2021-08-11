@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:the_coffee_house/models/store.dart';
-import 'package:the_coffee_house/screens/home/store_info_screen.dart';
+import 'package:the/models/store.dart';
+import 'package:the/screens/home/store_info_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:the_coffee_house/utils/const.dart' as Constant;
+import '/utils/const.dart' as Constant;
 
 class StoreCard extends StatelessWidget {
   final Store store;
@@ -25,7 +25,10 @@ class StoreCard extends StatelessWidget {
               ),
               context: context,
               builder: (_) => StoreInfoScreen(store),
-            ),
+            ).then((value) {
+              // Customer decided to order and take from this store => Update order navigation card
+              if (value != null) ;
+            }),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -40,9 +43,15 @@ class StoreCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Image.network(
-                store.imageUrls[0],
+                store.imageUrl,
                 fit: BoxFit.cover,
                 height: double.infinity,
+                errorBuilder: (_, exception, stackTrace) => Center(
+                  child: Text(
+                    'Unable to load image',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ),
             SizedBox(

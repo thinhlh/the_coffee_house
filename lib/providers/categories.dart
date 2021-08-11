@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../models/category.dart';
-import '../models/http_exception.dart';
-import '../services/firestore_categories.dart';
+import '../utils/exceptions/http_exception.dart';
+import '../services/categories_api.dart';
 import 'products.dart';
 
 class Categories with ChangeNotifier {
@@ -15,7 +15,7 @@ class Categories with ChangeNotifier {
   Categories.fromList(this._categories);
 
   Future<void> fetchCategories() {
-    return FireStoreCategories()
+    return CategoriesAPI()
         .firestore
         .collection('categories')
         .get()
@@ -34,28 +34,32 @@ class Categories with ChangeNotifier {
     return _categories.firstWhere((element) => element.id == id);
   }
 
-  Future<void> addCategory(Category category) async {
+  Future<void> addCategory(
+    Category category,
+    bool isChoosingImageFromLocal,
+  ) async {
     try {
-      final addedCategory = await FireStoreCategories().add(category);
-      _categories.add(addedCategory);
-
-      notifyListeners();
+      return await CategoriesAPI().addCategory(
+        category,
+        isChoosingImageFromLocal,
+      );
     } catch (error) {
       //TODO handling error
       throw error;
     }
   }
 
-  Future<void> updateCategory(String id, Category newCategory) async {
-    final index = _categories.indexWhere((element) => element.id == id);
+  Future<void> updateCategory(
+      Category newCategory, bool isChoosingImageFromLocal) async {
+    final index =
+        _categories.indexWhere((element) => element.id == newCategory.id);
     if (index == -1) return;
 
     try {
-      await FireStoreCategories().update(newCategory);
-
-      _categories[index] = newCategory;
-
-      notifyListeners();
+      await CategoriesAPI().updateCategory(
+        newCategory,
+        isChoosingImageFromLocal,
+      );
     } catch (error) {
       //TODO handling error
       throw error;
@@ -69,7 +73,7 @@ class Categories with ChangeNotifier {
 
     try {
       _categories.removeAt(index);
-      await FireStoreCategories().delete(id);
+      await CategoriesAPI().delete(id);
     } catch (error) {
       _categories.insert(index, tempCategory);
       throw HttpException('Cannot delete product');

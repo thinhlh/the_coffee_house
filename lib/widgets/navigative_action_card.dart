@@ -6,19 +6,19 @@ class NavigativeActionCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final Color color;
-  final Function navigate;
+  final Function onPressed;
 
   NavigativeActionCard({
     @required this.icon,
     @required this.title,
     @required this.color,
-    @required this.navigate,
+    @required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: navigate,
+      onTap: onPressed,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),

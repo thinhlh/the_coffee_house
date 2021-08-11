@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../providers/order_card_navigation_provider.dart';
 import '../../providers/products.dart';
 import '../../utils/const.dart' as Constant;
 import '../../widgets/cart_bottom_navigation.dart';
-import '../../widgets/order_card_navigation.dart';
 import '../../widgets/product_card.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
@@ -21,10 +17,7 @@ class ProductsOverviewScreen extends StatelessWidget {
         .getProductsByCategory((arguments['categoryId']));
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).pop(
-          Provider.of<OrderCardNavigationProvider>(context, listen: false)
-              .isDelivery,
-        );
+        Navigator.of(context).pop();
         return false;
       },
       child: Scaffold(

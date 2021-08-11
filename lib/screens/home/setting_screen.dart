@@ -1,9 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:the/providers/user_provider.dart';
+import 'package:the/utils/global_vars.dart';
 
 import '../../utils/const.dart' as Constant;
 import '../../widgets/expandable_list_tile.dart';
 import 'web_view_screen.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
   static const routeName = '/setting_screen';
@@ -35,15 +38,26 @@ class SettingScreen extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ),
                 title: Text('Nhận thông báo'),
-                trailing: _NotificationSwitch(true),
+                trailing:
+                    Consumer<UserProvider>(builder: (_, userProvider, child) {
+                  return Switch(
+                    value: userProvider.user.subscribeToNotifications,
+                    onChanged: (newValue) async {
+                      userProvider.toggleReceiveNotification(newValue);
+                    },
+                  );
+                }),
               ),
               Divider(
                 thickness: 1,
               ),
-              ExpandableListTile(
-                leadingIcon: Icons.link,
-                title: 'Liên kết với tài khoản',
-                onExpanded: () {},
+              ListTile(
+                leading: Icon(
+                  Icons.auto_delete_sharp,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text('Xoá dữ liệu đã lưu trong ứng dụng'),
+                onTap: () => sharedPref.clearData(),
               ),
               Divider(
                 thickness: 1,
@@ -64,28 +78,6 @@ class SettingScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _NotificationSwitch extends StatefulWidget {
-  bool receiveNotification;
-  _NotificationSwitch(this.receiveNotification);
-  @override
-  __NotificationSwitchState createState() => __NotificationSwitchState();
-}
-
-class __NotificationSwitchState extends State<_NotificationSwitch> {
-  @override
-  Widget build(BuildContext context) {
-    return Switch(
-      value: widget.receiveNotification,
-      onChanged: (newValue) async {
-        newValue
-            ? await FirebaseMessaging.instance.subscribeToTopic("Test")
-            : await FirebaseMessaging.instance.unsubscribeFromTopic("Test");
-        setState(() => widget.receiveNotification = newValue);
-      },
     );
   }
 }

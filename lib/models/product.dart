@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
-class Product {
+class Product extends Equatable {
   String id;
   String title;
   String description;
-  double price;
+  int price;
   String imageUrl;
   String categoryId;
 
@@ -25,7 +26,7 @@ class Product {
     this.id = json['id'];
     this.title = json['title'];
     this.description = json['description'];
-    this.price = json['price'] + .0;
+    this.price = (json['price'] + .0).toInt();
     this.imageUrl = json['imageUrl'];
     this.categoryId = json['categoryId'];
   }
@@ -44,4 +45,7 @@ class Product {
         locale: 'vi-VN',
         decimalDigits: 0,
       ).format(price);
+
+  @override
+  List<Object> get props => [];
 }

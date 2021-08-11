@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the/screens/admin/notification_edit_screen.dart';
 
 import '../../providers/notifications.dart';
-import '../../screens/admin_screens/notification_edit_screen.dart';
 import '../../utils/const.dart' as Constant;
 
 class EditNotificationsListView extends StatelessWidget {
@@ -22,6 +22,12 @@ class EditNotificationsListView extends StatelessWidget {
                 leading: Image.network(
                   notifications[index].imageUrl,
                   width: 40,
+                  errorBuilder: (_, exception, stackTrace) => Center(
+                    child: Text(
+                      'Unable to load image',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -33,7 +39,7 @@ class EditNotificationsListView extends StatelessWidget {
                       ),
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                            builder: (_) => EditNotificationScreen(
+                            builder: (_) => NotificationEditScreen(
                                 notifications[index].id)),
                       ),
                     ),
