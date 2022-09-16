@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+const String SERVER_ENDPOINT = 'https://the-coffee-house-server.herokuapp.com';
+
 /// Overall padding for all widgetss
 const double GENERAL_PADDING = 10;
 
 /// Overall Border Radius for border widgets
 const double BORDER_RADIUS = 10;
+
+const double SUB_HEADING = 20;
 
 /// General normal text font size
 const double TEXT_SIZE = 18;
@@ -22,7 +26,7 @@ const double ELEVATION = 10;
 const double SIZED_BOX_HEIGHT = 18;
 
 /// Primary Swatch
-const Color PRIMARY_SWATCH = Colors.yellow;
+const Color PRIMARY_SWATCH = Colors.brown;
 
 /// Primary Color
 const Color PRIMARY_COLOR = Color(0xFFF9A825);

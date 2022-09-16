@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:the/screens/home/orders_history_screen.dart';
 
-import '../../services/auth.dart';
+import '../../services/auth_api.dart';
 import '../../utils/const.dart' as Constant;
 import '../../widgets/expandable_list_tile.dart';
 import '../../widgets/navigative_action_card.dart';
@@ -42,38 +43,20 @@ class OthersScreen extends StatelessWidget {
             children: [
               NavigativeActionCard(
                 icon: FlutterIcons.file_document_mco,
-                color: Theme.of(context).primaryColor,
+                color: Colors.cyan,
                 title: 'Lịch sử đơn hàng',
-                navigate: () {},
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(OrdersHistoryScreen.routeName),
               ),
               NavigativeActionCard(
                 icon: FlutterIcons.law_oct,
                 color: Theme.of(context).primaryColor,
                 title: 'Điều khoản',
-                navigate: () => Navigator.of(context).push(
+                onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => WebViewScreen(
                       'Điều khoản',
                       'https://order.thecoffeehouse.com/term',
-                    ),
-                  ),
-                ),
-              ),
-              NavigativeActionCard(
-                icon: FlutterIcons.music_note_mco,
-                color: Colors.red,
-                title: 'Nhạc đang phát',
-                navigate: () {},
-              ),
-              NavigativeActionCard(
-                icon: FlutterIcons.news_ent,
-                color: Colors.blue,
-                title: 'Tin tức & Khuyến mãi',
-                navigate: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => WebViewScreen(
-                      'Tin tức & khuyến mãi',
-                      'https://www.thecoffeehouse.com/blogs/news',
                     ),
                   ),
                 ),
@@ -140,7 +123,7 @@ class OthersScreen extends StatelessWidget {
                 ExpandableListTile(
                   leadingIcon: Icons.logout,
                   title: 'Đăng xuất',
-                  onExpanded: () async => await Auth().signOut(),
+                  onExpanded: () async => await AuthAPI().signOut(),
                 ),
               ],
             ),

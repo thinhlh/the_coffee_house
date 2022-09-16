@@ -1,8 +1,12 @@
+import 'package:auth_buttons/auth_buttons.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the/utils/exceptions/authenticate_exception.dart';
 
-import '../../models/http_exception.dart';
-import '../../services/auth.dart';
+import '../../utils/exceptions/http_exception.dart';
+import '../../services/auth_api.dart';
 import '../../utils/const.dart' as Constant;
 import 'auth_screen.dart';
 
@@ -59,7 +63,6 @@ class LoginScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 2 * sizedBoxHeight),
                               LoginForm(),
-                              SizedBox(height: 2 * sizedBoxHeight),
                             ],
                           ),
                         ),
@@ -87,6 +90,28 @@ class _LoginFormState extends State<LoginForm> {
   Map<String, String> _authData = {'email': '', 'password': ''};
   bool _isLoading = false;
 
+  Future<void> _googleSignIn() async {
+    setState(() => _isLoading = true);
+    try {
+      return await AuthAPI().signInWithGoogle();
+    } catch (e) {
+      if (e.code == AuthMessages.UserDismissedGoogleSignIn) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _facebookSignIn() async {
+    setState(() => _isLoading = true);
+    try {
+      return await AuthAPI().signInWithFacebook();
+    } catch (e) {
+      if (e.code == AuthMessages.UserDismissedFacebookSignIn) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   Future<void> _saveForm() async {
     final isValid = _loginForm.currentState.validate();
     if (!isValid) return; //If not valid => not save
@@ -95,7 +120,7 @@ class _LoginFormState extends State<LoginForm> {
       _isLoading = true;
     });
     try {
-      await Auth().signin(_authData['email'], _authData['password']);
+      await AuthAPI().signin(_authData['email'], _authData['password']);
       setState(() {
         _isLoading = false;
       });
@@ -167,6 +192,7 @@ class _LoginFormState extends State<LoginForm> {
                 TextFormField(
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.email, color: Colors.redAccent[200]),
                     labelText: 'Email',
                     border: OutlineInputBorder(
                       borderRadius:
@@ -182,6 +208,10 @@ class _LoginFormState extends State<LoginForm> {
                   obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.vpn_key,
+                      color: Colors.amber.shade700,
+                    ),
                     labelText: 'Password',
                     border: OutlineInputBorder(
                       borderRadius:
@@ -192,27 +222,106 @@ class _LoginFormState extends State<LoginForm> {
                       value.isEmpty ? 'Password cannot be empty' : null,
                   onSaved: (value) => _authData['password'] = value,
                 ),
-                SizedBox(height: 2 * sizedBoxHeight),
+                SizedBox(height: sizedBoxHeight),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: _saveForm,
                     child: Text('Login'),
                     style: ButtonStyle(
+                      padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(vertical: 10),
+                      ),
                       overlayColor:
                           MaterialStateProperty.all(Colors.transparent),
+                      backgroundColor: MaterialStateProperty.all(
+                        Colors.amber.shade700,
+                      ),
+                      foregroundColor: MaterialStateProperty.all(Colors.black),
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () =>
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .navigate(),
-                  child: Text("Register"),
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all(Colors.purple.shade600),
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                SizedBox(height: sizedBoxHeight),
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.black87)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Constant.GENERAL_PADDING,
+                      ),
+                      child: Text("OR"),
+                    ),
+                    Expanded(child: Divider(color: Colors.black87)),
+                  ],
+                ),
+                SizedBox(height: sizedBoxHeight),
+                GoogleAuthButton(
+                  onPressed: _googleSignIn,
+                  style: AuthButtonStyle(
+                    buttonColor: Colors.white,
+                    splashColor: Colors.grey.shade100,
+                    shadowColor: Colors.grey,
+                    borderRadius: 8.0,
+                    elevation: 2.0,
+                    width: 280.0,
+                    height: 50.0,
+                    separator: 10.0,
+                    iconSize: 35.0,
+                    iconBackground: Colors.transparent,
+                    iconType: AuthIconType.secondary,
+                    buttonType: AuthButtonType.secondary,
+                    padding: const EdgeInsets.all(8.0),
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                ),
+                SizedBox(height: sizedBoxHeight),
+                FacebookAuthButton(
+                  onPressed: _facebookSignIn,
+                  rtl: false,
+                  style: AuthButtonStyle(
+                    buttonColor: Colors.white,
+                    splashColor: Colors.grey.shade100,
+                    shadowColor: Colors.grey,
+                    borderRadius: 8.0,
+                    elevation: 2.0,
+                    width: 280.0,
+                    height: 50.0,
+                    separator: 10.0,
+                    iconSize: 35.0,
+                    iconBackground: Colors.transparent,
+                    iconType: AuthIconType.outlined,
+                    buttonType: AuthButtonType.secondary,
+                    padding: const EdgeInsets.all(8.0),
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.0,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 2 * sizedBoxHeight),
+                Text.rich(
+                  TextSpan(
+                    text: '',
+                    children: [
+                      TextSpan(text: 'Don\'t have an account? '),
+                      TextSpan(
+                        text: 'Register',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () =>
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .navigate(),
+                        style: TextStyle(
+                          color: Colors.yellow.shade900,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

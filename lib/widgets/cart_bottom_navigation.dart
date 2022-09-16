@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +28,9 @@ class CartBottomNavigation extends StatelessWidget {
                   ],
                 ),
               ),
-              padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+              padding: EdgeInsets.all(Platform.isIOS
+                  ? 2 * Constant.GENERAL_PADDING
+                  : Constant.GENERAL_PADDING),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -43,7 +47,7 @@ class CartBottomNavigation extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        provider.formattedTotalPrice,
+                        provider.formattedTotalOrderValue,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

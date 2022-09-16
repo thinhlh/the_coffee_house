@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:the/helpers/search_product.dart';
+import 'package:the/screens/home/recently_ordered_products.dart';
 
-import '../../models/search_product.dart';
+import '../../helpers/admin_search_product.dart';
 import '../../utils/const.dart' as Constant;
 import '../../widgets/cart_bottom_navigation.dart';
 import '../../widgets/category_list_view.dart';
@@ -71,7 +73,11 @@ class OrderScreen extends StatelessWidget {
                     title: 'Các món vừa đặt',
                     color: Colors.blue.shade300,
                     icon: FlutterIcons.coffee_mco,
-                    navigate: () => {},
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => RecentlyOrderedProduct(),
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -79,7 +85,7 @@ class OrderScreen extends StatelessWidget {
                     icon: Icons.favorite,
                     title: 'Yêu thích',
                     color: Colors.amber,
-                    navigate: () => Navigator.of(context)
+                    onPressed: () => Navigator.of(context)
                         .pushNamed(FavoriteScreen.routeName),
                   ),
                 )

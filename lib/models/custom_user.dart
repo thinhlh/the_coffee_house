@@ -12,21 +12,31 @@ class CustomUser {
   int point = 0;
   Membership membership = Membership.Bronze;
   List<String> favoriteProducts = [];
+  bool isAdmin = false;
+
+  DateTime registerDate;
+  DateTime lastSignIn;
+  bool subscribeToNotifications = true;
+  int totalOrders = 0;
 
   CustomUser({
     @required this.uid,
     @required this.name,
     @required this.email,
     @required this.birthday,
+    this.isAdmin,
     this.favoriteProducts,
+    this.subscribeToNotifications,
   });
 
   CustomUser.fromJson(Map<String, dynamic> json) {
     this.uid = json['uid'];
     this.name = json['name'];
     this.email = json['email'];
-    this.birthday = (json['birthday'] as Timestamp).toDate();
-    this.point = json['point'];
+    this.birthday = json['birthday'] == null
+        ? DateTime.now()
+        : (json['birthday'] as Timestamp).toDate();
+    this.point = json['point'] ?? 0;
 
     switch (json['membership']) {
       case 'Bronze':
@@ -44,9 +54,12 @@ class CustomUser {
       default:
         break;
     }
+    this.isAdmin = json['admin'] ?? false;
     this.favoriteProducts = json['favoriteProducts'] == null
         ? []
         : (json['favoriteProducts'] as List<dynamic>).cast<String>();
+    this.subscribeToNotifications = json['subscribeToNotifications'] ?? true;
+    this.totalOrders = json['totalOrders'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +70,7 @@ class CustomUser {
       'point': this.point,
       'membership': this.membership.valueString(),
       'favoriteProducts': this.favoriteProducts,
+      'admin': this.isAdmin,
     };
   }
 

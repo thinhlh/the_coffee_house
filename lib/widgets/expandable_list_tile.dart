@@ -20,7 +20,7 @@ class ExpandableListTile extends StatelessWidget {
       onTap: onExpanded,
       leading: Icon(
         leadingIcon,
-        color: Constant.ACCENT_COLOR,
+        color: Theme.of(context).accentColor.withOpacity(0.8),
       ),
       title: Text(
         title,

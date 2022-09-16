@@ -28,7 +28,7 @@ class ContactScreen extends StatelessWidget {
           children: [
             ListTile(
               tileColor: Colors.white,
-              onTap: () => UrlLauncher.launch('tel: 028 71087088'),
+              onTap: () => UrlLauncher.launch('tel:02871087088'),
               leading: Icon(
                 Icons.phone_forwarded,
                 color: Theme.of(context).accentColor,

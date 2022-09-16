@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/custom_user.dart';
-import '../../models/http_exception.dart';
-import '../../services/auth.dart';
+import '../../utils/exceptions/http_exception.dart';
+import '../../services/auth_api.dart';
 import '../../utils/const.dart' as Constant;
 import 'auth_screen.dart';
 
@@ -22,21 +22,24 @@ class SignUpScreen extends StatelessWidget {
               snap: false,
               floating: false,
               expandedHeight: MediaQuery.of(context).size.height / 2,
-              title: TextButton(
-                onPressed: () =>
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .navigate(),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+              title: Align(
+                alignment: Alignment.topLeft,
+                child: TextButton(
+                  onPressed: () =>
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .navigate(),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Colors.transparent),
-                  foregroundColor:
-                      MaterialStateProperty.all(Colors.purple.shade400),
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    foregroundColor:
+                        MaterialStateProperty.all(Colors.blue.shade800),
+                  ),
                 ),
               ),
               flexibleSpace: FlexibleSpaceBar(
@@ -44,7 +47,7 @@ class SignUpScreen extends StatelessWidget {
                 title: Text(
                   'Registration',
                   style: TextStyle(
-                    color: Colors.purple.shade300,
+                    color: Colors.yellow.shade900,
                   ),
                 ),
                 background: _WavyHeader(),
@@ -230,80 +233,86 @@ class _SignUpFormState extends State<SignUpForm> {
                       ),
                     ),
                     SizedBox(height: sizedBoxHeight),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (!_signupForm.currentState.validate()) return;
-                        _signupForm.currentState.save();
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (!_signupForm.currentState.validate()) return;
+                          _signupForm.currentState.save();
 
-                        setState(() => _isLoading = true);
-                        try {
-                          await Auth().signup(
-                            CustomUser(
-                              uid: null,
-                              email: _userData['email'],
-                              name: _userData['name'],
-                              birthday: _userData['birthday'],
-                            ),
-                            _userData['password'],
-                          );
-                        } on HttpException catch (error) {
-                          var errorMessage = 'Failed To Sign Up';
-                          if (error.message == 'email-already-in-use')
-                            errorMessage =
-                                'There already exists an account with the given email address.';
-                          else if (error.message == 'weak-password')
-                            errorMessage =
-                                'Thrown if the password is not strong enough.';
+                          setState(() => _isLoading = true);
+                          try {
+                            await AuthAPI().signup(
+                              CustomUser(
+                                uid: null,
+                                email: _userData['email'],
+                                name: _userData['name'],
+                                birthday: _userData['birthday'],
+                              ),
+                              _userData['password'],
+                            );
+                          } on HttpException catch (error) {
+                            var errorMessage = 'Failed To Sign Up';
+                            if (error.message == 'email-already-in-use')
+                              errorMessage =
+                                  'There already exists an account with the given email address.';
+                            else if (error.message == 'weak-password')
+                              errorMessage =
+                                  'Thrown if the password is not strong enough.';
 
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text('Error'),
-                              content: Text(errorMessage),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: ButtonStyle(
-                                    foregroundColor:
-                                        MaterialStateProperty.all(Colors.blue),
-                                    overlayColor: MaterialStateProperty.all(
-                                        Colors.transparent),
-                                  ),
-                                  child: Text('Okay'),
-                                )
-                              ],
-                            ),
-                          );
-                        } catch (error) {
-                          var errorMessage = 'Cannot sign up';
-                          showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title: Text('Error'),
-                              content: Text(errorMessage),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('Okay'),
-                                )
-                              ],
-                            ),
-                          );
-                        } finally {
-                          _password.clear();
-                        }
-                        setState(() => _isLoading = false);
-                      },
-                      child: Text('Sign Up'),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.blue.shade300),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.white),
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Error'),
+                                content: Text(errorMessage),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.blue),
+                                      overlayColor: MaterialStateProperty.all(
+                                          Colors.transparent),
+                                    ),
+                                    child: Text('Okay'),
+                                  )
+                                ],
+                              ),
+                            );
+                          } catch (error) {
+                            var errorMessage = 'Cannot sign up';
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Error'),
+                                content: Text(errorMessage),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Okay'),
+                                  )
+                                ],
+                              ),
+                            );
+                          } finally {
+                            _password.clear();
+                          }
+                          setState(() => _isLoading = false);
+                        },
+                        child: Text('Sign Up'),
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(vertical: 10)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.yellow.shade900),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                        ),
                       ),
                     ),
                     SizedBox(height: sizedBoxHeight),

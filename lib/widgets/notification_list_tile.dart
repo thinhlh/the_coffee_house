@@ -51,10 +51,11 @@ class _NotificationListTileState extends State<NotificationListTile> {
             mainAxisSize: MainAxisSize.min,
             children: [
               isViewed
-                  ? SizedBox()
+                  ? SizedBox(width: 12)
                   : Icon(
-                      Icons.circle_notifications,
-                      color: Theme.of(context).primaryColorDark,
+                      Icons.circle,
+                      size: 12,
+                      color: Colors.red,
                     ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(
@@ -63,15 +64,17 @@ class _NotificationListTileState extends State<NotificationListTile> {
                   0,
                   Constant.GENERAL_PADDING,
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
-                  child: Image.network(
-                    widget._notification.imageUrl,
-                    width: 35,
-                    height: 35,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, exception, stackTrace) =>
-                        Icon(Icons.error),
+                child: IntrinsicHeight(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
+                    child: Image.network(
+                      widget._notification.imageUrl,
+                      width: 35,
+                      height: 35,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, exception, stackTrace) =>
+                          Icon(Icons.error),
+                    ),
                   ),
                 ),
               ),

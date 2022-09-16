@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the/screens/admin/product_edit_screen.dart';
 
 import '../../providers/products.dart';
-import '../../screens/admin_screens/product_edit_screen.dart';
 import '../../utils/const.dart' as Constant;
 
 class EditProductsListView extends StatelessWidget {
@@ -20,6 +20,12 @@ class EditProductsListView extends StatelessWidget {
                 title: Text(products[index].title),
                 leading: Image.network(
                   products[index].imageUrl,
+                  errorBuilder: (_, exception, stackTrace) => Center(
+                    child: Text(
+                      'Unable to load image',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   width: 40,
                 ),
                 trailing: Row(
@@ -33,7 +39,7 @@ class EditProductsListView extends StatelessWidget {
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (_) =>
-                                EditProductScreen(products[index].id)),
+                                ProductEditScreen(products[index].id)),
                       ),
                     ),
                     IconButton(

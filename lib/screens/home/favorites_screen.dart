@@ -15,9 +15,8 @@ class FavoriteScreen extends StatelessWidget {
         centerTitle: true,
         title: Text('Món yêu thích'),
       ),
-      body: Consumer<UserProvider>(
-        builder: (_, userProvider, child) => userProvider
-                .user.favoriteProducts.isEmpty
+      body: Consumer<UserProvider>(builder: (_, userProvider, child) {
+        return userProvider.user.favoriteProducts.isEmpty
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -42,19 +41,19 @@ class FavoriteScreen extends StatelessWidget {
                   ],
                 ),
               )
-            : SingleChildScrollView(
+            : ListView.separated(
                 padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
-                child: Consumer<UserProvider>(
-                  builder: (_, userProvider, child) => ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, index) =>
-                        ProductCard(userProvider.favoriteProducts[index]),
-                    itemCount: userProvider.favoriteProducts.length,
-                  ),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  return ProductCard(userProvider.favoriteProducts[index]);
+                },
+                separatorBuilder: (_, index) => SizedBox(
+                  height: Constant.SIZED_BOX_HEIGHT / 2,
                 ),
-              ),
-      ),
+                itemCount: userProvider.favoriteProducts.length,
+              );
+      }),
     );
   }
 }

@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:the_coffee_house/models/store.dart';
-import 'package:the_coffee_house/providers/stores.dart';
+import 'package:the/models/store.dart';
+import 'package:the/providers/stores.dart';
 
 class GoogleMapWidget extends StatefulWidget {
   static const routeName = '/google_map_screen';
@@ -37,11 +37,14 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
     return stores
         .map<Marker>(
           (store) => Marker(
+            infoWindow: InfoWindow(
+              title: 'The coffee house ' + store.name,
+              snippet: store.address,
+            ),
             markerId: MarkerId(store.id),
             zIndex: 5,
             position: store.location,
             onTap: () async {
-              print('Before called: ' + store.location.toString());
               _goToPosition(store.location);
             },
           ),

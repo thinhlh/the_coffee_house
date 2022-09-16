@@ -1,9 +1,9 @@
-import 'package:flutter/widgets.dart' as widget;
+import 'package:flutter/foundation.dart';
 
 import '../models/notification.dart';
-import '../services/firestore_notifications.dart';
+import '../services/notifications_api.dart';
 
-class Notifications with widget.ChangeNotifier {
+class Notifications with ChangeNotifier {
   List<Notification> _notifications = [];
 
   Notifications.initialize();
@@ -14,21 +14,27 @@ class Notifications with widget.ChangeNotifier {
     return _notifications.firstWhere((element) => element.id == id);
   }
 
-  Future<void> addNotification(Notification notification) async {
+  Future<void> addNotification(
+    Notification notification,
+    bool isLocalImage,
+  ) async {
     try {
-      await FireStoreNotifications().add(notification);
+      return NotificationsAPI().addNotification(notification, isLocalImage);
     } catch (error) {
       //TODO handling error
       throw error;
     }
   }
 
-  Future<void> updateNotification(Notification notification) async {
+  Future<void> updateNotification(
+    Notification notification,
+    bool isLocalImage,
+  ) async {
     final index =
         _notifications.indexWhere((value) => value.id == notification.id);
     if (index < 0) return;
     try {
-      await FireStoreNotifications().update(notification);
+      return NotificationsAPI().updateNotification(notification, isLocalImage);
     } catch (error) {
       //TODO handling error
     }
@@ -36,11 +42,20 @@ class Notifications with widget.ChangeNotifier {
 
   Future<void> deleteNotification(String id) async {
     try {
-      await FireStoreNotifications().delete(id);
+      await NotificationsAPI().delete(id);
       notifyListeners();
     } catch (error) {
       //TODO handling error
     }
+  }
+
+  List<Notification> searchNotification(String title) {
+    return _notifications
+        .where(
+          (product) =>
+              product.title.trim().toLowerCase().contains(title.toLowerCase()),
+        )
+        .toList();
   }
 
   Notifications.fromList(this._notifications);

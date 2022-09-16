@@ -3,8 +3,9 @@ import 'dart:ui' as ui;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter/material.dart';
-import 'package:the_coffee_house/screens/home/order_screen.dart';
-import 'package:the_coffee_house/utils/global_vars.dart';
+import 'package:provider/provider.dart';
+import 'package:the/screens/home/order_screen.dart';
+import 'package:the/utils/global_vars.dart';
 
 import '../models/notification.dart' as model;
 import '../utils/const.dart' as Constant;
@@ -17,6 +18,12 @@ class NotificationInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     Image image = Image.network(
       notification.imageUrl,
+      errorBuilder: (_, exception, stackTrace) => Center(
+        child: Text(
+          'Unable to load image',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
     );
     Completer<ui.Image> completer = Completer<ui.Image>();
 
@@ -88,7 +95,6 @@ class NotificationInfo extends StatelessWidget {
                                 Navigator.of(context).pop();
                                 tabScreenState.currentState.navigateToScreen(
                                   OrderScreen.routeName,
-                                  true,
                                 );
                               },
                               child: Text(

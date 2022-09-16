@@ -1,5 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:the/screens/home/order_screen.dart';
+import 'package:the/utils/global_vars.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,7 +27,14 @@ class StoreInfoScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
           ),
-          onPressed: () {},
+          onPressed: () {
+            sharedPref
+                .setIsPreferDelivered(false)
+                .then((value) => sharedPref.setTakeAwayLocation(store.id))
+                .then((value) => tabScreenState.currentState
+                    .navigateToScreen(OrderScreen.routeName))
+                .then((value) => Navigator.of(context).pop(store.id));
+          },
           label: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -36,20 +46,15 @@ class StoreInfoScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          CarouselSlider(
-            items: store.imageUrls
-                .map(
-                  (value) => Image.network(
-                    value,
-                    fit: BoxFit.cover,
-                  ),
-                )
-                .toList(),
-            options: CarouselOptions(
-              autoPlay: false,
-              enableInfiniteScroll: true,
-              height: 0.5.sh,
-              viewportFraction: 1,
+          Image.network(
+            store.imageUrl,
+            height: 0.5.sh,
+            fit: BoxFit.cover,
+            errorBuilder: (_, exception, stackTrace) => Center(
+              child: Text(
+                'Unable to load image',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           Padding(
@@ -65,7 +70,7 @@ class StoreInfoScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  store.address,
+                  store.name,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -89,11 +94,19 @@ class StoreInfoScreen extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  onTap: () => UrlLauncher.launch('geo: ' +
-                      store.location.latitude.toString() +
-                      ',' +
-                      store.location.longitude.toString() +
-                      '?z=20'),
+                  onTap: () => Platform.isIOS
+                      ? UrlLauncher.launch(
+                          'http://maps.apple.com/?q=The+Coffee+House&ll=' +
+                              store.location.latitude.toString() +
+                              ',' +
+                              store.location.longitude.toString() +
+                              '&z=20&t=s',
+                        )
+                      : UrlLauncher.launch('geo: ' +
+                          store.location.latitude.toString() +
+                          ',' +
+                          store.location.longitude.toString() +
+                          '?z=20'),
                   leading: Container(
                     margin: const EdgeInsets.only(
                       bottom: 4 * Constant.GENERAL_PADDING,
@@ -116,29 +129,7 @@ class StoreInfoScreen extends StatelessWidget {
                   ),
                 ),
                 ListTile(
-                  leading: Container(
-                    margin: const EdgeInsets.only(
-                      bottom: 4 * Constant.GENERAL_PADDING,
-                    ),
-                    child: Icon(
-                      Icons.star,
-                      size: 34,
-                    ),
-                  ),
-                  title: Text(
-                    'Thêm vào danh sách yêu thích',
-                    maxLines: 2,
-                  ),
-                  subtitle: Container(
-                    margin: const EdgeInsets.only(
-                      top: 2 * Constant.GENERAL_PADDING,
-                    ),
-                    color: Colors.grey.shade300,
-                    height: 1,
-                  ),
-                ),
-                ListTile(
-                  onTap: () => UrlLauncher.launch('tel: 028 71087088'),
+                  onTap: () => UrlLauncher.launch('tel:02871087088'),
                   leading: Container(
                     margin: const EdgeInsets.only(
                       bottom: 4 * Constant.GENERAL_PADDING,
@@ -150,28 +141,6 @@ class StoreInfoScreen extends StatelessWidget {
                   ),
                   title: Text(
                     'Liên hệ',
-                    maxLines: 2,
-                  ),
-                  subtitle: Container(
-                    margin: const EdgeInsets.only(
-                      top: 2 * Constant.GENERAL_PADDING,
-                    ),
-                    color: Colors.grey.shade300,
-                    height: 1,
-                  ),
-                ),
-                ListTile(
-                  leading: Container(
-                    margin: const EdgeInsets.only(
-                      bottom: 4 * Constant.GENERAL_PADDING,
-                    ),
-                    child: Icon(
-                      Icons.ios_share,
-                      size: 34,
-                    ),
-                  ),
-                  title: Text(
-                    'Chia sẻ với bạn bè',
                     maxLines: 2,
                   ),
                   subtitle: Container(

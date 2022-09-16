@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:the/screens/admin/category_edit_screen.dart';
 
 import '../../providers/categories.dart';
-import '../../screens/admin_screens/category_edit_screen.dart';
 import '../../utils/const.dart' as Constant;
 
 class EditCategoriesListView extends StatelessWidget {
@@ -20,6 +20,12 @@ class EditCategoriesListView extends StatelessWidget {
                 title: Text(categories[index].title),
                 leading: Image.network(
                   categories[index].imageUrl,
+                  errorBuilder: (_, exception, stackTrace) => Center(
+                    child: Text(
+                      'Unable to load image',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   width: 40,
                 ),
                 trailing: Row(

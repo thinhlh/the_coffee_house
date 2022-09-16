@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
-import '../services/firestore_products.dart';
+import '../services/products_api.dart';
 
 class Products with ChangeNotifier {
   List<Product> _products = [];
@@ -13,8 +13,8 @@ class Products with ChangeNotifier {
   Products.fromList(this._products);
 
   ///Only used for the first time when init and show blank screen in Wrapper
-  Future<void> fetchProducts() {
-    return FireStoreProducts()
+  Future<List<Product>> fetchProducts() {
+    return ProductsAPI()
         .firestore
         .collection('products')
         .get()
@@ -42,16 +42,16 @@ class Products with ChangeNotifier {
         .length;
   }
 
-  List<Product> searchProductsByTitle(String title) {
+  List<Product> searchProducts(String title) {
     return _products
         .where((product) =>
             product.title.trim().toLowerCase().contains(title.toLowerCase()))
         .toList();
   }
 
-  Future<void> addProduct(Product product) async {
+  Future<void> addProduct(Product product, bool isLocalImage) async {
     try {
-      final addedProduct = await FireStoreProducts().add(product);
+      await ProductsAPI().addProduct(product, isLocalImage);
       notifyListeners();
     } catch (error) {
       //TODO handling error
@@ -59,12 +59,13 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
-    final index = _products.indexWhere((product) => product.id == id);
+  Future<void> updateProduct(Product newProduct, bool isLocalImage) async {
+    final index =
+        _products.indexWhere((product) => product.id == newProduct.id);
     if (index < 0) return;
 
     try {
-      await FireStoreProducts().update(newProduct);
+      await ProductsAPI().updateProduct(newProduct, isLocalImage);
       notifyListeners();
     } catch (error) {
       throw error;
@@ -77,7 +78,7 @@ class Products with ChangeNotifier {
     try {
       _products.removeAt(index);
       notifyListeners();
-      await FireStoreProducts().delete(id);
+      await ProductsAPI().delete(id);
     } catch (error) {
       _products.insert(index, tempProduct);
       _products = null;

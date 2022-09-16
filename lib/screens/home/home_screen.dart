@@ -44,24 +44,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: Icons.pedal_bike,
                         color: Colors.red[400],
                         title: 'Giao Tận Nơi',
-                        navigate: () =>
-                            tabScreenState.currentState.navigateToScreen(
-                          OrderScreen.routeName,
-                          true,
-                        ),
+                        onPressed: () {
+                          sharedPref.setIsPreferDelivered(true).then(
+                                (value) => tabScreenState.currentState
+                                    .navigateToScreen(
+                                  OrderScreen.routeName,
+                                ),
+                              );
+                        },
                       ),
                     ),
                     Expanded(
                       child: NavigativeActionCard(
-                        icon: FlutterIcons.cup_ent,
-                        color: Colors.blue[400],
-                        title: 'Tự Đến Lấy',
-                        navigate: () =>
-                            tabScreenState.currentState.navigateToScreen(
-                          OrderScreen.routeName,
-                          false,
-                        ),
-                      ),
+                          icon: FlutterIcons.cup_ent,
+                          color: Colors.blue[400],
+                          title: 'Tự Đến Lấy',
+                          onPressed: () {
+                            sharedPref.setIsPreferDelivered(false).then(
+                                  (value) => tabScreenState.currentState
+                                      .navigateToScreen(
+                                    OrderScreen.routeName,
+                                  ),
+                                );
+                          }),
                     ),
                   ],
                 ),

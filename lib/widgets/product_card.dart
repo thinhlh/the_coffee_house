@@ -17,11 +17,10 @@ class ProductCard extends StatelessWidget {
     Product product = Provider.of<Products>(context, listen: false)
         .getProductById(_productId);
 
-    // if (product == null) {
-    //   // toggle unfavorite this product
-    //   Provider.of<UserProvider>(context, listen: false)
-    //       .toggleFavoriteStatus(_productId);
-    // }
+    //This is for when  product is deleted
+    if (product == null) {
+      return Container();
+    }
 
     return GestureDetector(
       onTap: () => showBarModalBottomSheet(
@@ -90,7 +89,23 @@ class ProductCard extends StatelessWidget {
                   child: ClipRRect(
                     child: Image.network(
                       product.imageUrl,
-                      fit: BoxFit.cover,
+                      loadingBuilder: (_, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).primaryColor),
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes
+                              : null,
+                        );
+                      },
+                      errorBuilder: (_, exception, stackTrace) => Center(
+                        child: Text(
+                          'Unable to load image',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ),

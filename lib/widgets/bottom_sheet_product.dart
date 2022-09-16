@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +32,15 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
   void initState() {
     product = Provider.of<Products>(context, listen: false)
         .getProductById(widget.productId);
-    image = Image.network(product.imageUrl);
+    image = Image.network(
+      product.imageUrl,
+      errorBuilder: (_, exception, stackTrace) => Center(
+        child: Text(
+          'Unable to load image',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
     super.initState();
   }
 
@@ -47,7 +57,11 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
             ],
           ),
         ),
-        padding: const EdgeInsets.all(Constant.GENERAL_PADDING),
+        padding: EdgeInsets.all(
+          Platform.isIOS
+              ? 2 * Constant.GENERAL_PADDING
+              : Constant.GENERAL_PADDING,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -82,12 +96,12 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
               child: GestureDetector(
                 onTap: () {
                   Provider.of<Cart>(context, listen: false).addCartItem(
-                    product.id,
                     CartItem(
                       productId: product.id,
                       title: product.title,
                       unitPrice: product.price,
                       quantity: quantity,
+                      note: _controller.text,
                     ),
                   );
                   Navigator.of(context).pop();
@@ -163,17 +177,16 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
                                     userProvider
                                         .toggleFavoriteStatus(widget.productId);
                                   },
-                                  child:
-                                      userProvider.isFavorite(widget.productId)
-                                          ? Icon(
-                                              Icons.favorite_rounded,
-                                              color: Theme.of(context)
-                                                  .primaryColorDark,
-                                            )
-                                          : Icon(
-                                              Icons.favorite_border_rounded,
-                                              color: Colors.black,
-                                            ),
+                                  child: userProvider
+                                          .isFavorite(widget.productId)
+                                      ? Icon(
+                                          Icons.favorite_rounded,
+                                          color: Theme.of(context).primaryColor,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_border_rounded,
+                                          color: Colors.black,
+                                        ),
                                   style: ButtonStyle(
                                     overlayColor: MaterialStateProperty.all(
                                         Colors.transparent),
@@ -286,14 +299,14 @@ class _BottomSheetProductState extends State<BottomSheetProduct> {
   }
 }
 
+TextEditingController _controller = TextEditingController();
+
 class BottomSheetTextField extends StatefulWidget {
   @override
   _BottomSheetTextFieldState createState() => _BottomSheetTextFieldState();
 }
 
 class _BottomSheetTextFieldState extends State<BottomSheetTextField> {
-  TextEditingController _controller;
-
   @override
   void initState() {
     _controller = TextEditingController();
@@ -310,6 +323,7 @@ class _BottomSheetTextFieldState extends State<BottomSheetTextField> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      maxLength: 40,
       decoration: InputDecoration(
         hintText: 'Ví dụ: Ít đá, nhiều đường...',
         alignLabelWithHint: true,

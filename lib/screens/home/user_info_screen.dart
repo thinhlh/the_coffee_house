@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:the/screens/home/change_password_screen.dart';
+import 'package:the/services/user_api.dart';
 
 import '../../models/custom_user.dart';
 import '../../providers/user_provider.dart';
@@ -85,7 +87,7 @@ class __UserFormState extends State<_UserForm> {
   void _save() async {
     if (!_formKey.currentState.validate()) return;
     _formKey.currentState.save();
-    Navigator.of(context).pop();
+    UserAPI().editUser(tempData).then((value) => Navigator.of(context).pop());
   }
 
   @override
@@ -111,6 +113,10 @@ class __UserFormState extends State<_UserForm> {
                     borderRadius: BorderRadius.circular(Constant.BORDER_RADIUS),
                   ),
                 ),
+                validator: (value) =>
+                    (!value.contains(RegExp('^[^0-9]+\$')) || value.isEmpty)
+                        ? 'Invalid name'
+                        : null,
                 initialValue: tempData['name'],
                 keyboardType: TextInputType.name,
                 textInputAction: TextInputAction.done,
@@ -134,10 +140,9 @@ class __UserFormState extends State<_UserForm> {
                 initialValue: user.email,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                validator: (value) =>
-                    (!value.contains(RegExp('^[^0-9]+\$')) || value.isEmpty)
-                        ? 'Invalid Name'
-                        : null,
+                validator: (value) => (value.isEmpty || !value.contains('@'))
+                    ? 'Invalid email'
+                    : null,
                 //enabled: false,
               ),
             ),
@@ -177,6 +182,17 @@ class __UserFormState extends State<_UserForm> {
                 }),
                 keyboardType: TextInputType.datetime,
                 textInputAction: TextInputAction.next,
+              ),
+            ),
+            SizedBox(height: Constant.SIZED_BOX_HEIGHT),
+            ElevatedButton(
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                builder: (_) => ChangePasswordScreen(),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(2 * Constant.GENERAL_PADDING),
+                child: Text('Đổi mật khẩu'),
               ),
             ),
             SizedBox(height: Constant.SIZED_BOX_HEIGHT),
