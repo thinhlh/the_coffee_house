@@ -25,7 +25,7 @@ import 'package:the/utils/const.dart';
 class App extends StatelessWidget {
   final Widget materialApp = ScreenUtilInit(
     designSize: Size(360, 690),
-    builder: () => MaterialApp(
+    builder: (_, child) => MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'The Coffee House',
       theme: ThemeData(

@@ -4,6 +4,7 @@ import 'package:the/tdd/features/order/presentation/widgets/cart_bottom_navigati
 import 'package:the/tdd/features/products/domain/entities/product.dart';
 import 'package:the/tdd/features/products/presentation/providers/products_provider.dart';
 import 'package:the/tdd/features/products/presentation/widgets/product_card.dart';
+import 'package:the/utils/const.dart';
 import 'package:the/utils/values/dimens.dart';
 
 ///This widgets can be navigated from category pages, receive 2 params as arguments
@@ -22,8 +23,14 @@ class ProductsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          color: Colors.black,
+        ),
         centerTitle: true,
-        title: Text(categoryTitle),
+        title: Text(
+          categoryTitle,
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       bottomNavigationBar: CartBottomNavigation(),
       body: Selector<ProductsProvider, List<Product>>(

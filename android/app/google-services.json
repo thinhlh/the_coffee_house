@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "1008379625573",
+    "firebase_url": "https://the-coffee-house-212b6-default-rtdb.firebaseio.com",
+    "project_id": "the-coffee-house-212b6",
+    "storage_bucket": "the-coffee-house-212b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008379625573:android:8b52e52a167235b925468c",
+        "android_client_info": {
+          "package_name": "com.coffeehouse.the"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008379625573-k9cbh3r2am654svnt8skiaq7eu8cngko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAApuAqAZ13iH_PsgSmoktTbKyP0-ybAwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008379625573-esujc5bhtv63js83cujpsefq9m0mvot0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1008379625573-k4jla04ej73ocijn5o6lk9f8qc4bkvna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coffeehouse.the"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008379625573:android:08e13644baa5d1a825468c",
+        "android_client_info": {
+          "package_name": "com.example.the_coffee_house"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008379625573-k9cbh3r2am654svnt8skiaq7eu8cngko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAApuAqAZ13iH_PsgSmoktTbKyP0-ybAwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008379625573-esujc5bhtv63js83cujpsefq9m0mvot0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1008379625573-k4jla04ej73ocijn5o6lk9f8qc4bkvna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.coffeehouse.the"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
